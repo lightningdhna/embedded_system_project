@@ -7,7 +7,7 @@
             ;                      \
         return key;                \
     }
-inline char get_pressed_key()
+inline char get_pressed_key(void)
 {
     P1 = 0xff;
     P1_3 = 0;

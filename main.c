@@ -3,14 +3,19 @@
 #include "led7seg.h"
 #include "lcd.h"
 #include "keymatrix.h"
+#include "sensor.h"
 
-void exec();
-void stop_timer_1();
-void reset();
+void exec(void);
+void stop_timer_1(void);
+void reset(void);
 long check = 0;
 
 #define buzzer_pin P1_5
-void buzzer()
+#define fan_pin P2_0
+
+char fan_state;
+
+void buzzer(void)
 {
 #define time 40
     for (int i = 0; i < time * 1e3 / 200; i++)
@@ -23,7 +28,25 @@ void buzzer()
             ;
     }
 }
-
+void fan_on(void)
+{
+    buzzer();
+    fan_state = 1;
+    fan_pin = 1;
+}
+void fan_off(void)
+{
+    buzzer();
+    fan_state = 0;
+    fan_pin = 0;
+}
+void fan_loop(void)
+{
+    if (fan_state)
+        fan_pin = 1;
+    else
+        fan_pin = 0;
+}
 #define max_code_counter 2
 
 char signal_codes[max_code_counter];
@@ -41,13 +64,14 @@ unsigned char bits_counter = 0;
 long last_signal_received = -10000;
 
 // todo remove these variable
-long max_delta = 0;
+// long max_delta = 0;
 
 #define max_command_length 16
 char command[max_command_length];
 char command_index = 0;
 char prev_num = 50;
-void command_second_line()
+
+void command_second_line(void)
 {
     while (command_index > 0)
     {
@@ -62,7 +86,7 @@ void command_second_line()
     }
     lcd_second_line();
 }
-void command_first_line()
+void command_first_line(void)
 {
     while (command_index > 0)
     {
@@ -101,7 +125,7 @@ const char key_map[12][8] = {
     // {'#', ' ', ' ', ' '}       // Phím #
 };
 
-inline void input_handler(const char num, const char interval_type)
+void input_handler(const char num, const char interval_type)
 {
 
     if (num != prev_num && command_index == max_command_length)
@@ -145,7 +169,7 @@ inline void input_handler(const char num, const char interval_type)
     }
 }
 
-void delete_one_char()
+void delete_one_char(void)
 {
     prev_num = 50;
     if (command_index <= 0)
@@ -156,7 +180,7 @@ void delete_one_char()
     lcd_write_char(' ');
     lcd_back();
 }
-void add_space()
+void add_space(void)
 {
     prev_num = 50;
     update_key(' ');
@@ -171,7 +195,7 @@ const char infrared_num[] = {151, 207, 231, 133, 239, 199, 165, 189, 181, 173};
 #define infrared_vol_up 111
 #define infrared_vol_down 87
 #define infrared_eq 31
-void exec_infrared_signal()
+void exec_infrared_signal(void)
 {
 
     switch (signal_codes[read_code_index])
@@ -267,42 +291,57 @@ void infrared_interrupt(void) __interrupt(0)
     // This could involve reading the infrared signal and taking some action.
 }
 unsigned int timer1_counter = 0;
-void reset_timer_1()
+void reset_timer_1(void)
 {
     // TF1 = 0;
     TH1 = 0x4B; // Thiết lập giá trị đầu tiên của thanh ghi đếm cao
     TL1 = 0xFF; // Thiết lập giá trị đầu tiên của thanh ghi đếm thấp
 }
-void stop_timer_1()
+void stop_timer_1(void)
 {
     TR1 = 0;
 }
-void start_time_1()
+void start_time_1(void)
 {
     timer1_counter = 0;
     reset_timer_1();
     TR1 = 1;
 }
-void (*do_something_1)() = NULL;
+void (*do_something_1)(void) = NULL;
 
-void count_down()
+void count_down(void)
 {
     if ((timer1_counter % 20) == 0)
     {
-        --check;
         if (check <= 0)
         {
+            stop_timer_1();
             buzzer();
             do_something_1 = NULL;
-            stop_timer_1();
         }
+        else
+            --check;
     }
 }
-void count_up()
+void count_up(void)
 {
     if ((timer1_counter % 20) == 0)
     {
         ++check;
+    }
+}
+void timer_fan_off(void)
+{
+    if ((timer1_counter % 20) == 0)
+    {
+        if (check <= 0)
+        {
+            fan_off();
+            do_something_1 = NULL;
+            stop_timer_1();
+        }
+        else
+            --check;
     }
 }
 void timer0_interrupt(void) __interrupt(1)
@@ -322,6 +361,10 @@ void timer1_interrupt(void) __interrupt(3)
     {
         do_something_1();
     }
+    else
+    {
+    }
+
     // Xử lý thêm nếu cần thiết
 }
 
@@ -329,7 +372,7 @@ char a[6];
 long last_time_key_pressed = 0;
 char prev_key_pressed = 0;
 char key_pressed = 0;
-void exec_key_pressed()
+void exec_key_pressed(void)
 {
     switch (key_pressed)
     {
@@ -424,9 +467,17 @@ void exec_key_pressed()
     last_time_key_pressed = time_counter;
     prev_key_pressed = key_pressed;
 }
-int main()
+void ex1_interrupt(void) __interrupt(IE1_VECTOR)
 {
+    fan_on();
+}
+int main(void)
+{
+    // setting interruption for INT1 aka P33 -> K4 button
+    EX1 = 1;
+    IT1 = 1;
 
+    init_ds18b20();
     // Set up the interrupt.
     // Enable the external interrupt.
     IT0 = 1; // Falling edge trigger
@@ -447,13 +498,16 @@ int main()
 
     // Cho phép ngắt timer 1
     ET1 = 1;
-    // Bắt đầu timer 1
+
+    P2 = 0;
+    P0 = 0;
 
     lcd_init();
     lcd_first_line();
 
     while (1)
     {
+        fan_loop();
         display_number(check);
         key_pressed = get_pressed_key();
         if (key_pressed)
@@ -468,7 +522,7 @@ int main()
     }
 }
 
-void reset()
+void reset(void)
 {
     do_something_1 = NULL;
     stop_timer_1();
@@ -515,7 +569,7 @@ void cal_num(const char *start)
     }
 }
 
-void exec()
+void exec(void)
 {
     if (strncmp(command, "buzzer", strlen("buzzer")) == 0)
     {
@@ -563,8 +617,40 @@ void exec()
     }
     else if (strncmp(command, "stopwatch", strlen("stopwatch")) == 0)
     {
-        const char *start = strchr(command + strlen("stopwatch"), ' ');
         do_something_1 = count_up;
         start_time_1();
+    }
+    else if (strncmp(command, "fan off", strlen("fan off")) == 0)
+    {
+        if (fan_state)
+        {
+            const char *start = strchr(command + strlen("fan off"), ' ');
+            check = 0;
+            cal_num(start);
+            do_something_1 = timer_fan_off;
+            start_time_1();
+        }
+    }
+    else if (strncmp(command, "fan on", strlen("fan on")) == 0)
+    {
+        if (fan_state == 0)
+        {
+            fan_on();
+            const char *start = strchr(command + strlen("fan off"), ' ');
+            check = 0;
+            cal_num(start);
+            if (check > 0)
+            {
+                do_something_1 = timer_fan_off;
+                start_time_1();
+            }
+        }
+    }
+    else if (
+        strncmp(command, "temp", strlen("temp")) == 0 ||
+        strncmp(command, "temperature", strlen("temperature")) == 0)
+
+    {
+        check = get_temp();
     }
 }

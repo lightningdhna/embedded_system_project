@@ -47,7 +47,7 @@ void lcd_send_command(const unsigned char x)
     delay_us(100); // Doi cho LCD san sang
     LCD_EN = 1;
 }
-inline unsigned char lcd_read_cursor_position()
+inline unsigned char lcd_read_cursor_position(void)
 {
     LCD_RS = 0; // Set RS low for command mode
     LCD_RW = 1; // Set RW high for read mode
@@ -57,7 +57,7 @@ inline unsigned char lcd_read_cursor_position()
     return LCD_DATA; // Read the cursor position
 }
 
-void lcd_init()
+void lcd_init(void)
 {
     lcd_send_command(0x38); // Chon che do 8 bit, 2 hang cho LCD
     lcd_send_command(0x0E); // Bat hien thi, nhap nhay con tro

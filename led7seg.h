@@ -17,7 +17,8 @@ const char number_string[10] = {
 inline void display_digit(const char led, const char digit)
 {
     P0 = 0;
-    P2 = led << 2;
+    P2 &= 0b11100011;
+    P2 |= led << 2;
     //    p2 &= ~(8<<2);
     //    p2 ^= (led<<2);
     P0 = number_string[digit];
