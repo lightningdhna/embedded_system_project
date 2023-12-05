@@ -123,7 +123,17 @@ inline char left_shift_cycle(const char a, const char shift)
 }
 void game_over(void)
 {
-
+#define buzzer_pin P1_5
+#define time 40
+    for (int i = 0; i < time * 1e3 / 200; i++)
+    {
+        buzzer_pin = 1;
+        for (int j = 0; j < 90; j++)
+            ;
+        buzzer_pin = 0;
+        for (int j = 0; j < 90; j++)
+            ;
+    }
     for (char i = 0; i < 8; i++)
         data_mat[i] = 0;
 
