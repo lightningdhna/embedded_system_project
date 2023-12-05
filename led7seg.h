@@ -24,11 +24,15 @@ inline void display_digit(const char led, const char digit)
     P0 = number_string[digit];
 }
 
-inline void display_number(long number)
+void display_number(long number)
 {
     if (!number)
     {
-        display_digit(0, 0);
+        P0 = 0;
+        P2 &= 0b11100011;
+        P0 = number_string[0];
+        for (char i = 0; i < 100; i++)
+            ;
         return;
     }
     char led = 0;

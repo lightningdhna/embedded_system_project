@@ -57,14 +57,19 @@ inline void display_game_and_point(void)
     P2 = 0b11111111;
     P0 = 0xFF;
     display_led_mat();
+    char i;
+    for (i = 0; i < 100; i++)
+        ;
     SER = 0;
-    for (char i = 0; i < 8; i++)
+    for (i = 0; i < 8; i++)
     {
         SCK = 1;
         SCK = 0;
     }
     RCK = 1;
     RCK = 0;
+    display_number(point);
+    display_number(point);
     display_number(point);
 }
 
@@ -123,6 +128,8 @@ inline char left_shift_cycle(const char a, const char shift)
 }
 void game_over(void)
 {
+    EA = 0;
+
 #define buzzer_pin P1_5
 #define time 40
     for (int i = 0; i < time * 1e3 / 200; i++)
@@ -220,7 +227,7 @@ void game_over(void)
     //     }
     // }
     // up & down
-    if (point > 20)
+    if (point > 2)
     {
 
         while (1)
