@@ -1,0 +1,3234 @@
+                                      1 ;--------------------------------------------------------
+                                      2 ; File Created by SDCC : free open source ISO C Compiler 
+                                      3 ; Version 4.3.0 #14184 (MINGW64)
+                                      4 ;--------------------------------------------------------
+                                      5 	.module ledmatrix
+                                      6 	.optsdcc -mmcs51 --model-small
+                                      7 	
+                                      8 ;--------------------------------------------------------
+                                      9 ; Public variables in this module
+                                     10 ;--------------------------------------------------------
+                                     11 	.globl _number_string
+                                     12 	.globl _main
+                                     13 	.globl _timer1_interrupt
+                                     14 	.globl _key_pressed_handle
+                                     15 	.globl _reset_timer_1
+                                     16 	.globl _go_right
+                                     17 	.globl _go_left
+                                     18 	.globl _go_down
+                                     19 	.globl _go_up
+                                     20 	.globl _update_game
+                                     21 	.globl _update_food
+                                     22 	.globl _game_over
+                                     23 	.globl _display_number
+                                     24 	.globl _srand
+                                     25 	.globl _rand
+                                     26 	.globl _CY
+                                     27 	.globl _AC
+                                     28 	.globl _F0
+                                     29 	.globl _RS1
+                                     30 	.globl _RS0
+                                     31 	.globl _OV
+                                     32 	.globl _F1
+                                     33 	.globl _P
+                                     34 	.globl _PS
+                                     35 	.globl _PT1
+                                     36 	.globl _PX1
+                                     37 	.globl _PT0
+                                     38 	.globl _PX0
+                                     39 	.globl _RD
+                                     40 	.globl _WR
+                                     41 	.globl _T1
+                                     42 	.globl _T0
+                                     43 	.globl _INT1
+                                     44 	.globl _INT0
+                                     45 	.globl _TXD
+                                     46 	.globl _RXD
+                                     47 	.globl _P3_7
+                                     48 	.globl _P3_6
+                                     49 	.globl _P3_5
+                                     50 	.globl _P3_4
+                                     51 	.globl _P3_3
+                                     52 	.globl _P3_2
+                                     53 	.globl _P3_1
+                                     54 	.globl _P3_0
+                                     55 	.globl _EA
+                                     56 	.globl _ES
+                                     57 	.globl _ET1
+                                     58 	.globl _EX1
+                                     59 	.globl _ET0
+                                     60 	.globl _EX0
+                                     61 	.globl _P2_7
+                                     62 	.globl _P2_6
+                                     63 	.globl _P2_5
+                                     64 	.globl _P2_4
+                                     65 	.globl _P2_3
+                                     66 	.globl _P2_2
+                                     67 	.globl _P2_1
+                                     68 	.globl _P2_0
+                                     69 	.globl _SM0
+                                     70 	.globl _SM1
+                                     71 	.globl _SM2
+                                     72 	.globl _REN
+                                     73 	.globl _TB8
+                                     74 	.globl _RB8
+                                     75 	.globl _TI
+                                     76 	.globl _RI
+                                     77 	.globl _P1_7
+                                     78 	.globl _P1_6
+                                     79 	.globl _P1_5
+                                     80 	.globl _P1_4
+                                     81 	.globl _P1_3
+                                     82 	.globl _P1_2
+                                     83 	.globl _P1_1
+                                     84 	.globl _P1_0
+                                     85 	.globl _TF1
+                                     86 	.globl _TR1
+                                     87 	.globl _TF0
+                                     88 	.globl _TR0
+                                     89 	.globl _IE1
+                                     90 	.globl _IT1
+                                     91 	.globl _IE0
+                                     92 	.globl _IT0
+                                     93 	.globl _P0_7
+                                     94 	.globl _P0_6
+                                     95 	.globl _P0_5
+                                     96 	.globl _P0_4
+                                     97 	.globl _P0_3
+                                     98 	.globl _P0_2
+                                     99 	.globl _P0_1
+                                    100 	.globl _P0_0
+                                    101 	.globl _TF2
+                                    102 	.globl _EXF2
+                                    103 	.globl _RCLK
+                                    104 	.globl _TCLK
+                                    105 	.globl _EXEN2
+                                    106 	.globl _TR2
+                                    107 	.globl _C_T2
+                                    108 	.globl _CP_RL2
+                                    109 	.globl _T2CON_7
+                                    110 	.globl _T2CON_6
+                                    111 	.globl _T2CON_5
+                                    112 	.globl _T2CON_4
+                                    113 	.globl _T2CON_3
+                                    114 	.globl _T2CON_2
+                                    115 	.globl _T2CON_1
+                                    116 	.globl _T2CON_0
+                                    117 	.globl _PT2
+                                    118 	.globl _ET2
+                                    119 	.globl _B
+                                    120 	.globl _ACC
+                                    121 	.globl _PSW
+                                    122 	.globl _IP
+                                    123 	.globl _P3
+                                    124 	.globl _IE
+                                    125 	.globl _P2
+                                    126 	.globl _SBUF
+                                    127 	.globl _SCON
+                                    128 	.globl _P1
+                                    129 	.globl _TH1
+                                    130 	.globl _TH0
+                                    131 	.globl _TL1
+                                    132 	.globl _TL0
+                                    133 	.globl _TMOD
+                                    134 	.globl _TCON
+                                    135 	.globl _PCON
+                                    136 	.globl _DPH
+                                    137 	.globl _DPL
+                                    138 	.globl _SP
+                                    139 	.globl _P0
+                                    140 	.globl _TH2
+                                    141 	.globl _TL2
+                                    142 	.globl _RCAP2H
+                                    143 	.globl _RCAP2L
+                                    144 	.globl _T2CON
+                                    145 	.globl _show_food
+                                    146 	.globl _bit1
+                                    147 	.globl _bit0
+                                    148 	.globl _food
+                                    149 	.globl _tail
+                                    150 	.globl _head
+                                    151 	.globl _key_pressed
+                                    152 	.globl _data_mat
+                                    153 	.globl _cur_dir
+                                    154 	.globl _sqr_left
+                                    155 	.globl _point
+                                    156 	.globl _game_timer_counter
+                                    157 	.globl _timer_counter
+                                    158 ;--------------------------------------------------------
+                                    159 ; special function registers
+                                    160 ;--------------------------------------------------------
+                                    161 	.area RSEG    (ABS,DATA)
+      000000                        162 	.org 0x0000
+                           0000C8   163 _T2CON	=	0x00c8
+                           0000CA   164 _RCAP2L	=	0x00ca
+                           0000CB   165 _RCAP2H	=	0x00cb
+                           0000CC   166 _TL2	=	0x00cc
+                           0000CD   167 _TH2	=	0x00cd
+                           000080   168 _P0	=	0x0080
+                           000081   169 _SP	=	0x0081
+                           000082   170 _DPL	=	0x0082
+                           000083   171 _DPH	=	0x0083
+                           000087   172 _PCON	=	0x0087
+                           000088   173 _TCON	=	0x0088
+                           000089   174 _TMOD	=	0x0089
+                           00008A   175 _TL0	=	0x008a
+                           00008B   176 _TL1	=	0x008b
+                           00008C   177 _TH0	=	0x008c
+                           00008D   178 _TH1	=	0x008d
+                           000090   179 _P1	=	0x0090
+                           000098   180 _SCON	=	0x0098
+                           000099   181 _SBUF	=	0x0099
+                           0000A0   182 _P2	=	0x00a0
+                           0000A8   183 _IE	=	0x00a8
+                           0000B0   184 _P3	=	0x00b0
+                           0000B8   185 _IP	=	0x00b8
+                           0000D0   186 _PSW	=	0x00d0
+                           0000E0   187 _ACC	=	0x00e0
+                           0000F0   188 _B	=	0x00f0
+                                    189 ;--------------------------------------------------------
+                                    190 ; special function bits
+                                    191 ;--------------------------------------------------------
+                                    192 	.area RSEG    (ABS,DATA)
+      000000                        193 	.org 0x0000
+                           0000AD   194 _ET2	=	0x00ad
+                           0000BD   195 _PT2	=	0x00bd
+                           0000C8   196 _T2CON_0	=	0x00c8
+                           0000C9   197 _T2CON_1	=	0x00c9
+                           0000CA   198 _T2CON_2	=	0x00ca
+                           0000CB   199 _T2CON_3	=	0x00cb
+                           0000CC   200 _T2CON_4	=	0x00cc
+                           0000CD   201 _T2CON_5	=	0x00cd
+                           0000CE   202 _T2CON_6	=	0x00ce
+                           0000CF   203 _T2CON_7	=	0x00cf
+                           0000C8   204 _CP_RL2	=	0x00c8
+                           0000C9   205 _C_T2	=	0x00c9
+                           0000CA   206 _TR2	=	0x00ca
+                           0000CB   207 _EXEN2	=	0x00cb
+                           0000CC   208 _TCLK	=	0x00cc
+                           0000CD   209 _RCLK	=	0x00cd
+                           0000CE   210 _EXF2	=	0x00ce
+                           0000CF   211 _TF2	=	0x00cf
+                           000080   212 _P0_0	=	0x0080
+                           000081   213 _P0_1	=	0x0081
+                           000082   214 _P0_2	=	0x0082
+                           000083   215 _P0_3	=	0x0083
+                           000084   216 _P0_4	=	0x0084
+                           000085   217 _P0_5	=	0x0085
+                           000086   218 _P0_6	=	0x0086
+                           000087   219 _P0_7	=	0x0087
+                           000088   220 _IT0	=	0x0088
+                           000089   221 _IE0	=	0x0089
+                           00008A   222 _IT1	=	0x008a
+                           00008B   223 _IE1	=	0x008b
+                           00008C   224 _TR0	=	0x008c
+                           00008D   225 _TF0	=	0x008d
+                           00008E   226 _TR1	=	0x008e
+                           00008F   227 _TF1	=	0x008f
+                           000090   228 _P1_0	=	0x0090
+                           000091   229 _P1_1	=	0x0091
+                           000092   230 _P1_2	=	0x0092
+                           000093   231 _P1_3	=	0x0093
+                           000094   232 _P1_4	=	0x0094
+                           000095   233 _P1_5	=	0x0095
+                           000096   234 _P1_6	=	0x0096
+                           000097   235 _P1_7	=	0x0097
+                           000098   236 _RI	=	0x0098
+                           000099   237 _TI	=	0x0099
+                           00009A   238 _RB8	=	0x009a
+                           00009B   239 _TB8	=	0x009b
+                           00009C   240 _REN	=	0x009c
+                           00009D   241 _SM2	=	0x009d
+                           00009E   242 _SM1	=	0x009e
+                           00009F   243 _SM0	=	0x009f
+                           0000A0   244 _P2_0	=	0x00a0
+                           0000A1   245 _P2_1	=	0x00a1
+                           0000A2   246 _P2_2	=	0x00a2
+                           0000A3   247 _P2_3	=	0x00a3
+                           0000A4   248 _P2_4	=	0x00a4
+                           0000A5   249 _P2_5	=	0x00a5
+                           0000A6   250 _P2_6	=	0x00a6
+                           0000A7   251 _P2_7	=	0x00a7
+                           0000A8   252 _EX0	=	0x00a8
+                           0000A9   253 _ET0	=	0x00a9
+                           0000AA   254 _EX1	=	0x00aa
+                           0000AB   255 _ET1	=	0x00ab
+                           0000AC   256 _ES	=	0x00ac
+                           0000AF   257 _EA	=	0x00af
+                           0000B0   258 _P3_0	=	0x00b0
+                           0000B1   259 _P3_1	=	0x00b1
+                           0000B2   260 _P3_2	=	0x00b2
+                           0000B3   261 _P3_3	=	0x00b3
+                           0000B4   262 _P3_4	=	0x00b4
+                           0000B5   263 _P3_5	=	0x00b5
+                           0000B6   264 _P3_6	=	0x00b6
+                           0000B7   265 _P3_7	=	0x00b7
+                           0000B0   266 _RXD	=	0x00b0
+                           0000B1   267 _TXD	=	0x00b1
+                           0000B2   268 _INT0	=	0x00b2
+                           0000B3   269 _INT1	=	0x00b3
+                           0000B4   270 _T0	=	0x00b4
+                           0000B5   271 _T1	=	0x00b5
+                           0000B6   272 _WR	=	0x00b6
+                           0000B7   273 _RD	=	0x00b7
+                           0000B8   274 _PX0	=	0x00b8
+                           0000B9   275 _PT0	=	0x00b9
+                           0000BA   276 _PX1	=	0x00ba
+                           0000BB   277 _PT1	=	0x00bb
+                           0000BC   278 _PS	=	0x00bc
+                           0000D0   279 _P	=	0x00d0
+                           0000D1   280 _F1	=	0x00d1
+                           0000D2   281 _OV	=	0x00d2
+                           0000D3   282 _RS0	=	0x00d3
+                           0000D4   283 _RS1	=	0x00d4
+                           0000D5   284 _F0	=	0x00d5
+                           0000D6   285 _AC	=	0x00d6
+                           0000D7   286 _CY	=	0x00d7
+                                    287 ;--------------------------------------------------------
+                                    288 ; overlayable register banks
+                                    289 ;--------------------------------------------------------
+                                    290 	.area REG_BANK_0	(REL,OVR,DATA)
+      000000                        291 	.ds 8
+                                    292 ;--------------------------------------------------------
+                                    293 ; overlayable bit register bank
+                                    294 ;--------------------------------------------------------
+                                    295 	.area BIT_BANK	(REL,OVR,DATA)
+      000000                        296 bits:
+      000000                        297 	.ds 1
+                           008000   298 	b0 = bits[0]
+                           008100   299 	b1 = bits[1]
+                           008200   300 	b2 = bits[2]
+                           008300   301 	b3 = bits[3]
+                           008400   302 	b4 = bits[4]
+                           008500   303 	b5 = bits[5]
+                           008600   304 	b6 = bits[6]
+                           008700   305 	b7 = bits[7]
+                                    306 ;--------------------------------------------------------
+                                    307 ; internal ram data
+                                    308 ;--------------------------------------------------------
+                                    309 	.area DSEG    (DATA)
+      000000                        310 _display_number_led_65537_56:
+      000000                        311 	.ds 1
+      000001                        312 _display_number_neg_65537_56:
+      000001                        313 	.ds 1
+      000002                        314 _timer_counter::
+      000002                        315 	.ds 4
+      000006                        316 _game_timer_counter::
+      000006                        317 	.ds 2
+      000008                        318 _point::
+      000008                        319 	.ds 1
+      000009                        320 _sqr_left::
+      000009                        321 	.ds 1
+      00000A                        322 _cur_dir::
+      00000A                        323 	.ds 1
+      00000B                        324 _data_mat::
+      00000B                        325 	.ds 8
+      000013                        326 _key_pressed::
+      000013                        327 	.ds 1
+      000014                        328 _head::
+      000014                        329 	.ds 1
+      000015                        330 _tail::
+      000015                        331 	.ds 1
+      000016                        332 _food::
+      000016                        333 	.ds 1
+      000017                        334 _bit0::
+      000017                        335 	.ds 8
+      00001F                        336 _bit1::
+      00001F                        337 	.ds 8
+      000027                        338 _game_over_temp_65537_111:
+      000027                        339 	.ds 1
+      000028                        340 _game_over_i_65537_111:
+      000028                        341 	.ds 1
+      000029                        342 _game_over_j_65537_111:
+      000029                        343 	.ds 1
+      00002A                        344 _game_over_t_65537_111:
+      00002A                        345 	.ds 1
+      00002B                        346 _game_over_current_data_983041_136:
+      00002B                        347 	.ds 1
+      00002C                        348 _game_over_row_917505_148:
+      00002C                        349 	.ds 1
+      00002D                        350 _game_over_current_data_983041_149:
+      00002D                        351 	.ds 1
+      00002E                        352 _game_over_i_1048577_150:
+      00002E                        353 	.ds 1
+      00002F                        354 _game_over_sloc0_1_0:
+      00002F                        355 	.ds 1
+      000030                        356 _game_over_sloc1_1_0:
+      000030                        357 	.ds 2
+      000032                        358 _game_over_sloc2_1_0:
+      000032                        359 	.ds 2
+      000034                        360 _update_food_i_131072_157:
+      000034                        361 	.ds 1
+      000035                        362 _show_food::
+      000035                        363 	.ds 1
+      000036                        364 _main_current_data_655360_277:
+      000036                        365 	.ds 1
+                                    366 ;--------------------------------------------------------
+                                    367 ; overlayable items in internal ram
+                                    368 ;--------------------------------------------------------
+                                    369 ;--------------------------------------------------------
+                                    370 ; Stack segment in internal ram
+                                    371 ;--------------------------------------------------------
+                                    372 	.area SSEG
+      000000                        373 __start__stack:
+      000000                        374 	.ds	1
+                                    375 
+                                    376 ;--------------------------------------------------------
+                                    377 ; indirectly addressable internal ram data
+                                    378 ;--------------------------------------------------------
+                                    379 	.area ISEG    (DATA)
+                                    380 ;--------------------------------------------------------
+                                    381 ; absolute internal ram data
+                                    382 ;--------------------------------------------------------
+                                    383 	.area IABS    (ABS,DATA)
+                                    384 	.area IABS    (ABS,DATA)
+                                    385 ;--------------------------------------------------------
+                                    386 ; bit data
+                                    387 ;--------------------------------------------------------
+                                    388 	.area BSEG    (BIT)
+      000000                        389 _update_food_sloc0_1_0:
+      000000                        390 	.ds 1
+      000001                        391 _update_game_sloc0_1_0:
+      000001                        392 	.ds 1
+                                    393 ;--------------------------------------------------------
+                                    394 ; paged external ram data
+                                    395 ;--------------------------------------------------------
+                                    396 	.area PSEG    (PAG,XDATA)
+                                    397 ;--------------------------------------------------------
+                                    398 ; uninitialized external ram data
+                                    399 ;--------------------------------------------------------
+                                    400 	.area XSEG    (XDATA)
+                                    401 ;--------------------------------------------------------
+                                    402 ; absolute external ram data
+                                    403 ;--------------------------------------------------------
+                                    404 	.area XABS    (ABS,XDATA)
+                                    405 ;--------------------------------------------------------
+                                    406 ; initialized external ram data
+                                    407 ;--------------------------------------------------------
+                                    408 	.area XISEG   (XDATA)
+                                    409 	.area HOME    (CODE)
+                                    410 	.area GSINIT0 (CODE)
+                                    411 	.area GSINIT1 (CODE)
+                                    412 	.area GSINIT2 (CODE)
+                                    413 	.area GSINIT3 (CODE)
+                                    414 	.area GSINIT4 (CODE)
+                                    415 	.area GSINIT5 (CODE)
+                                    416 	.area GSINIT  (CODE)
+                                    417 	.area GSFINAL (CODE)
+                                    418 	.area CSEG    (CODE)
+                                    419 ;--------------------------------------------------------
+                                    420 ; interrupt vector
+                                    421 ;--------------------------------------------------------
+                                    422 	.area HOME    (CODE)
+      000000                        423 __interrupt_vect:
+      000000 02r00r00         [24]  424 	ljmp	__sdcc_gsinit_startup
+      000003 32               [24]  425 	reti
+      000004                        426 	.ds	7
+      00000B 32               [24]  427 	reti
+      00000C                        428 	.ds	7
+      000013 32               [24]  429 	reti
+      000014                        430 	.ds	7
+      00001B 02r08r67         [24]  431 	ljmp	_timer1_interrupt
+                                    432 ;--------------------------------------------------------
+                                    433 ; global & static initialisations
+                                    434 ;--------------------------------------------------------
+                                    435 	.area HOME    (CODE)
+                                    436 	.area GSINIT  (CODE)
+                                    437 	.area GSFINAL (CODE)
+                                    438 	.area GSINIT  (CODE)
+                                    439 	.globl __sdcc_gsinit_startup
+                                    440 	.globl __sdcc_program_startup
+                                    441 	.globl __start__stack
+                                    442 	.globl __mcs51_genXINIT
+                                    443 	.globl __mcs51_genXRAMCLEAR
+                                    444 	.globl __mcs51_genRAMCLEAR
+                                    445 ;	ledmatrix.c:18: unsigned long timer_counter = 0;
+      000000 E4               [12]  446 	clr	a
+      000001 F5*02            [12]  447 	mov	_timer_counter,a
+      000003 F5*03            [12]  448 	mov	(_timer_counter + 1),a
+      000005 F5*04            [12]  449 	mov	(_timer_counter + 2),a
+      000007 F5*05            [12]  450 	mov	(_timer_counter + 3),a
+                                    451 ;	ledmatrix.c:19: int game_timer_counter = 0;
+      000009 F5*06            [12]  452 	mov	_game_timer_counter,a
+      00000B F5*07            [12]  453 	mov	(_game_timer_counter + 1),a
+                                    454 ;	ledmatrix.c:20: char point = 0;
+      00000D F5*08            [12]  455 	mov	_point,a
+                                    456 ;	ledmatrix.c:22: char sqr_left = 61;
+      00000F 75*09 3D         [24]  457 	mov	_sqr_left,#0x3d
+                                    458 ;	ledmatrix.c:23: char cur_dir = dir_right;
+      000012 75*0A 01         [24]  459 	mov	_cur_dir,#0x01
+                                    460 ;	ledmatrix.c:25: char key_pressed = 0;
+      000015 F5*13            [12]  461 	mov	_key_pressed,a
+                                    462 ;	ledmatrix.c:411: char show_food = 1;
+      000017 75*35 01         [24]  463 	mov	_show_food,#0x01
+                                    464 	.area GSFINAL (CODE)
+      000000 02r00r1E         [24]  465 	ljmp	__sdcc_program_startup
+                                    466 ;--------------------------------------------------------
+                                    467 ; Home
+                                    468 ;--------------------------------------------------------
+                                    469 	.area HOME    (CODE)
+                                    470 	.area HOME    (CODE)
+      00001E                        471 __sdcc_program_startup:
+      00001E 02r09r8D         [24]  472 	ljmp	_main
+                                    473 ;	return from main will return to caller
+                                    474 ;--------------------------------------------------------
+                                    475 ; code
+                                    476 ;--------------------------------------------------------
+                                    477 	.area CSEG    (CODE)
+                                    478 ;------------------------------------------------------------
+                                    479 ;Allocation info for local variables in function 'display_number'
+                                    480 ;------------------------------------------------------------
+                                    481 ;number                    Allocated to registers r4 r5 r6 r7 
+                                    482 ;i                         Allocated to registers r3 
+                                    483 ;led                       Allocated with name '_display_number_led_65537_56'
+                                    484 ;neg                       Allocated with name '_display_number_neg_65537_56'
+                                    485 ;__1966090004              Allocated to registers r3 
+                                    486 ;__1966090005              Allocated to registers r0 
+                                    487 ;led                       Allocated to registers 
+                                    488 ;digit                     Allocated to registers 
+                                    489 ;------------------------------------------------------------
+                                    490 ;	led7seg.h:27: void display_number(long number)
+                                    491 ;	-----------------------------------------
+                                    492 ;	 function display_number
+                                    493 ;	-----------------------------------------
+      000000                        494 _display_number:
+                           000007   495 	ar7 = 0x07
+                           000006   496 	ar6 = 0x06
+                           000005   497 	ar5 = 0x05
+                           000004   498 	ar4 = 0x04
+                           000003   499 	ar3 = 0x03
+                           000002   500 	ar2 = 0x02
+                           000001   501 	ar1 = 0x01
+                           000000   502 	ar0 = 0x00
+      000000 AC 82            [24]  503 	mov	r4,dpl
+      000002 AD 83            [24]  504 	mov	r5,dph
+      000004 AE F0            [24]  505 	mov	r6,b
+      000006 FF               [12]  506 	mov	r7,a
+                                    507 ;	led7seg.h:29: if (!number)
+      000007 EC               [12]  508 	mov	a,r4
+      000008 4D               [12]  509 	orl	a,r5
+      000009 4E               [12]  510 	orl	a,r6
+      00000A 4F               [12]  511 	orl	a,r7
+                                    512 ;	led7seg.h:31: P0 = 0;
+      00000B 70 17            [24]  513 	jnz	00103$
+      00000D F5 80            [12]  514 	mov	_P0,a
+                                    515 ;	led7seg.h:32: P2 &= 0b11100011;
+      00000F 53 A0 E3         [24]  516 	anl	_P2,#0xe3
+                                    517 ;	led7seg.h:33: P0 = number_string[0];
+      000012 90r00r00         [24]  518 	mov	dptr,#_number_string
+      000015 E4               [12]  519 	clr	a
+      000016 93               [24]  520 	movc	a,@a+dptr
+      000017 F5 80            [12]  521 	mov	_P0,a
+                                    522 ;	led7seg.h:34: for (char i = 0; i < 100; i++)
+      000019 7B 00            [12]  523 	mov	r3,#0x00
+      00001B                        524 00113$:
+      00001B BB 64 00         [24]  525 	cjne	r3,#0x64,00148$
+      00001E                        526 00148$:
+      00001E 50 03            [24]  527 	jnc	00101$
+      000020 0B               [12]  528 	inc	r3
+      000021 80 F8            [24]  529 	sjmp	00113$
+      000023                        530 00101$:
+                                    531 ;	led7seg.h:36: return;
+      000023 22               [24]  532 	ret
+      000024                        533 00103$:
+                                    534 ;	led7seg.h:39: char neg = 0;
+      000024 75*01 00         [24]  535 	mov	_display_number_neg_65537_56,#0x00
+                                    536 ;	led7seg.h:40: if (number < 0)
+      000027 EF               [12]  537 	mov	a,r7
+      000028 30 E7 10         [24]  538 	jnb	acc.7,00122$
+                                    539 ;	led7seg.h:42: neg = 1;
+      00002B 75*01 01         [24]  540 	mov	_display_number_neg_65537_56,#0x01
+                                    541 ;	led7seg.h:43: number = -number;
+      00002E C3               [12]  542 	clr	c
+      00002F E4               [12]  543 	clr	a
+      000030 9C               [12]  544 	subb	a,r4
+      000031 FC               [12]  545 	mov	r4,a
+      000032 E4               [12]  546 	clr	a
+      000033 9D               [12]  547 	subb	a,r5
+      000034 FD               [12]  548 	mov	r5,a
+      000035 E4               [12]  549 	clr	a
+      000036 9E               [12]  550 	subb	a,r6
+      000037 FE               [12]  551 	mov	r6,a
+      000038 E4               [12]  552 	clr	a
+      000039 9F               [12]  553 	subb	a,r7
+      00003A FF               [12]  554 	mov	r7,a
+                                    555 ;	led7seg.h:53: while (number)
+      00003B                        556 00122$:
+      00003B 75*00 00         [24]  557 	mov	_display_number_led_65537_56,#0x00
+      00003E                        558 00106$:
+      00003E EC               [12]  559 	mov	a,r4
+      00003F 4D               [12]  560 	orl	a,r5
+      000040 4E               [12]  561 	orl	a,r6
+      000041 4F               [12]  562 	orl	a,r7
+      000042 60 5A            [24]  563 	jz	00108$
+                                    564 ;	led7seg.h:55: display_digit(led++, number % 10);
+      000044 75*00 0A         [24]  565 	mov	__modslong_PARM_2,#0x0a
+      000047 E4               [12]  566 	clr	a
+      000048 F5*01            [12]  567 	mov	(__modslong_PARM_2 + 1),a
+      00004A F5*02            [12]  568 	mov	(__modslong_PARM_2 + 2),a
+      00004C F5*03            [12]  569 	mov	(__modslong_PARM_2 + 3),a
+      00004E 8C 82            [24]  570 	mov	dpl,r4
+      000050 8D 83            [24]  571 	mov	dph,r5
+      000052 8E F0            [24]  572 	mov	b,r6
+      000054 EF               [12]  573 	mov	a,r7
+      000055 C0 07            [24]  574 	push	ar7
+      000057 C0 06            [24]  575 	push	ar6
+      000059 C0 05            [24]  576 	push	ar5
+      00005B C0 04            [24]  577 	push	ar4
+      00005D 12r00r00         [24]  578 	lcall	__modslong
+      000060 A8 82            [24]  579 	mov	r0,dpl
+      000062 D0 04            [24]  580 	pop	ar4
+      000064 D0 05            [24]  581 	pop	ar5
+      000066 D0 06            [24]  582 	pop	ar6
+      000068 D0 07            [24]  583 	pop	ar7
+      00006A AB*00            [24]  584 	mov	r3,_display_number_led_65537_56
+      00006C 05*00            [12]  585 	inc	_display_number_led_65537_56
+                                    586 ;	led7seg.h:19: P0 = 0;
+      00006E 75 80 00         [24]  587 	mov	_P0,#0x00
+                                    588 ;	led7seg.h:20: P2 &= 0b11100011;
+      000071 53 A0 E3         [24]  589 	anl	_P2,#0xe3
+                                    590 ;	led7seg.h:21: P2 |= led << 2;
+      000074 EB               [12]  591 	mov	a,r3
+      000075 2B               [12]  592 	add	a,r3
+      000076 25 E0            [12]  593 	add	a,acc
+      000078 42 A0            [12]  594 	orl	_P2,a
+                                    595 ;	led7seg.h:24: P0 = number_string[digit];
+      00007A E8               [12]  596 	mov	a,r0
+      00007B 90r00r00         [24]  597 	mov	dptr,#_number_string
+      00007E 93               [24]  598 	movc	a,@a+dptr
+      00007F F5 80            [12]  599 	mov	_P0,a
+                                    600 ;	led7seg.h:56: number /= 10;
+      000081 75*00 0A         [24]  601 	mov	__divslong_PARM_2,#0x0a
+      000084 E4               [12]  602 	clr	a
+      000085 F5*01            [12]  603 	mov	(__divslong_PARM_2 + 1),a
+      000087 F5*02            [12]  604 	mov	(__divslong_PARM_2 + 2),a
+      000089 F5*03            [12]  605 	mov	(__divslong_PARM_2 + 3),a
+      00008B 8C 82            [24]  606 	mov	dpl,r4
+      00008D 8D 83            [24]  607 	mov	dph,r5
+      00008F 8E F0            [24]  608 	mov	b,r6
+      000091 EF               [12]  609 	mov	a,r7
+      000092 12r00r00         [24]  610 	lcall	__divslong
+      000095 AC 82            [24]  611 	mov	r4,dpl
+      000097 AD 83            [24]  612 	mov	r5,dph
+      000099 AE F0            [24]  613 	mov	r6,b
+      00009B FF               [12]  614 	mov	r7,a
+      00009C 80 A0            [24]  615 	sjmp	00106$
+      00009E                        616 00108$:
+                                    617 ;	led7seg.h:58: if (neg)
+      00009E E5*01            [12]  618 	mov	a,_display_number_neg_65537_56
+      0000A0 60 0F            [24]  619 	jz	00115$
+                                    620 ;	led7seg.h:60: P0 = 0;
+      0000A2 75 80 00         [24]  621 	mov	_P0,#0x00
+                                    622 ;	led7seg.h:61: P2 = led << 2;
+      0000A5 E5*00            [12]  623 	mov	a,_display_number_led_65537_56
+      0000A7 FA               [12]  624 	mov	r2,a
+      0000A8 25 E0            [12]  625 	add	a,acc
+      0000AA 25 E0            [12]  626 	add	a,acc
+      0000AC F5 A0            [12]  627 	mov	_P2,a
+                                    628 ;	led7seg.h:62: P0 = 0b01000000;
+      0000AE 75 80 40         [24]  629 	mov	_P0,#0x40
+      0000B1                        630 00115$:
+                                    631 ;	led7seg.h:64: }
+      0000B1 22               [24]  632 	ret
+                                    633 ;------------------------------------------------------------
+                                    634 ;Allocation info for local variables in function 'game_over'
+                                    635 ;------------------------------------------------------------
+                                    636 ;i                         Allocated to registers r6 r7 
+                                    637 ;j                         Allocated to registers r4 r5 
+                                    638 ;j                         Allocated to registers r4 r5 
+                                    639 ;i                         Allocated to registers r7 
+                                    640 ;temp                      Allocated with name '_game_over_temp_65537_111'
+                                    641 ;i                         Allocated with name '_game_over_i_65537_111'
+                                    642 ;j                         Allocated with name '_game_over_j_65537_111'
+                                    643 ;t                         Allocated with name '_game_over_t_65537_111'
+                                    644 ;row                       Allocated to registers r4 
+                                    645 ;current_data              Allocated with name '_game_over_current_data_983041_136'
+                                    646 ;i                         Allocated to registers r2 
+                                    647 ;i                         Allocated to registers r6 
+                                    648 ;i                         Allocated to registers r6 
+                                    649 ;row                       Allocated with name '_game_over_row_917505_148'
+                                    650 ;current_data              Allocated with name '_game_over_current_data_983041_149'
+                                    651 ;i                         Allocated with name '_game_over_i_1048577_150'
+                                    652 ;i                         Allocated to registers r3 
+                                    653 ;i                         Allocated to registers r3 
+                                    654 ;sloc0                     Allocated with name '_game_over_sloc0_1_0'
+                                    655 ;sloc1                     Allocated with name '_game_over_sloc1_1_0'
+                                    656 ;sloc2                     Allocated with name '_game_over_sloc2_1_0'
+                                    657 ;------------------------------------------------------------
+                                    658 ;	ledmatrix.c:129: void game_over(void)
+                                    659 ;	-----------------------------------------
+                                    660 ;	 function game_over
+                                    661 ;	-----------------------------------------
+      0000B2                        662 _game_over:
+                                    663 ;	ledmatrix.c:131: EA = 0;
+                                    664 ;	assignBit
+      0000B2 C2 AF            [12]  665 	clr	_EA
+                                    666 ;	ledmatrix.c:135: for (int i = 0; i < time * 1e3 / 200; i++)
+      0000B4 7E 00            [12]  667 	mov	r6,#0x00
+      0000B6 7F 00            [12]  668 	mov	r7,#0x00
+      0000B8                        669 00150$:
+      0000B8 C3               [12]  670 	clr	c
+      0000B9 EE               [12]  671 	mov	a,r6
+      0000BA 94 C8            [12]  672 	subb	a,#0xc8
+      0000BC EF               [12]  673 	mov	a,r7
+      0000BD 64 80            [12]  674 	xrl	a,#0x80
+      0000BF 94 80            [12]  675 	subb	a,#0x80
+      0000C1 50 37            [24]  676 	jnc	00103$
+                                    677 ;	ledmatrix.c:137: buzzer_pin = 1;
+                                    678 ;	assignBit
+      0000C3 D2 95            [12]  679 	setb	_P1_5
+                                    680 ;	ledmatrix.c:138: for (int j = 0; j < 90; j++)
+      0000C5 7C 00            [12]  681 	mov	r4,#0x00
+      0000C7 7D 00            [12]  682 	mov	r5,#0x00
+      0000C9                        683 00144$:
+      0000C9 C3               [12]  684 	clr	c
+      0000CA EC               [12]  685 	mov	a,r4
+      0000CB 94 5A            [12]  686 	subb	a,#0x5a
+      0000CD ED               [12]  687 	mov	a,r5
+      0000CE 64 80            [12]  688 	xrl	a,#0x80
+      0000D0 94 80            [12]  689 	subb	a,#0x80
+      0000D2 50 07            [24]  690 	jnc	00101$
+      0000D4 0C               [12]  691 	inc	r4
+      0000D5 BC 00 F1         [24]  692 	cjne	r4,#0x00,00144$
+      0000D8 0D               [12]  693 	inc	r5
+      0000D9 80 EE            [24]  694 	sjmp	00144$
+      0000DB                        695 00101$:
+                                    696 ;	ledmatrix.c:140: buzzer_pin = 0;
+                                    697 ;	assignBit
+      0000DB C2 95            [12]  698 	clr	_P1_5
+                                    699 ;	ledmatrix.c:141: for (int j = 0; j < 90; j++)
+      0000DD 7C 00            [12]  700 	mov	r4,#0x00
+      0000DF 7D 00            [12]  701 	mov	r5,#0x00
+      0000E1                        702 00147$:
+      0000E1 C3               [12]  703 	clr	c
+      0000E2 EC               [12]  704 	mov	a,r4
+      0000E3 94 5A            [12]  705 	subb	a,#0x5a
+      0000E5 ED               [12]  706 	mov	a,r5
+      0000E6 64 80            [12]  707 	xrl	a,#0x80
+      0000E8 94 80            [12]  708 	subb	a,#0x80
+      0000EA 50 07            [24]  709 	jnc	00151$
+      0000EC 0C               [12]  710 	inc	r4
+      0000ED BC 00 F1         [24]  711 	cjne	r4,#0x00,00147$
+      0000F0 0D               [12]  712 	inc	r5
+      0000F1 80 EE            [24]  713 	sjmp	00147$
+      0000F3                        714 00151$:
+                                    715 ;	ledmatrix.c:135: for (int i = 0; i < time * 1e3 / 200; i++)
+      0000F3 0E               [12]  716 	inc	r6
+      0000F4 BE 00 C1         [24]  717 	cjne	r6,#0x00,00150$
+      0000F7 0F               [12]  718 	inc	r7
+      0000F8 80 BE            [24]  719 	sjmp	00150$
+      0000FA                        720 00103$:
+                                    721 ;	ledmatrix.c:144: for (char i = 0; i < 8; i++)
+      0000FA 7F 00            [12]  722 	mov	r7,#0x00
+      0000FC                        723 00153$:
+      0000FC BF 08 00         [24]  724 	cjne	r7,#0x08,00403$
+      0000FF                        725 00403$:
+      0000FF 50 09            [24]  726 	jnc	00104$
+                                    727 ;	ledmatrix.c:145: data_mat[i] = 0;
+      000101 EF               [12]  728 	mov	a,r7
+      000102 24r0B            [12]  729 	add	a,#_data_mat
+      000104 F8               [12]  730 	mov	r0,a
+      000105 76 00            [12]  731 	mov	@r0,#0x00
+                                    732 ;	ledmatrix.c:144: for (char i = 0; i < 8; i++)
+      000107 0F               [12]  733 	inc	r7
+      000108 80 F2            [24]  734 	sjmp	00153$
+      00010A                        735 00104$:
+                                    736 ;	ledmatrix.c:208: const char temp = rand() % 6;
+      00010A 12r00r00         [24]  737 	lcall	_rand
+      00010D 75*00 06         [24]  738 	mov	__modsint_PARM_2,#0x06
+      000110 75*01 00         [24]  739 	mov	(__modsint_PARM_2 + 1),#0x00
+      000113 12r00r00         [24]  740 	lcall	__modsint
+      000116 AE 82            [24]  741 	mov	r6,dpl
+      000118 AF 83            [24]  742 	mov	r7,dph
+      00011A 8E*27            [24]  743 	mov	_game_over_temp_65537_111,r6
+                                    744 ;	ledmatrix.c:230: if (point > 2)
+      00011C E5*08            [12]  745 	mov	a,_point
+      00011E 24 FD            [12]  746 	add	a,#0xff - 0x02
+      000120 40 03            [24]  747 	jc	00405$
+      000122 02r02rC3         [24]  748 	ljmp	00239$
+      000125                        749 00405$:
+                                    750 ;	ledmatrix.c:235: for (i = 0; i < 8; i++)
+      000125                        751 00219$:
+      000125 E5*27            [12]  752 	mov	a,_game_over_temp_65537_111
+      000127 75 F0 08         [24]  753 	mov	b,#0x08
+      00012A A4               [48]  754 	mul	ab
+      00012B 24r0A            [12]  755 	add	a,#_game_over_floating_display_65537_111
+      00012D FD               [12]  756 	mov	r5,a
+      00012E 74s00            [12]  757 	mov	a,#(_game_over_floating_display_65537_111 >> 8)
+      000130 35 F0            [12]  758 	addc	a,b
+      000132 FF               [12]  759 	mov	r7,a
+      000133 75*28 00         [24]  760 	mov	_game_over_i_65537_111,#0x00
+                                    761 ;	ledmatrix.c:237: for (j = 0; j < 8; j++)
+      000136                        762 00205$:
+      000136 75*29 00         [24]  763 	mov	_game_over_j_65537_111,#0x00
+      000139                        764 00155$:
+                                    765 ;	ledmatrix.c:239: data_mat[j] = floating_display[temp][(j + i) % 8] & 0b11110000 |
+      000139 E5*29            [12]  766 	mov	a,_game_over_j_65537_111
+      00013B 24r0B            [12]  767 	add	a,#_data_mat
+      00013D F5*2F            [12]  768 	mov	_game_over_sloc0_1_0,a
+      00013F E5*29            [12]  769 	mov	a,_game_over_j_65537_111
+      000141 FA               [12]  770 	mov	r2,a
+      000142 33               [12]  771 	rlc	a
+      000143 95 E0            [12]  772 	subb	a,acc
+      000145 FE               [12]  773 	mov	r6,a
+      000146 E5*28            [12]  774 	mov	a,_game_over_i_65537_111
+      000148 F5*30            [12]  775 	mov	_game_over_sloc1_1_0,a
+      00014A 33               [12]  776 	rlc	a
+      00014B 95 E0            [12]  777 	subb	a,acc
+      00014D F5*31            [12]  778 	mov	(_game_over_sloc1_1_0 + 1),a
+      00014F E5*30            [12]  779 	mov	a,_game_over_sloc1_1_0
+      000151 2A               [12]  780 	add	a,r2
+      000152 F5 82            [12]  781 	mov	dpl,a
+      000154 E5*31            [12]  782 	mov	a,(_game_over_sloc1_1_0 + 1)
+      000156 3E               [12]  783 	addc	a,r6
+      000157 F5 83            [12]  784 	mov	dph,a
+      000159 75*00 08         [24]  785 	mov	__modsint_PARM_2,#0x08
+      00015C 75*01 00         [24]  786 	mov	(__modsint_PARM_2 + 1),#0x00
+      00015F C0 07            [24]  787 	push	ar7
+      000161 C0 06            [24]  788 	push	ar6
+      000163 C0 05            [24]  789 	push	ar5
+      000165 C0 02            [24]  790 	push	ar2
+      000167 12r00r00         [24]  791 	lcall	__modsint
+      00016A AB 82            [24]  792 	mov	r3,dpl
+      00016C AC 83            [24]  793 	mov	r4,dph
+      00016E D0 02            [24]  794 	pop	ar2
+      000170 D0 05            [24]  795 	pop	ar5
+      000172 D0 06            [24]  796 	pop	ar6
+      000174 D0 07            [24]  797 	pop	ar7
+      000176 EB               [12]  798 	mov	a,r3
+      000177 2D               [12]  799 	add	a,r5
+      000178 F5 82            [12]  800 	mov	dpl,a
+      00017A EC               [12]  801 	mov	a,r4
+      00017B 3F               [12]  802 	addc	a,r7
+      00017C F5 83            [12]  803 	mov	dph,a
+      00017E E4               [12]  804 	clr	a
+      00017F 93               [24]  805 	movc	a,@a+dptr
+      000180 FC               [12]  806 	mov	r4,a
+      000181 53 04 F0         [24]  807 	anl	ar4,#0xf0
+                                    808 ;	ledmatrix.c:240: floating_display[temp][(j - i + 8) % 8] & 0b00001111;
+      000184 EA               [12]  809 	mov	a,r2
+      000185 C3               [12]  810 	clr	c
+      000186 95*30            [12]  811 	subb	a,_game_over_sloc1_1_0
+      000188 FA               [12]  812 	mov	r2,a
+      000189 EE               [12]  813 	mov	a,r6
+      00018A 95*31            [12]  814 	subb	a,(_game_over_sloc1_1_0 + 1)
+      00018C FE               [12]  815 	mov	r6,a
+      00018D 74 08            [12]  816 	mov	a,#0x08
+      00018F 2A               [12]  817 	add	a,r2
+      000190 F5 82            [12]  818 	mov	dpl,a
+      000192 E4               [12]  819 	clr	a
+      000193 3E               [12]  820 	addc	a,r6
+      000194 F5 83            [12]  821 	mov	dph,a
+      000196 75*00 08         [24]  822 	mov	__modsint_PARM_2,#0x08
+      000199 75*01 00         [24]  823 	mov	(__modsint_PARM_2 + 1),#0x00
+      00019C C0 07            [24]  824 	push	ar7
+      00019E C0 05            [24]  825 	push	ar5
+      0001A0 C0 04            [24]  826 	push	ar4
+      0001A2 12r00r00         [24]  827 	lcall	__modsint
+      0001A5 AB 82            [24]  828 	mov	r3,dpl
+      0001A7 AE 83            [24]  829 	mov	r6,dph
+      0001A9 D0 04            [24]  830 	pop	ar4
+      0001AB D0 05            [24]  831 	pop	ar5
+      0001AD D0 07            [24]  832 	pop	ar7
+      0001AF EB               [12]  833 	mov	a,r3
+      0001B0 2D               [12]  834 	add	a,r5
+      0001B1 F5 82            [12]  835 	mov	dpl,a
+      0001B3 EE               [12]  836 	mov	a,r6
+      0001B4 3F               [12]  837 	addc	a,r7
+      0001B5 F5 83            [12]  838 	mov	dph,a
+      0001B7 E4               [12]  839 	clr	a
+      0001B8 93               [24]  840 	movc	a,@a+dptr
+      0001B9 FE               [12]  841 	mov	r6,a
+      0001BA 74 0F            [12]  842 	mov	a,#0x0f
+      0001BC 5E               [12]  843 	anl	a,r6
+      0001BD 4C               [12]  844 	orl	a,r4
+      0001BE A8*2F            [24]  845 	mov	r0,_game_over_sloc0_1_0
+      0001C0 F6               [12]  846 	mov	@r0,a
+                                    847 ;	ledmatrix.c:237: for (j = 0; j < 8; j++)
+      0001C1 05*29            [12]  848 	inc	_game_over_j_65537_111
+      0001C3 C3               [12]  849 	clr	c
+      0001C4 E5*29            [12]  850 	mov	a,_game_over_j_65537_111
+      0001C6 64 80            [12]  851 	xrl	a,#0x80
+      0001C8 94 88            [12]  852 	subb	a,#0x88
+      0001CA 50 03            [24]  853 	jnc	00406$
+      0001CC 02r01r39         [24]  854 	ljmp	00155$
+      0001CF                        855 00406$:
+                                    856 ;	ledmatrix.c:243: for (t = 0; t < 30; t++)
+      0001CF 75*2A 00         [24]  857 	mov	_game_over_t_65537_111,#0x00
+      0001D2                        858 00171$:
+                                    859 ;	ledmatrix.c:57: P2 = 0b11111111;
+      0001D2 75 A0 FF         [24]  860 	mov	_P2,#0xff
+                                    861 ;	ledmatrix.c:58: P0 = 0xFF;
+      0001D5 75 80 FF         [24]  862 	mov	_P0,#0xff
+                                    863 ;	ledmatrix.c:38: for (char row = 0; row < 8; row++)
+      0001D8 7C 00            [12]  864 	mov	r4,#0x00
+      0001DA                        865 00164$:
+      0001DA BC 08 00         [24]  866 	cjne	r4,#0x08,00407$
+      0001DD                        867 00407$:
+      0001DD 50 71            [24]  868 	jnc	00132$
+                                    869 ;	ledmatrix.c:40: const char current_data = data_mat[row];
+      0001DF EC               [12]  870 	mov	a,r4
+      0001E0 24r0B            [12]  871 	add	a,#_data_mat
+      0001E2 F9               [12]  872 	mov	r1,a
+      0001E3 87*2B            [24]  873 	mov	_game_over_current_data_983041_136,@r1
+                                    874 ;	ledmatrix.c:41: for (char i = 0; i < 8; i++)
+      0001E5 8C F0            [24]  875 	mov	b,r4
+      0001E7 05 F0            [12]  876 	inc	b
+      0001E9 75*30 80         [24]  877 	mov	_game_over_sloc1_1_0,#0x80
+      0001EC E4               [12]  878 	clr	a
+      0001ED F5*31            [12]  879 	mov	(_game_over_sloc1_1_0 + 1),a
+      0001EF 33               [12]  880 	rlc	a
+      0001F0 92 D2            [24]  881 	mov	ov,c
+      0001F2 80 0C            [24]  882 	sjmp	00410$
+      0001F4                        883 00409$:
+      0001F4 A2 D2            [12]  884 	mov	c,ov
+      0001F6 E5*31            [12]  885 	mov	a,(_game_over_sloc1_1_0 + 1)
+      0001F8 13               [12]  886 	rrc	a
+      0001F9 F5*31            [12]  887 	mov	(_game_over_sloc1_1_0 + 1),a
+      0001FB E5*30            [12]  888 	mov	a,_game_over_sloc1_1_0
+      0001FD 13               [12]  889 	rrc	a
+      0001FE F5*30            [12]  890 	mov	_game_over_sloc1_1_0,a
+      000200                        891 00410$:
+      000200 D5 F0 F1         [24]  892 	djnz	b,00409$
+      000203 7A 00            [12]  893 	mov	r2,#0x00
+      000205                        894 00158$:
+      000205 BA 08 00         [24]  895 	cjne	r2,#0x08,00411$
+      000208                        896 00411$:
+      000208 50 2D            [24]  897 	jnc	00129$
+                                    898 ;	ledmatrix.c:43: SER = (0x80 >> row) & (0x80 >> i);
+      00020A 8A F0            [24]  899 	mov	b,r2
+      00020C 05 F0            [12]  900 	inc	b
+      00020E 7B 80            [12]  901 	mov	r3,#0x80
+      000210 E4               [12]  902 	clr	a
+      000211 FE               [12]  903 	mov	r6,a
+      000212 33               [12]  904 	rlc	a
+      000213 92 D2            [24]  905 	mov	ov,c
+      000215 80 08            [24]  906 	sjmp	00414$
+      000217                        907 00413$:
+      000217 A2 D2            [12]  908 	mov	c,ov
+      000219 EE               [12]  909 	mov	a,r6
+      00021A 13               [12]  910 	rrc	a
+      00021B FE               [12]  911 	mov	r6,a
+      00021C EB               [12]  912 	mov	a,r3
+      00021D 13               [12]  913 	rrc	a
+      00021E FB               [12]  914 	mov	r3,a
+      00021F                        915 00414$:
+      00021F D5 F0 F5         [24]  916 	djnz	b,00413$
+      000222 E5*30            [12]  917 	mov	a,_game_over_sloc1_1_0
+      000224 52 03            [12]  918 	anl	ar3,a
+      000226 E5*31            [12]  919 	mov	a,(_game_over_sloc1_1_0 + 1)
+      000228 52 06            [12]  920 	anl	ar6,a
+                                    921 ;	assignBit
+      00022A EB               [12]  922 	mov	a,r3
+      00022B 4E               [12]  923 	orl	a,r6
+      00022C 24 FF            [12]  924 	add	a,#0xff
+      00022E 92 B4            [24]  925 	mov	_P3_4,c
+                                    926 ;	ledmatrix.c:44: SCK = 1;
+                                    927 ;	assignBit
+      000230 D2 B6            [12]  928 	setb	_P3_6
+                                    929 ;	ledmatrix.c:45: SCK = 0;
+                                    930 ;	assignBit
+      000232 C2 B6            [12]  931 	clr	_P3_6
+                                    932 ;	ledmatrix.c:41: for (char i = 0; i < 8; i++)
+      000234 0A               [12]  933 	inc	r2
+      000235 80 CE            [24]  934 	sjmp	00158$
+      000237                        935 00129$:
+                                    936 ;	ledmatrix.c:47: P0 = 0xff;
+      000237 75 80 FF         [24]  937 	mov	_P0,#0xff
+                                    938 ;	ledmatrix.c:48: RCK = 1;
+                                    939 ;	assignBit
+      00023A D2 B5            [12]  940 	setb	_P3_5
+                                    941 ;	ledmatrix.c:49: RCK = 0;
+                                    942 ;	assignBit
+      00023C C2 B5            [12]  943 	clr	_P3_5
+                                    944 ;	ledmatrix.c:50: P0 = ~current_data;
+      00023E E5*2B            [12]  945 	mov	a,_game_over_current_data_983041_136
+      000240 F4               [12]  946 	cpl	a
+      000241 F5 80            [12]  947 	mov	_P0,a
+                                    948 ;	ledmatrix.c:51: for (char i = 0; i < 5; i++)
+      000243 7E 00            [12]  949 	mov	r6,#0x00
+      000245                        950 00161$:
+      000245 BE 05 00         [24]  951 	cjne	r6,#0x05,00415$
+      000248                        952 00415$:
+      000248 50 03            [24]  953 	jnc	00165$
+      00024A 0E               [12]  954 	inc	r6
+      00024B 80 F8            [24]  955 	sjmp	00161$
+      00024D                        956 00165$:
+                                    957 ;	ledmatrix.c:38: for (char row = 0; row < 8; row++)
+      00024D 0C               [12]  958 	inc	r4
+                                    959 ;	ledmatrix.c:59: display_led_mat();
+      00024E 80 8A            [24]  960 	sjmp	00164$
+      000250                        961 00132$:
+                                    962 ;	ledmatrix.c:61: for (i = 0; i < 100; i++)
+      000250 7E 64            [12]  963 	mov	r6,#0x64
+      000252                        964 00168$:
+      000252 DE FE            [24]  965 	djnz	r6,00168$
+                                    966 ;	ledmatrix.c:63: SER = 0;
+                                    967 ;	assignBit
+      000254 C2 B4            [12]  968 	clr	_P3_4
+                                    969 ;	ledmatrix.c:64: for (i = 0; i < 8; i++)
+      000256 7E 00            [12]  970 	mov	r6,#0x00
+      000258                        971 00169$:
+                                    972 ;	ledmatrix.c:66: SCK = 1;
+                                    973 ;	assignBit
+      000258 D2 B6            [12]  974 	setb	_P3_6
+                                    975 ;	ledmatrix.c:67: SCK = 0;
+                                    976 ;	assignBit
+      00025A C2 B6            [12]  977 	clr	_P3_6
+                                    978 ;	ledmatrix.c:64: for (i = 0; i < 8; i++)
+      00025C 0E               [12]  979 	inc	r6
+      00025D BE 08 00         [24]  980 	cjne	r6,#0x08,00418$
+      000260                        981 00418$:
+      000260 40 F6            [24]  982 	jc	00169$
+                                    983 ;	ledmatrix.c:69: RCK = 1;
+                                    984 ;	assignBit
+      000262 D2 B5            [12]  985 	setb	_P3_5
+                                    986 ;	ledmatrix.c:70: RCK = 0;
+                                    987 ;	assignBit
+      000264 C2 B5            [12]  988 	clr	_P3_5
+                                    989 ;	ledmatrix.c:71: display_number(point);
+      000266 AA*08            [24]  990 	mov	r2,_point
+      000268 7B 00            [12]  991 	mov	r3,#0x00
+      00026A 7C 00            [12]  992 	mov	r4,#0x00
+      00026C 7E 00            [12]  993 	mov	r6,#0x00
+      00026E 8A 82            [24]  994 	mov	dpl,r2
+      000270 8B 83            [24]  995 	mov	dph,r3
+      000272 8C F0            [24]  996 	mov	b,r4
+      000274 EE               [12]  997 	mov	a,r6
+      000275 C0 07            [24]  998 	push	ar7
+      000277 C0 05            [24]  999 	push	ar5
+      000279 12r00r00         [24] 1000 	lcall	_display_number
+                                   1001 ;	ledmatrix.c:72: display_number(point);
+      00027C AA*08            [24] 1002 	mov	r2,_point
+      00027E 7B 00            [12] 1003 	mov	r3,#0x00
+      000280 7C 00            [12] 1004 	mov	r4,#0x00
+      000282 7E 00            [12] 1005 	mov	r6,#0x00
+      000284 8A 82            [24] 1006 	mov	dpl,r2
+      000286 8B 83            [24] 1007 	mov	dph,r3
+      000288 8C F0            [24] 1008 	mov	b,r4
+      00028A EE               [12] 1009 	mov	a,r6
+      00028B 12r00r00         [24] 1010 	lcall	_display_number
+                                   1011 ;	ledmatrix.c:73: display_number(point);
+      00028E AA*08            [24] 1012 	mov	r2,_point
+      000290 7B 00            [12] 1013 	mov	r3,#0x00
+      000292 7C 00            [12] 1014 	mov	r4,#0x00
+      000294 7E 00            [12] 1015 	mov	r6,#0x00
+      000296 8A 82            [24] 1016 	mov	dpl,r2
+      000298 8B 83            [24] 1017 	mov	dph,r3
+      00029A 8C F0            [24] 1018 	mov	b,r4
+      00029C EE               [12] 1019 	mov	a,r6
+      00029D 12r00r00         [24] 1020 	lcall	_display_number
+      0002A0 D0 05            [24] 1021 	pop	ar5
+      0002A2 D0 07            [24] 1022 	pop	ar7
+                                   1023 ;	ledmatrix.c:243: for (t = 0; t < 30; t++)
+      0002A4 05*2A            [12] 1024 	inc	_game_over_t_65537_111
+      0002A6 C3               [12] 1025 	clr	c
+      0002A7 E5*2A            [12] 1026 	mov	a,_game_over_t_65537_111
+      0002A9 64 80            [12] 1027 	xrl	a,#0x80
+      0002AB 94 9E            [12] 1028 	subb	a,#0x9e
+      0002AD 50 03            [24] 1029 	jnc	00420$
+      0002AF 02r01rD2         [24] 1030 	ljmp	00171$
+      0002B2                       1031 00420$:
+                                   1032 ;	ledmatrix.c:235: for (i = 0; i < 8; i++)
+      0002B2 05*28            [12] 1033 	inc	_game_over_i_65537_111
+      0002B4 C3               [12] 1034 	clr	c
+      0002B5 E5*28            [12] 1035 	mov	a,_game_over_i_65537_111
+      0002B7 64 80            [12] 1036 	xrl	a,#0x80
+      0002B9 94 88            [12] 1037 	subb	a,#0x88
+      0002BB 50 03            [24] 1038 	jnc	00421$
+      0002BD 02r01r36         [24] 1039 	ljmp	00205$
+      0002C0                       1040 00421$:
+      0002C0 02r01r25         [24] 1041 	ljmp	00219$
+                                   1042 ;	ledmatrix.c:257: for (i = 0; i < 16; i++)
+      0002C3                       1043 00239$:
+      0002C3 E5*27            [12] 1044 	mov	a,_game_over_temp_65537_111
+      0002C5 75 F0 08         [24] 1045 	mov	b,#0x08
+      0002C8 A4               [48] 1046 	mul	ab
+      0002C9 24r0A            [12] 1047 	add	a,#_game_over_floating_display_65537_111
+      0002CB FE               [12] 1048 	mov	r6,a
+      0002CC 74s00            [12] 1049 	mov	a,#(_game_over_floating_display_65537_111 >> 8)
+      0002CE 35 F0            [12] 1050 	addc	a,b
+      0002D0 FF               [12] 1051 	mov	r7,a
+      0002D1 8E 04            [24] 1052 	mov	ar4,r6
+      0002D3 8F 05            [24] 1053 	mov	ar5,r7
+      0002D5 75*28 00         [24] 1054 	mov	_game_over_i_65537_111,#0x00
+                                   1055 ;	ledmatrix.c:259: for (j = 0; j < 8; j++)
+      0002D8                       1056 00225$:
+      0002D8 74 10            [12] 1057 	mov	a,#0x10
+      0002DA C3               [12] 1058 	clr	c
+      0002DB 95*28            [12] 1059 	subb	a,_game_over_i_65537_111
+      0002DD FA               [12] 1060 	mov	r2,a
+      0002DE 75*29 00         [24] 1061 	mov	_game_over_j_65537_111,#0x00
+      0002E1                       1062 00175$:
+                                   1063 ;	ledmatrix.c:261: if (i + j < 8)
+      0002E1 C0 02            [24] 1064 	push	ar2
+      0002E3 E5*28            [12] 1065 	mov	a,_game_over_i_65537_111
+      0002E5 F5*30            [12] 1066 	mov	_game_over_sloc1_1_0,a
+      0002E7 33               [12] 1067 	rlc	a
+      0002E8 95 E0            [12] 1068 	subb	a,acc
+      0002EA F5*31            [12] 1069 	mov	(_game_over_sloc1_1_0 + 1),a
+      0002EC E5*29            [12] 1070 	mov	a,_game_over_j_65537_111
+      0002EE F5*32            [12] 1071 	mov	_game_over_sloc2_1_0,a
+      0002F0 33               [12] 1072 	rlc	a
+      0002F1 95 E0            [12] 1073 	subb	a,acc
+      0002F3 F5*33            [12] 1074 	mov	(_game_over_sloc2_1_0 + 1),a
+      0002F5 E5*32            [12] 1075 	mov	a,_game_over_sloc2_1_0
+      0002F7 25*30            [12] 1076 	add	a,_game_over_sloc1_1_0
+      0002F9 FA               [12] 1077 	mov	r2,a
+      0002FA E5*33            [12] 1078 	mov	a,(_game_over_sloc2_1_0 + 1)
+      0002FC 35*31            [12] 1079 	addc	a,(_game_over_sloc1_1_0 + 1)
+      0002FE FB               [12] 1080 	mov	r3,a
+      0002FF C3               [12] 1081 	clr	c
+      000300 EA               [12] 1082 	mov	a,r2
+      000301 94 08            [12] 1083 	subb	a,#0x08
+      000303 EB               [12] 1084 	mov	a,r3
+      000304 64 80            [12] 1085 	xrl	a,#0x80
+      000306 94 80            [12] 1086 	subb	a,#0x80
+      000308 D0 02            [24] 1087 	pop	ar2
+      00030A 50 24            [24] 1088 	jnc	00118$
+                                   1089 ;	ledmatrix.c:262: data_mat[j] = (floating_display[temp][(j + i)]) >> i;
+      00030C E5*29            [12] 1090 	mov	a,_game_over_j_65537_111
+      00030E 24r0B            [12] 1091 	add	a,#_data_mat
+      000310 F9               [12] 1092 	mov	r1,a
+      000311 E5*28            [12] 1093 	mov	a,_game_over_i_65537_111
+      000313 25*29            [12] 1094 	add	a,_game_over_j_65537_111
+      000315 2C               [12] 1095 	add	a,r4
+      000316 F5 82            [12] 1096 	mov	dpl,a
+      000318 E4               [12] 1097 	clr	a
+      000319 3D               [12] 1098 	addc	a,r5
+      00031A F5 83            [12] 1099 	mov	dph,a
+      00031C E4               [12] 1100 	clr	a
+      00031D 93               [24] 1101 	movc	a,@a+dptr
+      00031E FB               [12] 1102 	mov	r3,a
+      00031F 85*28 F0         [24] 1103 	mov	b,_game_over_i_65537_111
+      000322 05 F0            [12] 1104 	inc	b
+      000324 EB               [12] 1105 	mov	a,r3
+      000325 80 02            [24] 1106 	sjmp	00424$
+      000327                       1107 00423$:
+      000327 C3               [12] 1108 	clr	c
+      000328 13               [12] 1109 	rrc	a
+      000329                       1110 00424$:
+      000329 D5 F0 FB         [24] 1111 	djnz	b,00423$
+      00032C F7               [12] 1112 	mov	@r1,a
+      00032D 02r03rC6         [24] 1113 	ljmp	00176$
+      000330                       1114 00118$:
+                                   1115 ;	ledmatrix.c:263: else if (i + j >= 16)
+      000330 C0 02            [24] 1116 	push	ar2
+      000332 E5*32            [12] 1117 	mov	a,_game_over_sloc2_1_0
+      000334 25*30            [12] 1118 	add	a,_game_over_sloc1_1_0
+      000336 FA               [12] 1119 	mov	r2,a
+      000337 E5*33            [12] 1120 	mov	a,(_game_over_sloc2_1_0 + 1)
+      000339 35*31            [12] 1121 	addc	a,(_game_over_sloc1_1_0 + 1)
+      00033B FB               [12] 1122 	mov	r3,a
+      00033C C3               [12] 1123 	clr	c
+      00033D EA               [12] 1124 	mov	a,r2
+      00033E 94 10            [12] 1125 	subb	a,#0x10
+      000340 EB               [12] 1126 	mov	a,r3
+      000341 64 80            [12] 1127 	xrl	a,#0x80
+      000343 94 80            [12] 1128 	subb	a,#0x80
+      000345 D0 02            [24] 1129 	pop	ar2
+      000347 40 76            [24] 1130 	jc	00115$
+                                   1131 ;	ledmatrix.c:265: if (i + j >= 16)
+      000349 C0 02            [24] 1132 	push	ar2
+      00034B E5*32            [12] 1133 	mov	a,_game_over_sloc2_1_0
+      00034D 25*30            [12] 1134 	add	a,_game_over_sloc1_1_0
+      00034F FA               [12] 1135 	mov	r2,a
+      000350 E5*33            [12] 1136 	mov	a,(_game_over_sloc2_1_0 + 1)
+      000352 35*31            [12] 1137 	addc	a,(_game_over_sloc1_1_0 + 1)
+      000354 FB               [12] 1138 	mov	r3,a
+      000355 C3               [12] 1139 	clr	c
+      000356 EA               [12] 1140 	mov	a,r2
+      000357 94 10            [12] 1141 	subb	a,#0x10
+      000359 EB               [12] 1142 	mov	a,r3
+      00035A 64 80            [12] 1143 	xrl	a,#0x80
+      00035C 94 80            [12] 1144 	subb	a,#0x80
+      00035E D0 02            [24] 1145 	pop	ar2
+      000360 40 54            [24] 1146 	jc	00112$
+                                   1147 ;	ledmatrix.c:266: data_mat[j] = (floating_display[temp][(i + j) % 8]) << (16 - i);
+      000362 C0 04            [24] 1148 	push	ar4
+      000364 C0 05            [24] 1149 	push	ar5
+      000366 E5*29            [12] 1150 	mov	a,_game_over_j_65537_111
+      000368 24r0B            [12] 1151 	add	a,#_data_mat
+      00036A F9               [12] 1152 	mov	r1,a
+      00036B E5*32            [12] 1153 	mov	a,_game_over_sloc2_1_0
+      00036D 25*30            [12] 1154 	add	a,_game_over_sloc1_1_0
+      00036F F5 82            [12] 1155 	mov	dpl,a
+      000371 E5*33            [12] 1156 	mov	a,(_game_over_sloc2_1_0 + 1)
+      000373 35*31            [12] 1157 	addc	a,(_game_over_sloc1_1_0 + 1)
+      000375 F5 83            [12] 1158 	mov	dph,a
+      000377 75*00 08         [24] 1159 	mov	__modsint_PARM_2,#0x08
+      00037A 75*01 00         [24] 1160 	mov	(__modsint_PARM_2 + 1),#0x00
+      00037D C0 07            [24] 1161 	push	ar7
+      00037F C0 06            [24] 1162 	push	ar6
+      000381 C0 04            [24] 1163 	push	ar4
+      000383 C0 02            [24] 1164 	push	ar2
+      000385 C0 01            [24] 1165 	push	ar1
+      000387 12r00r00         [24] 1166 	lcall	__modsint
+      00038A AB 82            [24] 1167 	mov	r3,dpl
+      00038C AD 83            [24] 1168 	mov	r5,dph
+      00038E D0 01            [24] 1169 	pop	ar1
+      000390 D0 02            [24] 1170 	pop	ar2
+      000392 D0 04            [24] 1171 	pop	ar4
+      000394 D0 06            [24] 1172 	pop	ar6
+      000396 D0 07            [24] 1173 	pop	ar7
+      000398 EB               [12] 1174 	mov	a,r3
+      000399 2E               [12] 1175 	add	a,r6
+      00039A F5 82            [12] 1176 	mov	dpl,a
+      00039C ED               [12] 1177 	mov	a,r5
+      00039D 3F               [12] 1178 	addc	a,r7
+      00039E F5 83            [12] 1179 	mov	dph,a
+      0003A0 E4               [12] 1180 	clr	a
+      0003A1 93               [24] 1181 	movc	a,@a+dptr
+      0003A2 FD               [12] 1182 	mov	r5,a
+      0003A3 8A F0            [24] 1183 	mov	b,r2
+      0003A5 05 F0            [12] 1184 	inc	b
+      0003A7 ED               [12] 1185 	mov	a,r5
+      0003A8 80 02            [24] 1186 	sjmp	00429$
+      0003AA                       1187 00427$:
+      0003AA 25 E0            [12] 1188 	add	a,acc
+      0003AC                       1189 00429$:
+      0003AC D5 F0 FB         [24] 1190 	djnz	b,00427$
+      0003AF F7               [12] 1191 	mov	@r1,a
+      0003B0 D0 05            [24] 1192 	pop	ar5
+      0003B2 D0 04            [24] 1193 	pop	ar4
+      0003B4 80 10            [24] 1194 	sjmp	00176$
+      0003B6                       1195 00112$:
+                                   1196 ;	ledmatrix.c:268: data_mat[j] = 0;
+      0003B6 E5*29            [12] 1197 	mov	a,_game_over_j_65537_111
+      0003B8 24r0B            [12] 1198 	add	a,#_data_mat
+      0003BA F8               [12] 1199 	mov	r0,a
+      0003BB 76 00            [12] 1200 	mov	@r0,#0x00
+      0003BD 80 07            [24] 1201 	sjmp	00176$
+      0003BF                       1202 00115$:
+                                   1203 ;	ledmatrix.c:271: data_mat[j] = 0;
+      0003BF E5*29            [12] 1204 	mov	a,_game_over_j_65537_111
+      0003C1 24r0B            [12] 1205 	add	a,#_data_mat
+      0003C3 F8               [12] 1206 	mov	r0,a
+      0003C4 76 00            [12] 1207 	mov	@r0,#0x00
+      0003C6                       1208 00176$:
+                                   1209 ;	ledmatrix.c:259: for (j = 0; j < 8; j++)
+      0003C6 05*29            [12] 1210 	inc	_game_over_j_65537_111
+      0003C8 C3               [12] 1211 	clr	c
+      0003C9 E5*29            [12] 1212 	mov	a,_game_over_j_65537_111
+      0003CB 64 80            [12] 1213 	xrl	a,#0x80
+      0003CD 94 88            [12] 1214 	subb	a,#0x88
+      0003CF 50 03            [24] 1215 	jnc	00430$
+      0003D1 02r02rE1         [24] 1216 	ljmp	00175$
+      0003D4                       1217 00430$:
+                                   1218 ;	ledmatrix.c:277: for (t = 30; t; --t)
+      0003D4 75*2A 1E         [24] 1219 	mov	_game_over_t_65537_111,#0x1e
+      0003D7                       1220 00191$:
+                                   1221 ;	ledmatrix.c:57: P2 = 0b11111111;
+      0003D7 75 A0 FF         [24] 1222 	mov	_P2,#0xff
+                                   1223 ;	ledmatrix.c:58: P0 = 0xFF;
+      0003DA 75 80 FF         [24] 1224 	mov	_P0,#0xff
+                                   1225 ;	ledmatrix.c:38: for (char row = 0; row < 8; row++)
+      0003DD 75*2C 00         [24] 1226 	mov	_game_over_row_917505_148,#0x00
+      0003E0                       1227 00184$:
+      0003E0 74 F8            [12] 1228 	mov	a,#0x100 - 0x08
+      0003E2 25*2C            [12] 1229 	add	a,_game_over_row_917505_148
+      0003E4 40 78            [24] 1230 	jc	00139$
+                                   1231 ;	ledmatrix.c:40: const char current_data = data_mat[row];
+      0003E6 E5*2C            [12] 1232 	mov	a,_game_over_row_917505_148
+      0003E8 24r0B            [12] 1233 	add	a,#_data_mat
+      0003EA F9               [12] 1234 	mov	r1,a
+      0003EB 87*2D            [24] 1235 	mov	_game_over_current_data_983041_149,@r1
+                                   1236 ;	ledmatrix.c:41: for (char i = 0; i < 8; i++)
+      0003ED 85*2C F0         [24] 1237 	mov	b,_game_over_row_917505_148
+      0003F0 05 F0            [12] 1238 	inc	b
+      0003F2 75*32 80         [24] 1239 	mov	_game_over_sloc2_1_0,#0x80
+      0003F5 E4               [12] 1240 	clr	a
+      0003F6 F5*33            [12] 1241 	mov	(_game_over_sloc2_1_0 + 1),a
+      0003F8 33               [12] 1242 	rlc	a
+      0003F9 92 D2            [24] 1243 	mov	ov,c
+      0003FB 80 0C            [24] 1244 	sjmp	00433$
+      0003FD                       1245 00432$:
+      0003FD A2 D2            [12] 1246 	mov	c,ov
+      0003FF E5*33            [12] 1247 	mov	a,(_game_over_sloc2_1_0 + 1)
+      000401 13               [12] 1248 	rrc	a
+      000402 F5*33            [12] 1249 	mov	(_game_over_sloc2_1_0 + 1),a
+      000404 E5*32            [12] 1250 	mov	a,_game_over_sloc2_1_0
+      000406 13               [12] 1251 	rrc	a
+      000407 F5*32            [12] 1252 	mov	_game_over_sloc2_1_0,a
+      000409                       1253 00433$:
+      000409 D5 F0 F1         [24] 1254 	djnz	b,00432$
+      00040C 75*2E 00         [24] 1255 	mov	_game_over_i_1048577_150,#0x00
+      00040F                       1256 00178$:
+      00040F 74 F8            [12] 1257 	mov	a,#0x100 - 0x08
+      000411 25*2E            [12] 1258 	add	a,_game_over_i_1048577_150
+      000413 40 2F            [24] 1259 	jc	00136$
+                                   1260 ;	ledmatrix.c:43: SER = (0x80 >> row) & (0x80 >> i);
+      000415 85*2E F0         [24] 1261 	mov	b,_game_over_i_1048577_150
+      000418 05 F0            [12] 1262 	inc	b
+      00041A 7A 80            [12] 1263 	mov	r2,#0x80
+      00041C E4               [12] 1264 	clr	a
+      00041D FB               [12] 1265 	mov	r3,a
+      00041E 33               [12] 1266 	rlc	a
+      00041F 92 D2            [24] 1267 	mov	ov,c
+      000421 80 08            [24] 1268 	sjmp	00436$
+      000423                       1269 00435$:
+      000423 A2 D2            [12] 1270 	mov	c,ov
+      000425 EB               [12] 1271 	mov	a,r3
+      000426 13               [12] 1272 	rrc	a
+      000427 FB               [12] 1273 	mov	r3,a
+      000428 EA               [12] 1274 	mov	a,r2
+      000429 13               [12] 1275 	rrc	a
+      00042A FA               [12] 1276 	mov	r2,a
+      00042B                       1277 00436$:
+      00042B D5 F0 F5         [24] 1278 	djnz	b,00435$
+      00042E E5*32            [12] 1279 	mov	a,_game_over_sloc2_1_0
+      000430 52 02            [12] 1280 	anl	ar2,a
+      000432 E5*33            [12] 1281 	mov	a,(_game_over_sloc2_1_0 + 1)
+      000434 52 03            [12] 1282 	anl	ar3,a
+                                   1283 ;	assignBit
+      000436 EA               [12] 1284 	mov	a,r2
+      000437 4B               [12] 1285 	orl	a,r3
+      000438 24 FF            [12] 1286 	add	a,#0xff
+      00043A 92 B4            [24] 1287 	mov	_P3_4,c
+                                   1288 ;	ledmatrix.c:44: SCK = 1;
+                                   1289 ;	assignBit
+      00043C D2 B6            [12] 1290 	setb	_P3_6
+                                   1291 ;	ledmatrix.c:45: SCK = 0;
+                                   1292 ;	assignBit
+      00043E C2 B6            [12] 1293 	clr	_P3_6
+                                   1294 ;	ledmatrix.c:41: for (char i = 0; i < 8; i++)
+      000440 05*2E            [12] 1295 	inc	_game_over_i_1048577_150
+      000442 80 CB            [24] 1296 	sjmp	00178$
+      000444                       1297 00136$:
+                                   1298 ;	ledmatrix.c:47: P0 = 0xff;
+      000444 75 80 FF         [24] 1299 	mov	_P0,#0xff
+                                   1300 ;	ledmatrix.c:48: RCK = 1;
+                                   1301 ;	assignBit
+      000447 D2 B5            [12] 1302 	setb	_P3_5
+                                   1303 ;	ledmatrix.c:49: RCK = 0;
+                                   1304 ;	assignBit
+      000449 C2 B5            [12] 1305 	clr	_P3_5
+                                   1306 ;	ledmatrix.c:50: P0 = ~current_data;
+      00044B E5*2D            [12] 1307 	mov	a,_game_over_current_data_983041_149
+      00044D F4               [12] 1308 	cpl	a
+      00044E F5 80            [12] 1309 	mov	_P0,a
+                                   1310 ;	ledmatrix.c:51: for (char i = 0; i < 5; i++)
+      000450 7B 00            [12] 1311 	mov	r3,#0x00
+      000452                       1312 00181$:
+      000452 BB 05 00         [24] 1313 	cjne	r3,#0x05,00437$
+      000455                       1314 00437$:
+      000455 50 03            [24] 1315 	jnc	00185$
+      000457 0B               [12] 1316 	inc	r3
+      000458 80 F8            [24] 1317 	sjmp	00181$
+      00045A                       1318 00185$:
+                                   1319 ;	ledmatrix.c:38: for (char row = 0; row < 8; row++)
+      00045A 05*2C            [12] 1320 	inc	_game_over_row_917505_148
+                                   1321 ;	ledmatrix.c:59: display_led_mat();
+      00045C 80 82            [24] 1322 	sjmp	00184$
+      00045E                       1323 00139$:
+                                   1324 ;	ledmatrix.c:61: for (i = 0; i < 100; i++)
+      00045E 7B 64            [12] 1325 	mov	r3,#0x64
+      000460                       1326 00188$:
+      000460 DB FE            [24] 1327 	djnz	r3,00188$
+                                   1328 ;	ledmatrix.c:63: SER = 0;
+                                   1329 ;	assignBit
+      000462 C2 B4            [12] 1330 	clr	_P3_4
+                                   1331 ;	ledmatrix.c:64: for (i = 0; i < 8; i++)
+      000464 7B 00            [12] 1332 	mov	r3,#0x00
+      000466                       1333 00189$:
+                                   1334 ;	ledmatrix.c:66: SCK = 1;
+                                   1335 ;	assignBit
+      000466 D2 B6            [12] 1336 	setb	_P3_6
+                                   1337 ;	ledmatrix.c:67: SCK = 0;
+                                   1338 ;	assignBit
+      000468 C2 B6            [12] 1339 	clr	_P3_6
+                                   1340 ;	ledmatrix.c:64: for (i = 0; i < 8; i++)
+      00046A 0B               [12] 1341 	inc	r3
+      00046B BB 08 00         [24] 1342 	cjne	r3,#0x08,00440$
+      00046E                       1343 00440$:
+      00046E 40 F6            [24] 1344 	jc	00189$
+                                   1345 ;	ledmatrix.c:69: RCK = 1;
+      000470 C0 04            [24] 1346 	push	ar4
+      000472 C0 05            [24] 1347 	push	ar5
+                                   1348 ;	assignBit
+      000474 D2 B5            [12] 1349 	setb	_P3_5
+                                   1350 ;	ledmatrix.c:70: RCK = 0;
+                                   1351 ;	assignBit
+      000476 C2 B5            [12] 1352 	clr	_P3_5
+                                   1353 ;	ledmatrix.c:71: display_number(point);
+      000478 AA*08            [24] 1354 	mov	r2,_point
+      00047A 7B 00            [12] 1355 	mov	r3,#0x00
+      00047C 7C 00            [12] 1356 	mov	r4,#0x00
+      00047E 7D 00            [12] 1357 	mov	r5,#0x00
+      000480 8A 82            [24] 1358 	mov	dpl,r2
+      000482 8B 83            [24] 1359 	mov	dph,r3
+      000484 8C F0            [24] 1360 	mov	b,r4
+      000486 ED               [12] 1361 	mov	a,r5
+      000487 C0 07            [24] 1362 	push	ar7
+      000489 C0 06            [24] 1363 	push	ar6
+      00048B C0 05            [24] 1364 	push	ar5
+      00048D C0 04            [24] 1365 	push	ar4
+      00048F 12r00r00         [24] 1366 	lcall	_display_number
+      000492 D0 04            [24] 1367 	pop	ar4
+      000494 D0 05            [24] 1368 	pop	ar5
+                                   1369 ;	ledmatrix.c:72: display_number(point);
+      000496 AA*08            [24] 1370 	mov	r2,_point
+      000498 7B 00            [12] 1371 	mov	r3,#0x00
+      00049A 7C 00            [12] 1372 	mov	r4,#0x00
+      00049C 7D 00            [12] 1373 	mov	r5,#0x00
+      00049E 8A 82            [24] 1374 	mov	dpl,r2
+      0004A0 8B 83            [24] 1375 	mov	dph,r3
+      0004A2 8C F0            [24] 1376 	mov	b,r4
+      0004A4 ED               [12] 1377 	mov	a,r5
+      0004A5 C0 05            [24] 1378 	push	ar5
+      0004A7 C0 04            [24] 1379 	push	ar4
+      0004A9 12r00r00         [24] 1380 	lcall	_display_number
+      0004AC D0 04            [24] 1381 	pop	ar4
+      0004AE D0 05            [24] 1382 	pop	ar5
+                                   1383 ;	ledmatrix.c:73: display_number(point);
+      0004B0 AA*08            [24] 1384 	mov	r2,_point
+      0004B2 7B 00            [12] 1385 	mov	r3,#0x00
+      0004B4 7C 00            [12] 1386 	mov	r4,#0x00
+      0004B6 7D 00            [12] 1387 	mov	r5,#0x00
+      0004B8 8A 82            [24] 1388 	mov	dpl,r2
+      0004BA 8B 83            [24] 1389 	mov	dph,r3
+      0004BC 8C F0            [24] 1390 	mov	b,r4
+      0004BE ED               [12] 1391 	mov	a,r5
+      0004BF C0 05            [24] 1392 	push	ar5
+      0004C1 C0 04            [24] 1393 	push	ar4
+      0004C3 12r00r00         [24] 1394 	lcall	_display_number
+      0004C6 D0 04            [24] 1395 	pop	ar4
+      0004C8 D0 05            [24] 1396 	pop	ar5
+      0004CA D0 06            [24] 1397 	pop	ar6
+      0004CC D0 07            [24] 1398 	pop	ar7
+                                   1399 ;	ledmatrix.c:277: for (t = 30; t; --t)
+      0004CE 15*2A            [12] 1400 	dec	_game_over_t_65537_111
+      0004D0 D0 05            [24] 1401 	pop	ar5
+      0004D2 D0 04            [24] 1402 	pop	ar4
+      0004D4 E5*2A            [12] 1403 	mov	a,_game_over_t_65537_111
+      0004D6 60 03            [24] 1404 	jz	00442$
+      0004D8 02r03rD7         [24] 1405 	ljmp	00191$
+      0004DB                       1406 00442$:
+                                   1407 ;	ledmatrix.c:257: for (i = 0; i < 16; i++)
+      0004DB 05*28            [12] 1408 	inc	_game_over_i_65537_111
+      0004DD C3               [12] 1409 	clr	c
+      0004DE E5*28            [12] 1410 	mov	a,_game_over_i_65537_111
+      0004E0 64 80            [12] 1411 	xrl	a,#0x80
+      0004E2 94 90            [12] 1412 	subb	a,#0x90
+      0004E4 50 03            [24] 1413 	jnc	00443$
+      0004E6 02r02rD8         [24] 1414 	ljmp	00225$
+      0004E9                       1415 00443$:
+                                   1416 ;	ledmatrix.c:284: }
+      0004E9 02r02rC3         [24] 1417 	ljmp	00239$
+                                   1418 ;------------------------------------------------------------
+                                   1419 ;Allocation info for local variables in function 'update_food'
+                                   1420 ;------------------------------------------------------------
+                                   1421 ;cnt                       Allocated to registers 
+                                   1422 ;i                         Allocated with name '_update_food_i_131072_157'
+                                   1423 ;__2621440010              Allocated to registers 
+                                   1424 ;__2621440011              Allocated to registers 
+                                   1425 ;a                         Allocated to registers 
+                                   1426 ;------------------------------------------------------------
+                                   1427 ;	ledmatrix.c:285: void update_food(void)
+                                   1428 ;	-----------------------------------------
+                                   1429 ;	 function update_food
+                                   1430 ;	-----------------------------------------
+      0004EC                       1431 _update_food:
+                                   1432 ;	ledmatrix.c:287: char cnt = sqr_left;
+      0004EC AF*09            [24] 1433 	mov	r7,_sqr_left
+                                   1434 ;	ledmatrix.c:288: for (char i = 0; i < 64; i++)
+      0004EE 7E 00            [12] 1435 	mov	r6,#0x00
+      0004F0 8E*34            [24] 1436 	mov	_update_food_i_131072_157,r6
+      0004F2                       1437 00109$:
+      0004F2 74 C0            [12] 1438 	mov	a,#0x100 - 0x40
+      0004F4 25*34            [12] 1439 	add	a,_update_food_i_131072_157
+      0004F6 40 68            [24] 1440 	jc	00110$
+                                   1441 ;	ledmatrix.c:105: return (data_mat[a >> 3] & (0x80 >> (a & 7))) != 0;
+      0004F8 E5*34            [12] 1442 	mov	a,_update_food_i_131072_157
+      0004FA C4               [12] 1443 	swap	a
+      0004FB 23               [12] 1444 	rl	a
+      0004FC 54 1F            [12] 1445 	anl	a,#0x1f
+      0004FE 24r0B            [12] 1446 	add	a,#_data_mat
+      000500 F9               [12] 1447 	mov	r1,a
+      000501 87 04            [24] 1448 	mov	ar4,@r1
+      000503 74 07            [12] 1449 	mov	a,#0x07
+      000505 55*34            [12] 1450 	anl	a,_update_food_i_131072_157
+      000507 FB               [12] 1451 	mov	r3,a
+      000508 8B F0            [24] 1452 	mov	b,r3
+      00050A 05 F0            [12] 1453 	inc	b
+      00050C 7B 80            [12] 1454 	mov	r3,#0x80
+      00050E E4               [12] 1455 	clr	a
+      00050F FA               [12] 1456 	mov	r2,a
+      000510 33               [12] 1457 	rlc	a
+      000511 92 D2            [24] 1458 	mov	ov,c
+      000513 80 08            [24] 1459 	sjmp	00130$
+      000515                       1460 00129$:
+      000515 A2 D2            [12] 1461 	mov	c,ov
+      000517 EA               [12] 1462 	mov	a,r2
+      000518 13               [12] 1463 	rrc	a
+      000519 FA               [12] 1464 	mov	r2,a
+      00051A EB               [12] 1465 	mov	a,r3
+      00051B 13               [12] 1466 	rrc	a
+      00051C FB               [12] 1467 	mov	r3,a
+      00051D                       1468 00130$:
+      00051D D5 F0 F5         [24] 1469 	djnz	b,00129$
+      000520 7D 00            [12] 1470 	mov	r5,#0x00
+      000522 EC               [12] 1471 	mov	a,r4
+      000523 52 03            [12] 1472 	anl	ar3,a
+      000525 ED               [12] 1473 	mov	a,r5
+      000526 52 02            [12] 1474 	anl	ar2,a
+      000528 EB               [12] 1475 	mov	a,r3
+      000529 4A               [12] 1476 	orl	a,r2
+      00052A B4 01 00         [24] 1477 	cjne	a,#0x01,00131$
+      00052D                       1478 00131$:
+      00052D B3               [12] 1479 	cpl	c
+                                   1480 ;	ledmatrix.c:290: if (value(i))
+      00052E 92*00            [24] 1481 	mov	_update_food_sloc0_1_0,c
+      000530 40 28            [24] 1482 	jc	00105$
+                                   1483 ;	ledmatrix.c:292: if (rand() % cnt == 0)
+      000532 C0 07            [24] 1484 	push	ar7
+      000534 C0 06            [24] 1485 	push	ar6
+      000536 12r00r00         [24] 1486 	lcall	_rand
+      000539 D0 06            [24] 1487 	pop	ar6
+      00053B D0 07            [24] 1488 	pop	ar7
+      00053D 8F*00            [24] 1489 	mov	__modsint_PARM_2,r7
+      00053F 75*01 00         [24] 1490 	mov	(__modsint_PARM_2 + 1),#0x00
+      000542 C0 07            [24] 1491 	push	ar7
+      000544 C0 06            [24] 1492 	push	ar6
+      000546 12r00r00         [24] 1493 	lcall	__modsint
+      000549 E5 82            [12] 1494 	mov	a,dpl
+      00054B 85 83 F0         [24] 1495 	mov	b,dph
+      00054E D0 06            [24] 1496 	pop	ar6
+      000550 D0 07            [24] 1497 	pop	ar7
+      000552 45 F0            [12] 1498 	orl	a,b
+      000554 70 03            [24] 1499 	jnz	00104$
+                                   1500 ;	ledmatrix.c:294: food = i;
+      000556 8E*16            [24] 1501 	mov	_food,r6
+                                   1502 ;	ledmatrix.c:295: return;
+      000558 22               [24] 1503 	ret
+      000559                       1504 00104$:
+                                   1505 ;	ledmatrix.c:297: --cnt;
+      000559 1F               [12] 1506 	dec	r7
+      00055A                       1507 00105$:
+                                   1508 ;	ledmatrix.c:288: for (char i = 0; i < 64; i++)
+      00055A 05*34            [12] 1509 	inc	_update_food_i_131072_157
+      00055C AE*34            [24] 1510 	mov	r6,_update_food_i_131072_157
+      00055E 80 92            [24] 1511 	sjmp	00109$
+      000560                       1512 00110$:
+                                   1513 ;	ledmatrix.c:299: }
+      000560 22               [24] 1514 	ret
+                                   1515 ;------------------------------------------------------------
+                                   1516 ;Allocation info for local variables in function 'update_game'
+                                   1517 ;------------------------------------------------------------
+                                   1518 ;__1310720013              Allocated to registers r7 
+                                   1519 ;a                         Allocated to registers 
+                                   1520 ;__1966080015              Allocated to registers r7 
+                                   1521 ;a                         Allocated to registers 
+                                   1522 ;__1966080017              Allocated to registers r7 
+                                   1523 ;a                         Allocated to registers 
+                                   1524 ;__1966080019              Allocated to registers r7 
+                                   1525 ;dir                       Allocated to registers 
+                                   1526 ;__1966090020              Allocated to registers r7 
+                                   1527 ;tail                      Allocated to registers 
+                                   1528 ;temp                      Allocated to registers r6 
+                                   1529 ;------------------------------------------------------------
+                                   1530 ;	ledmatrix.c:300: void update_game(void)
+                                   1531 ;	-----------------------------------------
+                                   1532 ;	 function update_game
+                                   1533 ;	-----------------------------------------
+      000561                       1534 _update_game:
+                                   1535 ;	ledmatrix.c:302: if (head != food && (data_mat[(head / 8)] & (0x80 >> (head % 8))))
+      000561 E5*16            [12] 1536 	mov	a,_food
+      000563 B5*14 02         [24] 1537 	cjne	a,_head,00134$
+      000566 80 4B            [24] 1538 	sjmp	00102$
+      000568                       1539 00134$:
+      000568 AE*14            [24] 1540 	mov	r6,_head
+      00056A 7F 00            [12] 1541 	mov	r7,#0x00
+      00056C 75*00 08         [24] 1542 	mov	__divsint_PARM_2,#0x08
+      00056F 8F*01            [24] 1543 	mov	(__divsint_PARM_2 + 1),r7
+      000571 8E 82            [24] 1544 	mov	dpl,r6
+      000573 8F 83            [24] 1545 	mov	dph,r7
+      000575 C0 07            [24] 1546 	push	ar7
+      000577 C0 06            [24] 1547 	push	ar6
+      000579 12r00r00         [24] 1548 	lcall	__divsint
+      00057C AC 82            [24] 1549 	mov	r4,dpl
+      00057E D0 06            [24] 1550 	pop	ar6
+      000580 D0 07            [24] 1551 	pop	ar7
+      000582 EC               [12] 1552 	mov	a,r4
+      000583 24r0B            [12] 1553 	add	a,#_data_mat
+      000585 F9               [12] 1554 	mov	r1,a
+      000586 87 05            [24] 1555 	mov	ar5,@r1
+      000588 53 06 07         [24] 1556 	anl	ar6,#0x07
+      00058B 7F 00            [12] 1557 	mov	r7,#0x00
+      00058D 8E F0            [24] 1558 	mov	b,r6
+      00058F 05 F0            [12] 1559 	inc	b
+      000591 7E 80            [12] 1560 	mov	r6,#0x80
+      000593 E4               [12] 1561 	clr	a
+      000594 33               [12] 1562 	rlc	a
+      000595 92 D2            [24] 1563 	mov	ov,c
+      000597 80 08            [24] 1564 	sjmp	00136$
+      000599                       1565 00135$:
+      000599 A2 D2            [12] 1566 	mov	c,ov
+      00059B EF               [12] 1567 	mov	a,r7
+      00059C 13               [12] 1568 	rrc	a
+      00059D FF               [12] 1569 	mov	r7,a
+      00059E EE               [12] 1570 	mov	a,r6
+      00059F 13               [12] 1571 	rrc	a
+      0005A0 FE               [12] 1572 	mov	r6,a
+      0005A1                       1573 00136$:
+      0005A1 D5 F0 F5         [24] 1574 	djnz	b,00135$
+      0005A4 7C 00            [12] 1575 	mov	r4,#0x00
+      0005A6 ED               [12] 1576 	mov	a,r5
+      0005A7 52 06            [12] 1577 	anl	ar6,a
+      0005A9 EC               [12] 1578 	mov	a,r4
+      0005AA 52 07            [12] 1579 	anl	ar7,a
+      0005AC EE               [12] 1580 	mov	a,r6
+      0005AD 4F               [12] 1581 	orl	a,r7
+      0005AE 60 03            [24] 1582 	jz	00102$
+                                   1583 ;	ledmatrix.c:304: game_over();
+      0005B0 12r00rB2         [24] 1584 	lcall	_game_over
+      0005B3                       1585 00102$:
+                                   1586 ;	ledmatrix.c:306: turn_on(head);
+                                   1587 ;	ledmatrix.c:114: data_mat[a >> 3] |= 0x80 >> (a & 7);
+      0005B3 E5*14            [12] 1588 	mov	a,_head
+      0005B5 FF               [12] 1589 	mov	r7,a
+      0005B6 C4               [12] 1590 	swap	a
+      0005B7 23               [12] 1591 	rl	a
+      0005B8 54 1F            [12] 1592 	anl	a,#0x1f
+      0005BA 24r0B            [12] 1593 	add	a,#_data_mat
+      0005BC F9               [12] 1594 	mov	r1,a
+      0005BD 87 06            [24] 1595 	mov	ar6,@r1
+      0005BF 53 07 07         [24] 1596 	anl	ar7,#0x07
+      0005C2 8F F0            [24] 1597 	mov	b,r7
+      0005C4 05 F0            [12] 1598 	inc	b
+      0005C6 7F 80            [12] 1599 	mov	r7,#0x80
+      0005C8 E4               [12] 1600 	clr	a
+      0005C9 FD               [12] 1601 	mov	r5,a
+      0005CA 33               [12] 1602 	rlc	a
+      0005CB 92 D2            [24] 1603 	mov	ov,c
+      0005CD 80 08            [24] 1604 	sjmp	00139$
+      0005CF                       1605 00138$:
+      0005CF A2 D2            [12] 1606 	mov	c,ov
+      0005D1 ED               [12] 1607 	mov	a,r5
+      0005D2 13               [12] 1608 	rrc	a
+      0005D3 FD               [12] 1609 	mov	r5,a
+      0005D4 EF               [12] 1610 	mov	a,r7
+      0005D5 13               [12] 1611 	rrc	a
+      0005D6 FF               [12] 1612 	mov	r7,a
+      0005D7                       1613 00139$:
+      0005D7 D5 F0 F5         [24] 1614 	djnz	b,00138$
+      0005DA EF               [12] 1615 	mov	a,r7
+      0005DB 4E               [12] 1616 	orl	a,r6
+      0005DC F7               [12] 1617 	mov	@r1,a
+                                   1618 ;	ledmatrix.c:307: if (head == food)
+      0005DD E5*16            [12] 1619 	mov	a,_food
+      0005DF B5*14 32         [24] 1620 	cjne	a,_head,00110$
+                                   1621 ;	ledmatrix.c:309: ++point;
+      0005E2 05*08            [12] 1622 	inc	_point
+                                   1623 ;	ledmatrix.c:311: update_food();
+      0005E4 12r04rEC         [24] 1624 	lcall	_update_food
+                                   1625 ;	ledmatrix.c:313: turn_on(food);
+                                   1626 ;	ledmatrix.c:114: data_mat[a >> 3] |= 0x80 >> (a & 7);
+      0005E7 E5*16            [12] 1627 	mov	a,_food
+      0005E9 FF               [12] 1628 	mov	r7,a
+      0005EA C4               [12] 1629 	swap	a
+      0005EB 23               [12] 1630 	rl	a
+      0005EC 54 1F            [12] 1631 	anl	a,#0x1f
+      0005EE 24r0B            [12] 1632 	add	a,#_data_mat
+      0005F0 F9               [12] 1633 	mov	r1,a
+      0005F1 87 06            [24] 1634 	mov	ar6,@r1
+      0005F3 53 07 07         [24] 1635 	anl	ar7,#0x07
+      0005F6 8F F0            [24] 1636 	mov	b,r7
+      0005F8 05 F0            [12] 1637 	inc	b
+      0005FA 7F 80            [12] 1638 	mov	r7,#0x80
+      0005FC E4               [12] 1639 	clr	a
+      0005FD FD               [12] 1640 	mov	r5,a
+      0005FE 33               [12] 1641 	rlc	a
+      0005FF 92 D2            [24] 1642 	mov	ov,c
+      000601 80 08            [24] 1643 	sjmp	00143$
+      000603                       1644 00142$:
+      000603 A2 D2            [12] 1645 	mov	c,ov
+      000605 ED               [12] 1646 	mov	a,r5
+      000606 13               [12] 1647 	rrc	a
+      000607 FD               [12] 1648 	mov	r5,a
+      000608 EF               [12] 1649 	mov	a,r7
+      000609 13               [12] 1650 	rrc	a
+      00060A FF               [12] 1651 	mov	r7,a
+      00060B                       1652 00143$:
+      00060B D5 F0 F5         [24] 1653 	djnz	b,00142$
+      00060E EF               [12] 1654 	mov	a,r7
+      00060F 4E               [12] 1655 	orl	a,r6
+      000610 F7               [12] 1656 	mov	@r1,a
+                                   1657 ;	ledmatrix.c:314: --sqr_left;
+      000611 15*09            [12] 1658 	dec	_sqr_left
+                                   1659 ;	ledmatrix.c:315: return;
+      000613 22               [24] 1660 	ret
+      000614                       1661 00110$:
+                                   1662 ;	ledmatrix.c:319: turn_off(tail);
+                                   1663 ;	ledmatrix.c:118: data_mat[a >> 3] &= ~(0x80 >> (a & 7));
+      000614 E5*15            [12] 1664 	mov	a,_tail
+      000616 FF               [12] 1665 	mov	r7,a
+      000617 C4               [12] 1666 	swap	a
+      000618 23               [12] 1667 	rl	a
+      000619 54 1F            [12] 1668 	anl	a,#0x1f
+      00061B 24r0B            [12] 1669 	add	a,#_data_mat
+      00061D F9               [12] 1670 	mov	r1,a
+      00061E 87 06            [24] 1671 	mov	ar6,@r1
+      000620 53 07 07         [24] 1672 	anl	ar7,#0x07
+      000623 8F F0            [24] 1673 	mov	b,r7
+      000625 05 F0            [12] 1674 	inc	b
+      000627 7F 80            [12] 1675 	mov	r7,#0x80
+      000629 E4               [12] 1676 	clr	a
+      00062A FD               [12] 1677 	mov	r5,a
+      00062B 33               [12] 1678 	rlc	a
+      00062C 92 D2            [24] 1679 	mov	ov,c
+      00062E 80 08            [24] 1680 	sjmp	00145$
+      000630                       1681 00144$:
+      000630 A2 D2            [12] 1682 	mov	c,ov
+      000632 ED               [12] 1683 	mov	a,r5
+      000633 13               [12] 1684 	rrc	a
+      000634 FD               [12] 1685 	mov	r5,a
+      000635 EF               [12] 1686 	mov	a,r7
+      000636 13               [12] 1687 	rrc	a
+      000637 FF               [12] 1688 	mov	r7,a
+      000638                       1689 00145$:
+      000638 D5 F0 F5         [24] 1690 	djnz	b,00144$
+      00063B EF               [12] 1691 	mov	a,r7
+      00063C F4               [12] 1692 	cpl	a
+      00063D 5E               [12] 1693 	anl	a,r6
+      00063E F7               [12] 1694 	mov	@r1,a
+                                   1695 ;	ledmatrix.c:320: char dir = get_direction(tail);
+      00063F AF*15            [24] 1696 	mov	r7,_tail
+                                   1697 ;	ledmatrix.c:78: char temp = 0x80 >> (tail & 7);
+      000641 74 07            [12] 1698 	mov	a,#0x07
+      000643 5F               [12] 1699 	anl	a,r7
+      000644 FE               [12] 1700 	mov	r6,a
+      000645 8E F0            [24] 1701 	mov	b,r6
+      000647 05 F0            [12] 1702 	inc	b
+      000649 7E 80            [12] 1703 	mov	r6,#0x80
+      00064B E4               [12] 1704 	clr	a
+      00064C FD               [12] 1705 	mov	r5,a
+      00064D 33               [12] 1706 	rlc	a
+      00064E 92 D2            [24] 1707 	mov	ov,c
+      000650 80 08            [24] 1708 	sjmp	00147$
+      000652                       1709 00146$:
+      000652 A2 D2            [12] 1710 	mov	c,ov
+      000654 ED               [12] 1711 	mov	a,r5
+      000655 13               [12] 1712 	rrc	a
+      000656 FD               [12] 1713 	mov	r5,a
+      000657 EE               [12] 1714 	mov	a,r6
+      000658 13               [12] 1715 	rrc	a
+      000659 FE               [12] 1716 	mov	r6,a
+      00065A                       1717 00147$:
+      00065A D5 F0 F5         [24] 1718 	djnz	b,00146$
+                                   1719 ;	ledmatrix.c:320: char dir = get_direction(tail);
+      00065D EF               [12] 1720 	mov	a,r7
+      00065E C4               [12] 1721 	swap	a
+      00065F 23               [12] 1722 	rl	a
+      000660 54 1F            [12] 1723 	anl	a,#0x1f
+      000662 FF               [12] 1724 	mov	r7,a
+      000663 24r1F            [12] 1725 	add	a,#_bit1
+      000665 F9               [12] 1726 	mov	r1,a
+      000666 87 05            [24] 1727 	mov	ar5,@r1
+      000668 EE               [12] 1728 	mov	a,r6
+      000669 52 05            [12] 1729 	anl	ar5,a
+      00066B ED               [12] 1730 	mov	a,r5
+      00066C B4 01 00         [24] 1731 	cjne	a,#0x01,00148$
+      00066F                       1732 00148$:
+      00066F B3               [12] 1733 	cpl	c
+      000670 92*01            [24] 1734 	mov	_update_game_sloc0_1_0,c
+      000672 E4               [12] 1735 	clr	a
+      000673 33               [12] 1736 	rlc	a
+      000674 25 E0            [12] 1737 	add	a,acc
+      000676 FD               [12] 1738 	mov	r5,a
+      000677 EF               [12] 1739 	mov	a,r7
+      000678 24r17            [12] 1740 	add	a,#_bit0
+      00067A F9               [12] 1741 	mov	r1,a
+      00067B E7               [12] 1742 	mov	a,@r1
+      00067C 52 06            [12] 1743 	anl	ar6,a
+      00067E EE               [12] 1744 	mov	a,r6
+      00067F B4 01 00         [24] 1745 	cjne	a,#0x01,00149$
+      000682                       1746 00149$:
+      000682 B3               [12] 1747 	cpl	c
+      000683 92*01            [24] 1748 	mov	_update_game_sloc0_1_0,c
+      000685 E4               [12] 1749 	clr	a
+      000686 33               [12] 1750 	rlc	a
+      000687 FF               [12] 1751 	mov	r7,a
+      000688 ED               [12] 1752 	mov	a,r5
+      000689 42 07            [12] 1753 	orl	ar7,a
+                                   1754 ;	ledmatrix.c:321: switch (dir)
+      00068B EF               [12] 1755 	mov	a,r7
+      00068C 24 FC            [12] 1756 	add	a,#0xff - 0x03
+      00068E 40 22            [24] 1757 	jc	00116$
+      000690 EF               [12] 1758 	mov	a,r7
+      000691 2F               [12] 1759 	add	a,r7
+                                   1760 ;	ledmatrix.c:323: case dir_left:
+      000692 90r06r96         [24] 1761 	mov	dptr,#00151$
+      000695 73               [24] 1762 	jmp	@a+dptr
+      000696                       1763 00151$:
+      000696 80 06            [24] 1764 	sjmp	00104$
+      000698 80 07            [24] 1765 	sjmp	00105$
+      00069A 80 08            [24] 1766 	sjmp	00106$
+      00069C 80 0D            [24] 1767 	sjmp	00107$
+      00069E                       1768 00104$:
+                                   1769 ;	ledmatrix.c:324: --tail;
+      00069E 15*15            [12] 1770 	dec	_tail
+                                   1771 ;	ledmatrix.c:325: break;
+                                   1772 ;	ledmatrix.c:326: case dir_right:
+      0006A0 22               [24] 1773 	ret
+      0006A1                       1774 00105$:
+                                   1775 ;	ledmatrix.c:327: ++tail;
+      0006A1 05*15            [12] 1776 	inc	_tail
+                                   1777 ;	ledmatrix.c:328: break;
+                                   1778 ;	ledmatrix.c:329: case dir_up:
+      0006A3 22               [24] 1779 	ret
+      0006A4                       1780 00106$:
+                                   1781 ;	ledmatrix.c:330: tail -= 8;
+      0006A4 E5*15            [12] 1782 	mov	a,_tail
+      0006A6 24 F8            [12] 1783 	add	a,#0xf8
+      0006A8 F5*15            [12] 1784 	mov	_tail,a
+                                   1785 ;	ledmatrix.c:331: break;
+                                   1786 ;	ledmatrix.c:332: case dir_down:
+      0006AA 22               [24] 1787 	ret
+      0006AB                       1788 00107$:
+                                   1789 ;	ledmatrix.c:333: tail += 8;
+      0006AB AF*15            [24] 1790 	mov	r7,_tail
+      0006AD 74 08            [12] 1791 	mov	a,#0x08
+      0006AF 2F               [12] 1792 	add	a,r7
+      0006B0 F5*15            [12] 1793 	mov	_tail,a
+                                   1794 ;	ledmatrix.c:335: }
+      0006B2                       1795 00116$:
+                                   1796 ;	ledmatrix.c:337: }
+      0006B2 22               [24] 1797 	ret
+                                   1798 ;------------------------------------------------------------
+                                   1799 ;Allocation info for local variables in function 'go_up'
+                                   1800 ;------------------------------------------------------------
+                                   1801 ;__1310720022              Allocated to registers r7 
+                                   1802 ;__1310720023              Allocated to registers 
+                                   1803 ;tail                      Allocated to registers r6 
+                                   1804 ;direction                 Allocated to registers 
+                                   1805 ;temp                      Allocated to registers r5 
+                                   1806 ;------------------------------------------------------------
+                                   1807 ;	ledmatrix.c:339: void go_up(void)
+                                   1808 ;	-----------------------------------------
+                                   1809 ;	 function go_up
+                                   1810 ;	-----------------------------------------
+      0006B3                       1811 _go_up:
+                                   1812 ;	ledmatrix.c:341: if (head < 8)
+      0006B3 74 F8            [12] 1813 	mov	a,#0x100 - 0x08
+      0006B5 25*14            [12] 1814 	add	a,_head
+      0006B7 40 03            [24] 1815 	jc	00102$
+                                   1816 ;	ledmatrix.c:342: game_over();
+      0006B9 12r00rB2         [24] 1817 	lcall	_game_over
+      0006BC                       1818 00102$:
+                                   1819 ;	ledmatrix.c:343: if (cur_dir == dir_down)
+      0006BC 74 03            [12] 1820 	mov	a,#0x03
+      0006BE B5*0A 01         [24] 1821 	cjne	a,_cur_dir,00104$
+                                   1822 ;	ledmatrix.c:344: return;
+      0006C1 22               [24] 1823 	ret
+      0006C2                       1824 00104$:
+                                   1825 ;	ledmatrix.c:345: update_direction(head, dir_up);
+      0006C2 AF*14            [24] 1826 	mov	r7,_head
+      0006C4 8F 06            [24] 1827 	mov	ar6,r7
+                                   1828 ;	ledmatrix.c:84: char temp = 0x80 >> (tail & 7);
+      0006C6 74 07            [12] 1829 	mov	a,#0x07
+      0006C8 5F               [12] 1830 	anl	a,r7
+      0006C9 FD               [12] 1831 	mov	r5,a
+      0006CA 8D F0            [24] 1832 	mov	b,r5
+      0006CC 05 F0            [12] 1833 	inc	b
+      0006CE 7D 80            [12] 1834 	mov	r5,#0x80
+      0006D0 E4               [12] 1835 	clr	a
+      0006D1 FC               [12] 1836 	mov	r4,a
+      0006D2 33               [12] 1837 	rlc	a
+      0006D3 92 D2            [24] 1838 	mov	ov,c
+      0006D5 80 08            [24] 1839 	sjmp	00126$
+      0006D7                       1840 00125$:
+      0006D7 A2 D2            [12] 1841 	mov	c,ov
+      0006D9 EC               [12] 1842 	mov	a,r4
+      0006DA 13               [12] 1843 	rrc	a
+      0006DB FC               [12] 1844 	mov	r4,a
+      0006DC ED               [12] 1845 	mov	a,r5
+      0006DD 13               [12] 1846 	rrc	a
+      0006DE FD               [12] 1847 	mov	r5,a
+      0006DF                       1848 00126$:
+      0006DF D5 F0 F5         [24] 1849 	djnz	b,00125$
+                                   1850 ;	ledmatrix.c:85: bit1[tail >> 3] &= ~temp;
+      0006E2 EF               [12] 1851 	mov	a,r7
+      0006E3 C4               [12] 1852 	swap	a
+      0006E4 23               [12] 1853 	rl	a
+      0006E5 54 1F            [12] 1854 	anl	a,#0x1f
+      0006E7 24r1F            [12] 1855 	add	a,#_bit1
+      0006E9 F9               [12] 1856 	mov	r1,a
+      0006EA 87 07            [24] 1857 	mov	ar7,@r1
+      0006EC ED               [12] 1858 	mov	a,r5
+      0006ED F4               [12] 1859 	cpl	a
+      0006EE 5F               [12] 1860 	anl	a,r7
+      0006EF F7               [12] 1861 	mov	@r1,a
+                                   1862 ;	ledmatrix.c:88: bit1[tail >> 3] |= temp;
+      0006F0 EE               [12] 1863 	mov	a,r6
+      0006F1 C4               [12] 1864 	swap	a
+      0006F2 23               [12] 1865 	rl	a
+      0006F3 54 1F            [12] 1866 	anl	a,#0x1f
+      0006F5 FE               [12] 1867 	mov	r6,a
+      0006F6 24r1F            [12] 1868 	add	a,#_bit1
+      0006F8 F9               [12] 1869 	mov	r1,a
+      0006F9 87 07            [24] 1870 	mov	ar7,@r1
+      0006FB ED               [12] 1871 	mov	a,r5
+      0006FC 4F               [12] 1872 	orl	a,r7
+      0006FD F7               [12] 1873 	mov	@r1,a
+                                   1874 ;	ledmatrix.c:93: bit0[tail >> 3] &= ~temp;
+      0006FE EE               [12] 1875 	mov	a,r6
+      0006FF 24r17            [12] 1876 	add	a,#_bit0
+      000701 F9               [12] 1877 	mov	r1,a
+      000702 87 07            [24] 1878 	mov	ar7,@r1
+      000704 ED               [12] 1879 	mov	a,r5
+      000705 F4               [12] 1880 	cpl	a
+      000706 5F               [12] 1881 	anl	a,r7
+      000707 F7               [12] 1882 	mov	@r1,a
+                                   1883 ;	ledmatrix.c:346: head = head - 8;
+      000708 E5*14            [12] 1884 	mov	a,_head
+      00070A 24 F8            [12] 1885 	add	a,#0xf8
+      00070C F5*14            [12] 1886 	mov	_head,a
+                                   1887 ;	ledmatrix.c:347: cur_dir = dir_up;
+      00070E 75*0A 02         [24] 1888 	mov	_cur_dir,#0x02
+                                   1889 ;	ledmatrix.c:348: update_game();
+                                   1890 ;	ledmatrix.c:349: }
+      000711 02r05r61         [24] 1891 	ljmp	_update_game
+                                   1892 ;------------------------------------------------------------
+                                   1893 ;Allocation info for local variables in function 'go_down'
+                                   1894 ;------------------------------------------------------------
+                                   1895 ;__1310720025              Allocated to registers r7 
+                                   1896 ;__1310720026              Allocated to registers 
+                                   1897 ;tail                      Allocated to registers r6 
+                                   1898 ;direction                 Allocated to registers 
+                                   1899 ;temp                      Allocated to registers r5 
+                                   1900 ;------------------------------------------------------------
+                                   1901 ;	ledmatrix.c:350: void go_down(void)
+                                   1902 ;	-----------------------------------------
+                                   1903 ;	 function go_down
+                                   1904 ;	-----------------------------------------
+      000714                       1905 _go_down:
+                                   1906 ;	ledmatrix.c:352: if (head >= 56)
+      000714 74 C8            [12] 1907 	mov	a,#0x100 - 0x38
+      000716 25*14            [12] 1908 	add	a,_head
+      000718 50 03            [24] 1909 	jnc	00102$
+                                   1910 ;	ledmatrix.c:353: game_over();
+      00071A 12r00rB2         [24] 1911 	lcall	_game_over
+      00071D                       1912 00102$:
+                                   1913 ;	ledmatrix.c:354: if (cur_dir == dir_up)
+      00071D 74 02            [12] 1914 	mov	a,#0x02
+      00071F B5*0A 01         [24] 1915 	cjne	a,_cur_dir,00104$
+                                   1916 ;	ledmatrix.c:355: return;
+      000722 22               [24] 1917 	ret
+      000723                       1918 00104$:
+                                   1919 ;	ledmatrix.c:356: update_direction(head, dir_down);
+      000723 AF*14            [24] 1920 	mov	r7,_head
+      000725 8F 06            [24] 1921 	mov	ar6,r7
+                                   1922 ;	ledmatrix.c:84: char temp = 0x80 >> (tail & 7);
+      000727 74 07            [12] 1923 	mov	a,#0x07
+      000729 5F               [12] 1924 	anl	a,r7
+      00072A FD               [12] 1925 	mov	r5,a
+      00072B 8D F0            [24] 1926 	mov	b,r5
+      00072D 05 F0            [12] 1927 	inc	b
+      00072F 7D 80            [12] 1928 	mov	r5,#0x80
+      000731 E4               [12] 1929 	clr	a
+      000732 FC               [12] 1930 	mov	r4,a
+      000733 33               [12] 1931 	rlc	a
+      000734 92 D2            [24] 1932 	mov	ov,c
+      000736 80 08            [24] 1933 	sjmp	00126$
+      000738                       1934 00125$:
+      000738 A2 D2            [12] 1935 	mov	c,ov
+      00073A EC               [12] 1936 	mov	a,r4
+      00073B 13               [12] 1937 	rrc	a
+      00073C FC               [12] 1938 	mov	r4,a
+      00073D ED               [12] 1939 	mov	a,r5
+      00073E 13               [12] 1940 	rrc	a
+      00073F FD               [12] 1941 	mov	r5,a
+      000740                       1942 00126$:
+      000740 D5 F0 F5         [24] 1943 	djnz	b,00125$
+                                   1944 ;	ledmatrix.c:85: bit1[tail >> 3] &= ~temp;
+      000743 EF               [12] 1945 	mov	a,r7
+      000744 C4               [12] 1946 	swap	a
+      000745 23               [12] 1947 	rl	a
+      000746 54 1F            [12] 1948 	anl	a,#0x1f
+      000748 24r1F            [12] 1949 	add	a,#_bit1
+      00074A F9               [12] 1950 	mov	r1,a
+      00074B 87 07            [24] 1951 	mov	ar7,@r1
+      00074D ED               [12] 1952 	mov	a,r5
+      00074E F4               [12] 1953 	cpl	a
+      00074F 5F               [12] 1954 	anl	a,r7
+      000750 F7               [12] 1955 	mov	@r1,a
+                                   1956 ;	ledmatrix.c:88: bit1[tail >> 3] |= temp;
+      000751 EE               [12] 1957 	mov	a,r6
+      000752 C4               [12] 1958 	swap	a
+      000753 23               [12] 1959 	rl	a
+      000754 54 1F            [12] 1960 	anl	a,#0x1f
+      000756 FE               [12] 1961 	mov	r6,a
+      000757 24r1F            [12] 1962 	add	a,#_bit1
+      000759 F9               [12] 1963 	mov	r1,a
+      00075A 87 07            [24] 1964 	mov	ar7,@r1
+      00075C ED               [12] 1965 	mov	a,r5
+      00075D 4F               [12] 1966 	orl	a,r7
+      00075E F7               [12] 1967 	mov	@r1,a
+                                   1968 ;	ledmatrix.c:93: bit0[tail >> 3] &= ~temp;
+      00075F EE               [12] 1969 	mov	a,r6
+      000760 24r17            [12] 1970 	add	a,#_bit0
+      000762 F9               [12] 1971 	mov	r1,a
+      000763 87 07            [24] 1972 	mov	ar7,@r1
+      000765 ED               [12] 1973 	mov	a,r5
+      000766 F4               [12] 1974 	cpl	a
+      000767 5F               [12] 1975 	anl	a,r7
+      000768 F7               [12] 1976 	mov	@r1,a
+                                   1977 ;	ledmatrix.c:96: bit0[tail >> 3] |= temp;
+      000769 87 07            [24] 1978 	mov	ar7,@r1
+      00076B ED               [12] 1979 	mov	a,r5
+      00076C 4F               [12] 1980 	orl	a,r7
+      00076D F7               [12] 1981 	mov	@r1,a
+                                   1982 ;	ledmatrix.c:357: head = head + 8;
+      00076E AF*14            [24] 1983 	mov	r7,_head
+      000770 74 08            [12] 1984 	mov	a,#0x08
+      000772 2F               [12] 1985 	add	a,r7
+      000773 F5*14            [12] 1986 	mov	_head,a
+                                   1987 ;	ledmatrix.c:358: cur_dir = dir_down;
+      000775 75*0A 03         [24] 1988 	mov	_cur_dir,#0x03
+                                   1989 ;	ledmatrix.c:359: update_game();
+                                   1990 ;	ledmatrix.c:360: }
+      000778 02r05r61         [24] 1991 	ljmp	_update_game
+                                   1992 ;------------------------------------------------------------
+                                   1993 ;Allocation info for local variables in function 'go_left'
+                                   1994 ;------------------------------------------------------------
+                                   1995 ;__1310720028              Allocated to registers r7 
+                                   1996 ;__1310720029              Allocated to registers 
+                                   1997 ;tail                      Allocated to registers r6 
+                                   1998 ;direction                 Allocated to registers 
+                                   1999 ;temp                      Allocated to registers r5 
+                                   2000 ;------------------------------------------------------------
+                                   2001 ;	ledmatrix.c:361: void go_left(void)
+                                   2002 ;	-----------------------------------------
+                                   2003 ;	 function go_left
+                                   2004 ;	-----------------------------------------
+      00077B                       2005 _go_left:
+                                   2006 ;	ledmatrix.c:363: if (head % 8 == 0)
+      00077B E5*14            [12] 2007 	mov	a,_head
+      00077D 54 07            [12] 2008 	anl	a,#0x07
+      00077F 60 02            [24] 2009 	jz	00123$
+      000781 80 03            [24] 2010 	sjmp	00102$
+      000783                       2011 00123$:
+                                   2012 ;	ledmatrix.c:364: game_over();
+      000783 12r00rB2         [24] 2013 	lcall	_game_over
+      000786                       2014 00102$:
+                                   2015 ;	ledmatrix.c:365: if (cur_dir == dir_right)
+      000786 74 01            [12] 2016 	mov	a,#0x01
+      000788 B5*0A 01         [24] 2017 	cjne	a,_cur_dir,00104$
+                                   2018 ;	ledmatrix.c:366: return;
+      00078B 22               [24] 2019 	ret
+      00078C                       2020 00104$:
+                                   2021 ;	ledmatrix.c:367: update_direction(head, dir_left);
+      00078C AF*14            [24] 2022 	mov	r7,_head
+      00078E 8F 06            [24] 2023 	mov	ar6,r7
+                                   2024 ;	ledmatrix.c:84: char temp = 0x80 >> (tail & 7);
+      000790 74 07            [12] 2025 	mov	a,#0x07
+      000792 5F               [12] 2026 	anl	a,r7
+      000793 FD               [12] 2027 	mov	r5,a
+      000794 8D F0            [24] 2028 	mov	b,r5
+      000796 05 F0            [12] 2029 	inc	b
+      000798 7D 80            [12] 2030 	mov	r5,#0x80
+      00079A E4               [12] 2031 	clr	a
+      00079B FC               [12] 2032 	mov	r4,a
+      00079C 33               [12] 2033 	rlc	a
+      00079D 92 D2            [24] 2034 	mov	ov,c
+      00079F 80 08            [24] 2035 	sjmp	00127$
+      0007A1                       2036 00126$:
+      0007A1 A2 D2            [12] 2037 	mov	c,ov
+      0007A3 EC               [12] 2038 	mov	a,r4
+      0007A4 13               [12] 2039 	rrc	a
+      0007A5 FC               [12] 2040 	mov	r4,a
+      0007A6 ED               [12] 2041 	mov	a,r5
+      0007A7 13               [12] 2042 	rrc	a
+      0007A8 FD               [12] 2043 	mov	r5,a
+      0007A9                       2044 00127$:
+      0007A9 D5 F0 F5         [24] 2045 	djnz	b,00126$
+                                   2046 ;	ledmatrix.c:85: bit1[tail >> 3] &= ~temp;
+      0007AC EF               [12] 2047 	mov	a,r7
+      0007AD C4               [12] 2048 	swap	a
+      0007AE 23               [12] 2049 	rl	a
+      0007AF 54 1F            [12] 2050 	anl	a,#0x1f
+      0007B1 24r1F            [12] 2051 	add	a,#_bit1
+      0007B3 F9               [12] 2052 	mov	r1,a
+      0007B4 87 07            [24] 2053 	mov	ar7,@r1
+      0007B6 ED               [12] 2054 	mov	a,r5
+      0007B7 F4               [12] 2055 	cpl	a
+      0007B8 5F               [12] 2056 	anl	a,r7
+      0007B9 F7               [12] 2057 	mov	@r1,a
+                                   2058 ;	ledmatrix.c:93: bit0[tail >> 3] &= ~temp;
+      0007BA EE               [12] 2059 	mov	a,r6
+      0007BB C4               [12] 2060 	swap	a
+      0007BC 23               [12] 2061 	rl	a
+      0007BD 54 1F            [12] 2062 	anl	a,#0x1f
+      0007BF 24r17            [12] 2063 	add	a,#_bit0
+      0007C1 F9               [12] 2064 	mov	r1,a
+      0007C2 87 07            [24] 2065 	mov	ar7,@r1
+      0007C4 ED               [12] 2066 	mov	a,r5
+      0007C5 F4               [12] 2067 	cpl	a
+      0007C6 5F               [12] 2068 	anl	a,r7
+      0007C7 F7               [12] 2069 	mov	@r1,a
+                                   2070 ;	ledmatrix.c:368: --head;
+      0007C8 15*14            [12] 2071 	dec	_head
+                                   2072 ;	ledmatrix.c:369: cur_dir = dir_left;
+      0007CA 75*0A 00         [24] 2073 	mov	_cur_dir,#0x00
+                                   2074 ;	ledmatrix.c:370: update_game();
+                                   2075 ;	ledmatrix.c:371: }
+      0007CD 02r05r61         [24] 2076 	ljmp	_update_game
+                                   2077 ;------------------------------------------------------------
+                                   2078 ;Allocation info for local variables in function 'go_right'
+                                   2079 ;------------------------------------------------------------
+                                   2080 ;__1310720031              Allocated to registers r7 
+                                   2081 ;__1310720032              Allocated to registers 
+                                   2082 ;tail                      Allocated to registers r6 
+                                   2083 ;direction                 Allocated to registers 
+                                   2084 ;temp                      Allocated to registers r5 
+                                   2085 ;------------------------------------------------------------
+                                   2086 ;	ledmatrix.c:372: void go_right(void)
+                                   2087 ;	-----------------------------------------
+                                   2088 ;	 function go_right
+                                   2089 ;	-----------------------------------------
+      0007D0                       2090 _go_right:
+                                   2091 ;	ledmatrix.c:374: if (head % 8 == 7)
+      0007D0 74 07            [12] 2092 	mov	a,#0x07
+      0007D2 55*14            [12] 2093 	anl	a,_head
+      0007D4 FE               [12] 2094 	mov	r6,a
+      0007D5 7F 00            [12] 2095 	mov	r7,#0x00
+      0007D7 BE 07 06         [24] 2096 	cjne	r6,#0x07,00102$
+      0007DA BF 00 03         [24] 2097 	cjne	r7,#0x00,00102$
+                                   2098 ;	ledmatrix.c:375: game_over();
+      0007DD 12r00rB2         [24] 2099 	lcall	_game_over
+      0007E0                       2100 00102$:
+                                   2101 ;	ledmatrix.c:376: if (cur_dir == dir_left)
+      0007E0 E5*0A            [12] 2102 	mov	a,_cur_dir
+      0007E2 70 01            [24] 2103 	jnz	00104$
+                                   2104 ;	ledmatrix.c:377: return;
+      0007E4 22               [24] 2105 	ret
+      0007E5                       2106 00104$:
+                                   2107 ;	ledmatrix.c:378: update_direction(head, dir_right);
+      0007E5 AF*14            [24] 2108 	mov	r7,_head
+      0007E7 8F 06            [24] 2109 	mov	ar6,r7
+                                   2110 ;	ledmatrix.c:84: char temp = 0x80 >> (tail & 7);
+      0007E9 74 07            [12] 2111 	mov	a,#0x07
+      0007EB 5F               [12] 2112 	anl	a,r7
+      0007EC FD               [12] 2113 	mov	r5,a
+      0007ED 8D F0            [24] 2114 	mov	b,r5
+      0007EF 05 F0            [12] 2115 	inc	b
+      0007F1 7D 80            [12] 2116 	mov	r5,#0x80
+      0007F3 E4               [12] 2117 	clr	a
+      0007F4 FC               [12] 2118 	mov	r4,a
+      0007F5 33               [12] 2119 	rlc	a
+      0007F6 92 D2            [24] 2120 	mov	ov,c
+      0007F8 80 08            [24] 2121 	sjmp	00126$
+      0007FA                       2122 00125$:
+      0007FA A2 D2            [12] 2123 	mov	c,ov
+      0007FC EC               [12] 2124 	mov	a,r4
+      0007FD 13               [12] 2125 	rrc	a
+      0007FE FC               [12] 2126 	mov	r4,a
+      0007FF ED               [12] 2127 	mov	a,r5
+      000800 13               [12] 2128 	rrc	a
+      000801 FD               [12] 2129 	mov	r5,a
+      000802                       2130 00126$:
+      000802 D5 F0 F5         [24] 2131 	djnz	b,00125$
+                                   2132 ;	ledmatrix.c:85: bit1[tail >> 3] &= ~temp;
+      000805 EF               [12] 2133 	mov	a,r7
+      000806 C4               [12] 2134 	swap	a
+      000807 23               [12] 2135 	rl	a
+      000808 54 1F            [12] 2136 	anl	a,#0x1f
+      00080A 24r1F            [12] 2137 	add	a,#_bit1
+      00080C F9               [12] 2138 	mov	r1,a
+      00080D 87 07            [24] 2139 	mov	ar7,@r1
+      00080F ED               [12] 2140 	mov	a,r5
+      000810 F4               [12] 2141 	cpl	a
+      000811 5F               [12] 2142 	anl	a,r7
+      000812 F7               [12] 2143 	mov	@r1,a
+                                   2144 ;	ledmatrix.c:93: bit0[tail >> 3] &= ~temp;
+      000813 EE               [12] 2145 	mov	a,r6
+      000814 C4               [12] 2146 	swap	a
+      000815 23               [12] 2147 	rl	a
+      000816 54 1F            [12] 2148 	anl	a,#0x1f
+      000818 24r17            [12] 2149 	add	a,#_bit0
+      00081A F9               [12] 2150 	mov	r1,a
+      00081B 87 07            [24] 2151 	mov	ar7,@r1
+      00081D ED               [12] 2152 	mov	a,r5
+      00081E F4               [12] 2153 	cpl	a
+      00081F 5F               [12] 2154 	anl	a,r7
+      000820 F7               [12] 2155 	mov	@r1,a
+                                   2156 ;	ledmatrix.c:96: bit0[tail >> 3] |= temp;
+      000821 87 07            [24] 2157 	mov	ar7,@r1
+      000823 ED               [12] 2158 	mov	a,r5
+      000824 4F               [12] 2159 	orl	a,r7
+      000825 F7               [12] 2160 	mov	@r1,a
+                                   2161 ;	ledmatrix.c:379: ++head;
+      000826 05*14            [12] 2162 	inc	_head
+                                   2163 ;	ledmatrix.c:380: cur_dir = dir_right;
+      000828 75*0A 01         [24] 2164 	mov	_cur_dir,#0x01
+                                   2165 ;	ledmatrix.c:381: update_game();
+                                   2166 ;	ledmatrix.c:382: }
+      00082B 02r05r61         [24] 2167 	ljmp	_update_game
+                                   2168 ;------------------------------------------------------------
+                                   2169 ;Allocation info for local variables in function 'reset_timer_1'
+                                   2170 ;------------------------------------------------------------
+                                   2171 ;	ledmatrix.c:383: void reset_timer_1(void)
+                                   2172 ;	-----------------------------------------
+                                   2173 ;	 function reset_timer_1
+                                   2174 ;	-----------------------------------------
+      00082E                       2175 _reset_timer_1:
+                                   2176 ;	ledmatrix.c:386: TH1 = 0x4B; // Thiết lập giá trị đầu tiên của thanh ghi đếm cao
+      00082E 75 8D 4B         [24] 2177 	mov	_TH1,#0x4b
+                                   2178 ;	ledmatrix.c:387: TL1 = 0xFF; // Thiết lập giá trị đầu tiên của thanh ghi đếm thấp
+      000831 75 8B FF         [24] 2179 	mov	_TL1,#0xff
+                                   2180 ;	ledmatrix.c:388: }
+      000834 22               [24] 2181 	ret
+                                   2182 ;------------------------------------------------------------
+                                   2183 ;Allocation info for local variables in function 'key_pressed_handle'
+                                   2184 ;------------------------------------------------------------
+                                   2185 ;	ledmatrix.c:390: void key_pressed_handle(void)
+                                   2186 ;	-----------------------------------------
+                                   2187 ;	 function key_pressed_handle
+                                   2188 ;	-----------------------------------------
+      000835                       2189 _key_pressed_handle:
+                                   2190 ;	ledmatrix.c:392: reset_timer_1();
+      000835 12r08r2E         [24] 2191 	lcall	_reset_timer_1
+                                   2192 ;	ledmatrix.c:393: game_timer_counter = -7;
+      000838 75*06 F9         [24] 2193 	mov	_game_timer_counter,#0xf9
+      00083B 75*07 FF         [24] 2194 	mov	(_game_timer_counter + 1),#0xff
+                                   2195 ;	ledmatrix.c:394: switch (key_pressed)
+      00083E 74 02            [12] 2196 	mov	a,#0x02
+      000840 B5*13 02         [24] 2197 	cjne	a,_key_pressed,00124$
+      000843 80 15            [24] 2198 	sjmp	00101$
+      000845                       2199 00124$:
+      000845 74 05            [12] 2200 	mov	a,#0x05
+      000847 B5*13 02         [24] 2201 	cjne	a,_key_pressed,00125$
+      00084A 80 14            [24] 2202 	sjmp	00103$
+      00084C                       2203 00125$:
+      00084C 74 06            [12] 2204 	mov	a,#0x06
+      00084E B5*13 02         [24] 2205 	cjne	a,_key_pressed,00126$
+      000851 80 0A            [24] 2206 	sjmp	00102$
+      000853                       2207 00126$:
+      000853 74 07            [12] 2208 	mov	a,#0x07
+                                   2209 ;	ledmatrix.c:396: case 2:
+      000855 B5*13 0E         [24] 2210 	cjne	a,_key_pressed,00106$
+      000858 80 09            [24] 2211 	sjmp	00104$
+      00085A                       2212 00101$:
+                                   2213 ;	ledmatrix.c:397: go_up();
+                                   2214 ;	ledmatrix.c:398: break;
+                                   2215 ;	ledmatrix.c:399: case 6:
+      00085A 02r06rB3         [24] 2216 	ljmp	_go_up
+      00085D                       2217 00102$:
+                                   2218 ;	ledmatrix.c:400: go_down();
+                                   2219 ;	ledmatrix.c:401: break;
+                                   2220 ;	ledmatrix.c:402: case 5:
+      00085D 02r07r14         [24] 2221 	ljmp	_go_down
+      000860                       2222 00103$:
+                                   2223 ;	ledmatrix.c:403: go_left();
+                                   2224 ;	ledmatrix.c:404: break;
+                                   2225 ;	ledmatrix.c:405: case 7:
+      000860 02r07r7B         [24] 2226 	ljmp	_go_left
+      000863                       2227 00104$:
+                                   2228 ;	ledmatrix.c:406: go_right();
+                                   2229 ;	ledmatrix.c:408: }
+                                   2230 ;	ledmatrix.c:409: }
+      000863 02r07rD0         [24] 2231 	ljmp	_go_right
+      000866                       2232 00106$:
+      000866 22               [24] 2233 	ret
+                                   2234 ;------------------------------------------------------------
+                                   2235 ;Allocation info for local variables in function 'timer1_interrupt'
+                                   2236 ;------------------------------------------------------------
+                                   2237 ;__2621440034              Allocated to registers r7 
+                                   2238 ;a                         Allocated to registers 
+                                   2239 ;__2621440036              Allocated to registers r7 
+                                   2240 ;a                         Allocated to registers 
+                                   2241 ;------------------------------------------------------------
+                                   2242 ;	ledmatrix.c:412: void timer1_interrupt(void) __interrupt(3)
+                                   2243 ;	-----------------------------------------
+                                   2244 ;	 function timer1_interrupt
+                                   2245 ;	-----------------------------------------
+      000867                       2246 _timer1_interrupt:
+      000867 C0*00            [24] 2247 	push	bits
+      000869 C0 E0            [24] 2248 	push	acc
+      00086B C0 F0            [24] 2249 	push	b
+      00086D C0 82            [24] 2250 	push	dpl
+      00086F C0 83            [24] 2251 	push	dph
+      000871 C0 07            [24] 2252 	push	(0+7)
+      000873 C0 06            [24] 2253 	push	(0+6)
+      000875 C0 05            [24] 2254 	push	(0+5)
+      000877 C0 04            [24] 2255 	push	(0+4)
+      000879 C0 03            [24] 2256 	push	(0+3)
+      00087B C0 02            [24] 2257 	push	(0+2)
+      00087D C0 01            [24] 2258 	push	(0+1)
+      00087F C0 00            [24] 2259 	push	(0+0)
+      000881 C0 D0            [24] 2260 	push	psw
+      000883 75 D0 00         [24] 2261 	mov	psw,#0x00
+                                   2262 ;	ledmatrix.c:415: ++timer_counter;
+      000886 05*02            [12] 2263 	inc	_timer_counter
+      000888 E4               [12] 2264 	clr	a
+      000889 B5*02 0C         [24] 2265 	cjne	a,_timer_counter,00133$
+      00088C 05*03            [12] 2266 	inc	(_timer_counter + 1)
+      00088E B5*03 07         [24] 2267 	cjne	a,(_timer_counter + 1),00133$
+      000891 05*04            [12] 2268 	inc	(_timer_counter + 2)
+      000893 B5*04 02         [24] 2269 	cjne	a,(_timer_counter + 2),00133$
+      000896 05*05            [12] 2270 	inc	(_timer_counter + 3)
+      000898                       2271 00133$:
+                                   2272 ;	ledmatrix.c:416: reset_timer_1();
+      000898 12r08r2E         [24] 2273 	lcall	_reset_timer_1
+                                   2274 ;	ledmatrix.c:417: ++game_timer_counter;
+      00089B 05*06            [12] 2275 	inc	_game_timer_counter
+      00089D E4               [12] 2276 	clr	a
+      00089E B5*06 02         [24] 2277 	cjne	a,_game_timer_counter,00134$
+      0008A1 05*07            [12] 2278 	inc	(_game_timer_counter + 1)
+      0008A3                       2279 00134$:
+                                   2280 ;	ledmatrix.c:418: if (!(timer_counter % 3))
+      0008A3 75*00 03         [24] 2281 	mov	__modulong_PARM_2,#0x03
+      0008A6 E4               [12] 2282 	clr	a
+      0008A7 F5*01            [12] 2283 	mov	(__modulong_PARM_2 + 1),a
+      0008A9 F5*02            [12] 2284 	mov	(__modulong_PARM_2 + 2),a
+      0008AB F5*03            [12] 2285 	mov	(__modulong_PARM_2 + 3),a
+      0008AD 85*02 82         [24] 2286 	mov	dpl,_timer_counter
+      0008B0 85*03 83         [24] 2287 	mov	dph,(_timer_counter + 1)
+      0008B3 85*04 F0         [24] 2288 	mov	b,(_timer_counter + 2)
+      0008B6 E5*05            [12] 2289 	mov	a,(_timer_counter + 3)
+      0008B8 12r00r00         [24] 2290 	lcall	__modulong
+      0008BB AC 82            [24] 2291 	mov	r4,dpl
+      0008BD AD 83            [24] 2292 	mov	r5,dph
+      0008BF AE F0            [24] 2293 	mov	r6,b
+      0008C1 FF               [12] 2294 	mov	r7,a
+      0008C2 EC               [12] 2295 	mov	a,r4
+      0008C3 4D               [12] 2296 	orl	a,r5
+      0008C4 4E               [12] 2297 	orl	a,r6
+      0008C5 4F               [12] 2298 	orl	a,r7
+      0008C6 70 62            [24] 2299 	jnz	00105$
+                                   2300 ;	ledmatrix.c:420: if (show_food)
+      0008C8 E5*35            [12] 2301 	mov	a,_show_food
+      0008CA 60 31            [24] 2302 	jz	00102$
+                                   2303 ;	ledmatrix.c:422: turn_off(food);
+                                   2304 ;	ledmatrix.c:118: data_mat[a >> 3] &= ~(0x80 >> (a & 7));
+      0008CC E5*16            [12] 2305 	mov	a,_food
+      0008CE FF               [12] 2306 	mov	r7,a
+      0008CF C4               [12] 2307 	swap	a
+      0008D0 23               [12] 2308 	rl	a
+      0008D1 54 1F            [12] 2309 	anl	a,#0x1f
+      0008D3 24r0B            [12] 2310 	add	a,#_data_mat
+      0008D5 F9               [12] 2311 	mov	r1,a
+      0008D6 87 06            [24] 2312 	mov	ar6,@r1
+      0008D8 53 07 07         [24] 2313 	anl	ar7,#0x07
+      0008DB 8F F0            [24] 2314 	mov	b,r7
+      0008DD 05 F0            [12] 2315 	inc	b
+      0008DF 7F 80            [12] 2316 	mov	r7,#0x80
+      0008E1 E4               [12] 2317 	clr	a
+      0008E2 FD               [12] 2318 	mov	r5,a
+      0008E3 33               [12] 2319 	rlc	a
+      0008E4 92 D2            [24] 2320 	mov	ov,c
+      0008E6 80 08            [24] 2321 	sjmp	00138$
+      0008E8                       2322 00137$:
+      0008E8 A2 D2            [12] 2323 	mov	c,ov
+      0008EA ED               [12] 2324 	mov	a,r5
+      0008EB 13               [12] 2325 	rrc	a
+      0008EC FD               [12] 2326 	mov	r5,a
+      0008ED EF               [12] 2327 	mov	a,r7
+      0008EE 13               [12] 2328 	rrc	a
+      0008EF FF               [12] 2329 	mov	r7,a
+      0008F0                       2330 00138$:
+      0008F0 D5 F0 F5         [24] 2331 	djnz	b,00137$
+      0008F3 EF               [12] 2332 	mov	a,r7
+      0008F4 F4               [12] 2333 	cpl	a
+      0008F5 FF               [12] 2334 	mov	r7,a
+      0008F6 5E               [12] 2335 	anl	a,r6
+      0008F7 F7               [12] 2336 	mov	@r1,a
+                                   2337 ;	ledmatrix.c:423: show_food = 0;
+      0008F8 75*35 00         [24] 2338 	mov	_show_food,#0x00
+      0008FB 80 2D            [24] 2339 	sjmp	00105$
+      0008FD                       2340 00102$:
+                                   2341 ;	ledmatrix.c:427: turn_on(food);
+                                   2342 ;	ledmatrix.c:114: data_mat[a >> 3] |= 0x80 >> (a & 7);
+      0008FD E5*16            [12] 2343 	mov	a,_food
+      0008FF FF               [12] 2344 	mov	r7,a
+      000900 C4               [12] 2345 	swap	a
+      000901 23               [12] 2346 	rl	a
+      000902 54 1F            [12] 2347 	anl	a,#0x1f
+      000904 24r0B            [12] 2348 	add	a,#_data_mat
+      000906 F9               [12] 2349 	mov	r1,a
+      000907 87 06            [24] 2350 	mov	ar6,@r1
+      000909 53 07 07         [24] 2351 	anl	ar7,#0x07
+      00090C 8F F0            [24] 2352 	mov	b,r7
+      00090E 05 F0            [12] 2353 	inc	b
+      000910 7F 80            [12] 2354 	mov	r7,#0x80
+      000912 E4               [12] 2355 	clr	a
+      000913 FD               [12] 2356 	mov	r5,a
+      000914 33               [12] 2357 	rlc	a
+      000915 92 D2            [24] 2358 	mov	ov,c
+      000917 80 08            [24] 2359 	sjmp	00140$
+      000919                       2360 00139$:
+      000919 A2 D2            [12] 2361 	mov	c,ov
+      00091B ED               [12] 2362 	mov	a,r5
+      00091C 13               [12] 2363 	rrc	a
+      00091D FD               [12] 2364 	mov	r5,a
+      00091E EF               [12] 2365 	mov	a,r7
+      00091F 13               [12] 2366 	rrc	a
+      000920 FF               [12] 2367 	mov	r7,a
+      000921                       2368 00140$:
+      000921 D5 F0 F5         [24] 2369 	djnz	b,00139$
+      000924 EF               [12] 2370 	mov	a,r7
+      000925 4E               [12] 2371 	orl	a,r6
+      000926 F7               [12] 2372 	mov	@r1,a
+                                   2373 ;	ledmatrix.c:428: show_food = 1;
+      000927 75*35 01         [24] 2374 	mov	_show_food,#0x01
+      00092A                       2375 00105$:
+                                   2376 ;	ledmatrix.c:431: if (!(game_timer_counter % 10))
+      00092A 75*00 0A         [24] 2377 	mov	__modsint_PARM_2,#0x0a
+      00092D 75*01 00         [24] 2378 	mov	(__modsint_PARM_2 + 1),#0x00
+      000930 85*06 82         [24] 2379 	mov	dpl,_game_timer_counter
+      000933 85*07 83         [24] 2380 	mov	dph,(_game_timer_counter + 1)
+      000936 12r00r00         [24] 2381 	lcall	__modsint
+      000939 E5 82            [12] 2382 	mov	a,dpl
+      00093B 85 83 F0         [24] 2383 	mov	b,dph
+      00093E 45 F0            [12] 2384 	orl	a,b
+      000940 70 2E            [24] 2385 	jnz	00115$
+                                   2386 ;	ledmatrix.c:433: switch (cur_dir)
+      000942 E5*0A            [12] 2387 	mov	a,_cur_dir
+      000944 24 FC            [12] 2388 	add	a,#0xff - 0x03
+      000946 40 28            [24] 2389 	jc	00115$
+      000948 E5*0A            [12] 2390 	mov	a,_cur_dir
+      00094A 75 F0 03         [24] 2391 	mov	b,#0x03
+      00094D A4               [48] 2392 	mul	ab
+      00094E 90r09r52         [24] 2393 	mov	dptr,#00143$
+      000951 73               [24] 2394 	jmp	@a+dptr
+      000952                       2395 00143$:
+      000952 02r09r68         [24] 2396 	ljmp	00108$
+      000955 02r09r6D         [24] 2397 	ljmp	00109$
+      000958 02r09r5E         [24] 2398 	ljmp	00106$
+      00095B 02r09r63         [24] 2399 	ljmp	00107$
+                                   2400 ;	ledmatrix.c:435: case (dir_up):
+      00095E                       2401 00106$:
+                                   2402 ;	ledmatrix.c:436: go_up();
+      00095E 12r06rB3         [24] 2403 	lcall	_go_up
+                                   2404 ;	ledmatrix.c:437: break;
+                                   2405 ;	ledmatrix.c:438: case (dir_down):
+      000961 80 0D            [24] 2406 	sjmp	00115$
+      000963                       2407 00107$:
+                                   2408 ;	ledmatrix.c:439: go_down();
+      000963 12r07r14         [24] 2409 	lcall	_go_down
+                                   2410 ;	ledmatrix.c:440: break;
+                                   2411 ;	ledmatrix.c:441: case (dir_left):
+      000966 80 08            [24] 2412 	sjmp	00115$
+      000968                       2413 00108$:
+                                   2414 ;	ledmatrix.c:442: go_left();
+      000968 12r07r7B         [24] 2415 	lcall	_go_left
+                                   2416 ;	ledmatrix.c:443: break;
+                                   2417 ;	ledmatrix.c:444: case (dir_right):
+      00096B 80 03            [24] 2418 	sjmp	00115$
+      00096D                       2419 00109$:
+                                   2420 ;	ledmatrix.c:445: go_right();
+      00096D 12r07rD0         [24] 2421 	lcall	_go_right
+                                   2422 ;	ledmatrix.c:447: }
+      000970                       2423 00115$:
+                                   2424 ;	ledmatrix.c:450: }
+      000970 D0 D0            [24] 2425 	pop	psw
+      000972 D0 00            [24] 2426 	pop	(0+0)
+      000974 D0 01            [24] 2427 	pop	(0+1)
+      000976 D0 02            [24] 2428 	pop	(0+2)
+      000978 D0 03            [24] 2429 	pop	(0+3)
+      00097A D0 04            [24] 2430 	pop	(0+4)
+      00097C D0 05            [24] 2431 	pop	(0+5)
+      00097E D0 06            [24] 2432 	pop	(0+6)
+      000980 D0 07            [24] 2433 	pop	(0+7)
+      000982 D0 83            [24] 2434 	pop	dph
+      000984 D0 82            [24] 2435 	pop	dpl
+      000986 D0 F0            [24] 2436 	pop	b
+      000988 D0 E0            [24] 2437 	pop	acc
+      00098A D0*00            [24] 2438 	pop	bits
+      00098C 32               [24] 2439 	reti
+                                   2440 ;------------------------------------------------------------
+                                   2441 ;Allocation info for local variables in function 'main'
+                                   2442 ;------------------------------------------------------------
+                                   2443 ;__1310720038              Allocated to registers r7 
+                                   2444 ;__1310720040              Allocated to registers 
+                                   2445 ;__1310720041              Allocated to registers 
+                                   2446 ;tail                      Allocated to registers 
+                                   2447 ;direction                 Allocated to registers 
+                                   2448 ;temp                      Allocated to registers 
+                                   2449 ;__1310720043              Allocated to registers 
+                                   2450 ;__1310720044              Allocated to registers 
+                                   2451 ;tail                      Allocated to registers 
+                                   2452 ;direction                 Allocated to registers 
+                                   2453 ;temp                      Allocated to registers 
+                                   2454 ;__1310720046              Allocated to registers 
+                                   2455 ;__1310720047              Allocated to registers 
+                                   2456 ;tail                      Allocated to registers 
+                                   2457 ;direction                 Allocated to registers 
+                                   2458 ;temp                      Allocated to registers 
+                                   2459 ;__1310720049              Allocated to registers r7 
+                                   2460 ;a                         Allocated to registers 
+                                   2461 ;__1966080052              Allocated to registers r7 
+                                   2462 ;row                       Allocated to registers r7 
+                                   2463 ;current_data              Allocated with name '_main_current_data_655360_277'
+                                   2464 ;i                         Allocated to registers r3 
+                                   2465 ;i                         Allocated to registers r6 
+                                   2466 ;i                         Allocated to registers r7 
+                                   2467 ;------------------------------------------------------------
+                                   2468 ;	ledmatrix.c:452: void main(void)
+                                   2469 ;	-----------------------------------------
+                                   2470 ;	 function main
+                                   2471 ;	-----------------------------------------
+      00098D                       2472 _main:
+                                   2473 ;	ledmatrix.c:455: IT0 = 1; // Falling edge trigger
+                                   2474 ;	assignBit
+      00098D D2 88            [12] 2475 	setb	_IT0
+                                   2476 ;	ledmatrix.c:456: EX0 = 1; // Enable INT0 interrupt
+                                   2477 ;	assignBit
+      00098F D2 A8            [12] 2478 	setb	_EX0
+                                   2479 ;	ledmatrix.c:457: EA = 1;  // Enable global interrupt flag
+                                   2480 ;	assignBit
+      000991 D2 AF            [12] 2481 	setb	_EA
+                                   2482 ;	ledmatrix.c:459: TMOD = 0x12; // Timer 0 mode 1 (16-bit timer
+      000993 75 89 12         [24] 2483 	mov	_TMOD,#0x12
+                                   2484 ;	ledmatrix.c:461: TH1 = 0x4B; // Thiết lập giá trị đầu tiên của thanh ghi đếm cao
+      000996 75 8D 4B         [24] 2485 	mov	_TH1,#0x4b
+                                   2486 ;	ledmatrix.c:462: TL1 = 0xFF; // Thiết lập giá trị đầu tiên của thanh ghi đếm thấp
+      000999 75 8B FF         [24] 2487 	mov	_TL1,#0xff
+                                   2488 ;	ledmatrix.c:465: ET1 = 1;
+                                   2489 ;	assignBit
+      00099C D2 AB            [12] 2490 	setb	_ET1
+                                   2491 ;	ledmatrix.c:467: reset_timer_1();
+      00099E 12r08r2E         [24] 2492 	lcall	_reset_timer_1
+                                   2493 ;	ledmatrix.c:468: TR1 = 1;
+                                   2494 ;	assignBit
+      0009A1 D2 8E            [12] 2495 	setb	_TR1
+                                   2496 ;	ledmatrix.c:470: while (get_pressed_key() == 0)
+      0009A3                       2497 00101$:
+                                   2498 ;	keymatrix.h:12: P1 = 0xff;
+      0009A3 75 90 FF         [24] 2499 	mov	_P1,#0xff
+                                   2500 ;	keymatrix.h:13: P1_3 = 0;
+                                   2501 ;	assignBit
+      0009A6 C2 93            [12] 2502 	clr	_P1_3
+                                   2503 ;	ledmatrix.c:14: #define dir_right 1
+      0009A8 20 97 08         [24] 2504 	jb	_P1_7,00113$
+      0009AB                       2505 00109$:
+      0009AB 30 97 FD         [24] 2506 	jnb	_P1_7,00109$
+      0009AE 7F 01            [12] 2507 	mov	r7,#0x01
+      0009B0 02r0Ar5E         [24] 2508 	ljmp	00189$
+      0009B3                       2509 00113$:
+                                   2510 ;	ledmatrix.c:15: #define dir_up 2
+      0009B3 20 96 08         [24] 2511 	jb	_P1_6,00118$
+      0009B6                       2512 00114$:
+      0009B6 30 96 FD         [24] 2513 	jnb	_P1_6,00114$
+      0009B9 7F 05            [12] 2514 	mov	r7,#0x05
+      0009BB 02r0Ar5E         [24] 2515 	ljmp	00189$
+      0009BE                       2516 00118$:
+                                   2517 ;	ledmatrix.c:16: #define dir_down 3
+      0009BE 20 95 08         [24] 2518 	jb	_P1_5,00123$
+      0009C1                       2519 00119$:
+      0009C1 30 95 FD         [24] 2520 	jnb	_P1_5,00119$
+      0009C4 7F 09            [12] 2521 	mov	r7,#0x09
+      0009C6 02r0Ar5E         [24] 2522 	ljmp	00189$
+      0009C9                       2523 00123$:
+                                   2524 ;	ledmatrix.c:17: 
+      0009C9 20 94 08         [24] 2525 	jb	_P1_4,00128$
+      0009CC                       2526 00124$:
+      0009CC 30 94 FD         [24] 2527 	jnb	_P1_4,00124$
+      0009CF 7F 0D            [12] 2528 	mov	r7,#0x0d
+      0009D1 02r0Ar5E         [24] 2529 	ljmp	00189$
+      0009D4                       2530 00128$:
+                                   2531 ;	keymatrix.h:19: P1 = 0xff;
+      0009D4 75 90 FF         [24] 2532 	mov	_P1,#0xff
+                                   2533 ;	keymatrix.h:20: P1_2 = 0;
+                                   2534 ;	assignBit
+      0009D7 C2 92            [12] 2535 	clr	_P1_2
+                                   2536 ;	ledmatrix.c:21: 
+      0009D9 20 97 08         [24] 2537 	jb	_P1_7,00133$
+      0009DC                       2538 00129$:
+      0009DC 30 97 FD         [24] 2539 	jnb	_P1_7,00129$
+      0009DF 7F 02            [12] 2540 	mov	r7,#0x02
+      0009E1 02r0Ar5E         [24] 2541 	ljmp	00189$
+      0009E4                       2542 00133$:
+                                   2543 ;	ledmatrix.c:22: char sqr_left = 61;
+      0009E4 20 96 07         [24] 2544 	jb	_P1_6,00138$
+      0009E7                       2545 00134$:
+      0009E7 30 96 FD         [24] 2546 	jnb	_P1_6,00134$
+      0009EA 7F 06            [12] 2547 	mov	r7,#0x06
+      0009EC 80 70            [24] 2548 	sjmp	00189$
+      0009EE                       2549 00138$:
+                                   2550 ;	ledmatrix.c:23: char cur_dir = dir_right;
+      0009EE 20 95 07         [24] 2551 	jb	_P1_5,00143$
+      0009F1                       2552 00139$:
+      0009F1 30 95 FD         [24] 2553 	jnb	_P1_5,00139$
+      0009F4 7F 0A            [12] 2554 	mov	r7,#0x0a
+      0009F6 80 66            [24] 2555 	sjmp	00189$
+      0009F8                       2556 00143$:
+                                   2557 ;	ledmatrix.c:24: char data_mat[8];
+      0009F8 20 94 07         [24] 2558 	jb	_P1_4,00148$
+      0009FB                       2559 00144$:
+      0009FB 30 94 FD         [24] 2560 	jnb	_P1_4,00144$
+      0009FE 7F 0E            [12] 2561 	mov	r7,#0x0e
+      000A00 80 5C            [24] 2562 	sjmp	00189$
+      000A02                       2563 00148$:
+                                   2564 ;	keymatrix.h:26: P1 = 0xff;
+      000A02 75 90 FF         [24] 2565 	mov	_P1,#0xff
+                                   2566 ;	keymatrix.h:27: P1_1 = 0;
+                                   2567 ;	assignBit
+      000A05 C2 91            [12] 2568 	clr	_P1_1
+                                   2569 ;	ledmatrix.c:28: char food;
+      000A07 20 97 07         [24] 2570 	jb	_P1_7,00153$
+      000A0A                       2571 00149$:
+      000A0A 30 97 FD         [24] 2572 	jnb	_P1_7,00149$
+      000A0D 7F 03            [12] 2573 	mov	r7,#0x03
+      000A0F 80 4D            [24] 2574 	sjmp	00189$
+      000A11                       2575 00153$:
+                                   2576 ;	ledmatrix.c:29: char bit0[8];
+      000A11 20 96 07         [24] 2577 	jb	_P1_6,00158$
+      000A14                       2578 00154$:
+      000A14 30 96 FD         [24] 2579 	jnb	_P1_6,00154$
+      000A17 7F 07            [12] 2580 	mov	r7,#0x07
+      000A19 80 43            [24] 2581 	sjmp	00189$
+      000A1B                       2582 00158$:
+                                   2583 ;	ledmatrix.c:30: char bit1[8]; // 0 : horizontal 1: vertical
+      000A1B 20 95 07         [24] 2584 	jb	_P1_5,00163$
+      000A1E                       2585 00159$:
+      000A1E 30 95 FD         [24] 2586 	jnb	_P1_5,00159$
+      000A21 7F 0B            [12] 2587 	mov	r7,#0x0b
+      000A23 80 39            [24] 2588 	sjmp	00189$
+      000A25                       2589 00163$:
+                                   2590 ;	ledmatrix.c:31: 
+      000A25 20 94 07         [24] 2591 	jb	_P1_4,00168$
+      000A28                       2592 00164$:
+      000A28 30 94 FD         [24] 2593 	jnb	_P1_4,00164$
+      000A2B 7F 0F            [12] 2594 	mov	r7,#0x0f
+      000A2D 80 2F            [24] 2595 	sjmp	00189$
+      000A2F                       2596 00168$:
+                                   2597 ;	keymatrix.h:33: P1 = 0xff;
+      000A2F 75 90 FF         [24] 2598 	mov	_P1,#0xff
+                                   2599 ;	keymatrix.h:34: P1_0 = 0;
+                                   2600 ;	assignBit
+      000A32 C2 90            [12] 2601 	clr	_P1_0
+                                   2602 ;	ledmatrix.c:35: // 11: down
+      000A34 20 97 07         [24] 2603 	jb	_P1_7,00173$
+      000A37                       2604 00169$:
+      000A37 30 97 FD         [24] 2605 	jnb	_P1_7,00169$
+      000A3A 7F 04            [12] 2606 	mov	r7,#0x04
+      000A3C 80 20            [24] 2607 	sjmp	00189$
+      000A3E                       2608 00173$:
+                                   2609 ;	ledmatrix.c:36: inline void display_led_mat(void)
+      000A3E 20 96 07         [24] 2610 	jb	_P1_6,00178$
+      000A41                       2611 00174$:
+      000A41 30 96 FD         [24] 2612 	jnb	_P1_6,00174$
+      000A44 7F 08            [12] 2613 	mov	r7,#0x08
+      000A46 80 16            [24] 2614 	sjmp	00189$
+      000A48                       2615 00178$:
+                                   2616 ;	ledmatrix.c:37: {
+      000A48 20 95 07         [24] 2617 	jb	_P1_5,00183$
+      000A4B                       2618 00179$:
+      000A4B 30 95 FD         [24] 2619 	jnb	_P1_5,00179$
+      000A4E 7F 0C            [12] 2620 	mov	r7,#0x0c
+      000A50 80 0C            [24] 2621 	sjmp	00189$
+      000A52                       2622 00183$:
+                                   2623 ;	ledmatrix.c:38: for (char row = 0; row < 8; row++)
+      000A52 20 94 07         [24] 2624 	jb	_P1_4,00188$
+      000A55                       2625 00184$:
+      000A55 30 94 FD         [24] 2626 	jnb	_P1_4,00184$
+      000A58 7F 10            [12] 2627 	mov	r7,#0x10
+      000A5A 80 02            [24] 2628 	sjmp	00189$
+      000A5C                       2629 00188$:
+                                   2630 ;	keymatrix.h:39: return 0;
+      000A5C 7F 00            [12] 2631 	mov	r7,#0x00
+                                   2632 ;	ledmatrix.c:470: while (get_pressed_key() == 0)
+      000A5E                       2633 00189$:
+      000A5E EF               [12] 2634 	mov	a,r7
+      000A5F 70 03            [24] 2635 	jnz	00665$
+      000A61 02r09rA3         [24] 2636 	ljmp	00101$
+      000A64                       2637 00665$:
+                                   2638 ;	ledmatrix.c:473: srand(timer_counter);
+      000A64 85*02 82         [24] 2639 	mov	dpl,_timer_counter
+      000A67 85*03 83         [24] 2640 	mov	dph,(_timer_counter + 1)
+      000A6A 12r00r00         [24] 2641 	lcall	_srand
+                                   2642 ;	ledmatrix.c:475: P0 = 0x00;
+      000A6D 75 80 00         [24] 2643 	mov	_P0,#0x00
+                                   2644 ;	ledmatrix.c:476: SCK = 0;
+                                   2645 ;	assignBit
+      000A70 C2 B6            [12] 2646 	clr	_P3_6
+                                   2647 ;	ledmatrix.c:477: RCK = 0;
+                                   2648 ;	assignBit
+      000A72 C2 B5            [12] 2649 	clr	_P3_5
+                                   2650 ;	ledmatrix.c:478: data_mat[0] = 0xE0;
+      000A74 75*0B E0         [24] 2651 	mov	_data_mat,#0xe0
+                                   2652 ;	ledmatrix.c:479: head = 2;
+      000A77 75*14 02         [24] 2653 	mov	_head,#0x02
+                                   2654 ;	ledmatrix.c:85: bit1[tail >> 3] &= ~temp;
+      000A7A 74 7F            [12] 2655 	mov	a,#0x7f
+      000A7C 55*1F            [12] 2656 	anl	a,_bit1
+      000A7E F5*1F            [12] 2657 	mov	_bit1,a
+                                   2658 ;	ledmatrix.c:93: bit0[tail >> 3] &= ~temp;
+      000A80 74 7F            [12] 2659 	mov	a,#0x7f
+      000A82 55*17            [12] 2660 	anl	a,_bit0
+      000A84 F5*17            [12] 2661 	mov	_bit0,a
+                                   2662 ;	ledmatrix.c:96: bit0[tail >> 3] |= temp;
+      000A86 74 80            [12] 2663 	mov	a,#0x80
+      000A88 45*17            [12] 2664 	orl	a,_bit0
+      000A8A F5*17            [12] 2665 	mov	_bit0,a
+                                   2666 ;	ledmatrix.c:85: bit1[tail >> 3] &= ~temp;
+      000A8C 74 BF            [12] 2667 	mov	a,#0xbf
+      000A8E 55*1F            [12] 2668 	anl	a,_bit1
+      000A90 F5*1F            [12] 2669 	mov	_bit1,a
+                                   2670 ;	ledmatrix.c:93: bit0[tail >> 3] &= ~temp;
+      000A92 74 BF            [12] 2671 	mov	a,#0xbf
+      000A94 55*17            [12] 2672 	anl	a,_bit0
+      000A96 F5*17            [12] 2673 	mov	_bit0,a
+                                   2674 ;	ledmatrix.c:96: bit0[tail >> 3] |= temp;
+      000A98 74 40            [12] 2675 	mov	a,#0x40
+      000A9A 45*17            [12] 2676 	orl	a,_bit0
+      000A9C F5*17            [12] 2677 	mov	_bit0,a
+                                   2678 ;	ledmatrix.c:85: bit1[tail >> 3] &= ~temp;
+      000A9E 74 DF            [12] 2679 	mov	a,#0xdf
+      000AA0 55*1F            [12] 2680 	anl	a,_bit1
+      000AA2 F5*1F            [12] 2681 	mov	_bit1,a
+                                   2682 ;	ledmatrix.c:93: bit0[tail >> 3] &= ~temp;
+      000AA4 74 DF            [12] 2683 	mov	a,#0xdf
+      000AA6 55*17            [12] 2684 	anl	a,_bit0
+      000AA8 F5*17            [12] 2685 	mov	_bit0,a
+                                   2686 ;	ledmatrix.c:96: bit0[tail >> 3] |= temp;
+      000AAA 74 20            [12] 2687 	mov	a,#0x20
+      000AAC 45*17            [12] 2688 	orl	a,_bit0
+      000AAE F5*17            [12] 2689 	mov	_bit0,a
+                                   2690 ;	ledmatrix.c:484: tail = 0;
+      000AB0 75*15 00         [24] 2691 	mov	_tail,#0x00
+                                   2692 ;	ledmatrix.c:486: update_food();
+      000AB3 12r04rEC         [24] 2693 	lcall	_update_food
+                                   2694 ;	ledmatrix.c:487: turn_on(food);
+                                   2695 ;	ledmatrix.c:114: data_mat[a >> 3] |= 0x80 >> (a & 7);
+      000AB6 E5*16            [12] 2696 	mov	a,_food
+      000AB8 FF               [12] 2697 	mov	r7,a
+      000AB9 C4               [12] 2698 	swap	a
+      000ABA 23               [12] 2699 	rl	a
+      000ABB 54 1F            [12] 2700 	anl	a,#0x1f
+      000ABD 24r0B            [12] 2701 	add	a,#_data_mat
+      000ABF F9               [12] 2702 	mov	r1,a
+      000AC0 87 06            [24] 2703 	mov	ar6,@r1
+      000AC2 53 07 07         [24] 2704 	anl	ar7,#0x07
+      000AC5 8F F0            [24] 2705 	mov	b,r7
+      000AC7 05 F0            [12] 2706 	inc	b
+      000AC9 7F 80            [12] 2707 	mov	r7,#0x80
+      000ACB E4               [12] 2708 	clr	a
+      000ACC FD               [12] 2709 	mov	r5,a
+      000ACD 33               [12] 2710 	rlc	a
+      000ACE 92 D2            [24] 2711 	mov	ov,c
+      000AD0 80 08            [24] 2712 	sjmp	00667$
+      000AD2                       2713 00666$:
+      000AD2 A2 D2            [12] 2714 	mov	c,ov
+      000AD4 ED               [12] 2715 	mov	a,r5
+      000AD5 13               [12] 2716 	rrc	a
+      000AD6 FD               [12] 2717 	mov	r5,a
+      000AD7 EF               [12] 2718 	mov	a,r7
+      000AD8 13               [12] 2719 	rrc	a
+      000AD9 FF               [12] 2720 	mov	r7,a
+      000ADA                       2721 00667$:
+      000ADA D5 F0 F5         [24] 2722 	djnz	b,00666$
+      000ADD EF               [12] 2723 	mov	a,r7
+      000ADE 4E               [12] 2724 	orl	a,r6
+      000ADF F7               [12] 2725 	mov	@r1,a
+                                   2726 ;	ledmatrix.c:489: while (1)
+      000AE0                       2727 00107$:
+                                   2728 ;	ledmatrix.c:57: P2 = 0b11111111;
+      000AE0 75 A0 FF         [24] 2729 	mov	_P2,#0xff
+                                   2730 ;	ledmatrix.c:58: P0 = 0xFF;
+      000AE3 75 80 FF         [24] 2731 	mov	_P0,#0xff
+                                   2732 ;	ledmatrix.c:38: for (char row = 0; row < 8; row++)
+      000AE6 7F 00            [12] 2733 	mov	r7,#0x00
+      000AE8                       2734 00301$:
+      000AE8 BF 08 00         [24] 2735 	cjne	r7,#0x08,00668$
+      000AEB                       2736 00668$:
+      000AEB 50 69            [24] 2737 	jnc	00209$
+                                   2738 ;	ledmatrix.c:40: const char current_data = data_mat[row];
+      000AED EF               [12] 2739 	mov	a,r7
+      000AEE 24r0B            [12] 2740 	add	a,#_data_mat
+      000AF0 F9               [12] 2741 	mov	r1,a
+      000AF1 87*36            [24] 2742 	mov	_main_current_data_655360_277,@r1
+                                   2743 ;	ledmatrix.c:41: for (char i = 0; i < 8; i++)
+      000AF3 8F F0            [24] 2744 	mov	b,r7
+      000AF5 05 F0            [12] 2745 	inc	b
+      000AF7 7C 80            [12] 2746 	mov	r4,#0x80
+      000AF9 E4               [12] 2747 	clr	a
+      000AFA FD               [12] 2748 	mov	r5,a
+      000AFB 33               [12] 2749 	rlc	a
+      000AFC 92 D2            [24] 2750 	mov	ov,c
+      000AFE 80 08            [24] 2751 	sjmp	00671$
+      000B00                       2752 00670$:
+      000B00 A2 D2            [12] 2753 	mov	c,ov
+      000B02 ED               [12] 2754 	mov	a,r5
+      000B03 13               [12] 2755 	rrc	a
+      000B04 FD               [12] 2756 	mov	r5,a
+      000B05 EC               [12] 2757 	mov	a,r4
+      000B06 13               [12] 2758 	rrc	a
+      000B07 FC               [12] 2759 	mov	r4,a
+      000B08                       2760 00671$:
+      000B08 D5 F0 F5         [24] 2761 	djnz	b,00670$
+      000B0B 7B 00            [12] 2762 	mov	r3,#0x00
+      000B0D                       2763 00295$:
+      000B0D BB 08 00         [24] 2764 	cjne	r3,#0x08,00672$
+      000B10                       2765 00672$:
+      000B10 50 2B            [24] 2766 	jnc	00206$
+                                   2767 ;	ledmatrix.c:43: SER = (0x80 >> row) & (0x80 >> i);
+      000B12 8B F0            [24] 2768 	mov	b,r3
+      000B14 05 F0            [12] 2769 	inc	b
+      000B16 7A 80            [12] 2770 	mov	r2,#0x80
+      000B18 E4               [12] 2771 	clr	a
+      000B19 FE               [12] 2772 	mov	r6,a
+      000B1A 33               [12] 2773 	rlc	a
+      000B1B 92 D2            [24] 2774 	mov	ov,c
+      000B1D 80 08            [24] 2775 	sjmp	00675$
+      000B1F                       2776 00674$:
+      000B1F A2 D2            [12] 2777 	mov	c,ov
+      000B21 EE               [12] 2778 	mov	a,r6
+      000B22 13               [12] 2779 	rrc	a
+      000B23 FE               [12] 2780 	mov	r6,a
+      000B24 EA               [12] 2781 	mov	a,r2
+      000B25 13               [12] 2782 	rrc	a
+      000B26 FA               [12] 2783 	mov	r2,a
+      000B27                       2784 00675$:
+      000B27 D5 F0 F5         [24] 2785 	djnz	b,00674$
+      000B2A EC               [12] 2786 	mov	a,r4
+      000B2B 52 02            [12] 2787 	anl	ar2,a
+      000B2D ED               [12] 2788 	mov	a,r5
+      000B2E 52 06            [12] 2789 	anl	ar6,a
+                                   2790 ;	assignBit
+      000B30 EA               [12] 2791 	mov	a,r2
+      000B31 4E               [12] 2792 	orl	a,r6
+      000B32 24 FF            [12] 2793 	add	a,#0xff
+      000B34 92 B4            [24] 2794 	mov	_P3_4,c
+                                   2795 ;	ledmatrix.c:44: SCK = 1;
+                                   2796 ;	assignBit
+      000B36 D2 B6            [12] 2797 	setb	_P3_6
+                                   2798 ;	ledmatrix.c:45: SCK = 0;
+                                   2799 ;	assignBit
+      000B38 C2 B6            [12] 2800 	clr	_P3_6
+                                   2801 ;	ledmatrix.c:41: for (char i = 0; i < 8; i++)
+      000B3A 0B               [12] 2802 	inc	r3
+      000B3B 80 D0            [24] 2803 	sjmp	00295$
+      000B3D                       2804 00206$:
+                                   2805 ;	ledmatrix.c:47: P0 = 0xff;
+      000B3D 75 80 FF         [24] 2806 	mov	_P0,#0xff
+                                   2807 ;	ledmatrix.c:48: RCK = 1;
+                                   2808 ;	assignBit
+      000B40 D2 B5            [12] 2809 	setb	_P3_5
+                                   2810 ;	ledmatrix.c:49: RCK = 0;
+                                   2811 ;	assignBit
+      000B42 C2 B5            [12] 2812 	clr	_P3_5
+                                   2813 ;	ledmatrix.c:50: P0 = ~current_data;
+      000B44 E5*36            [12] 2814 	mov	a,_main_current_data_655360_277
+      000B46 F4               [12] 2815 	cpl	a
+      000B47 F5 80            [12] 2816 	mov	_P0,a
+                                   2817 ;	ledmatrix.c:51: for (char i = 0; i < 5; i++)
+      000B49 7E 00            [12] 2818 	mov	r6,#0x00
+      000B4B                       2819 00298$:
+      000B4B BE 05 00         [24] 2820 	cjne	r6,#0x05,00676$
+      000B4E                       2821 00676$:
+      000B4E 50 03            [24] 2822 	jnc	00302$
+      000B50 0E               [12] 2823 	inc	r6
+      000B51 80 F8            [24] 2824 	sjmp	00298$
+      000B53                       2825 00302$:
+                                   2826 ;	ledmatrix.c:38: for (char row = 0; row < 8; row++)
+      000B53 0F               [12] 2827 	inc	r7
+                                   2828 ;	ledmatrix.c:59: display_led_mat();
+      000B54 80 92            [24] 2829 	sjmp	00301$
+      000B56                       2830 00209$:
+                                   2831 ;	ledmatrix.c:61: for (i = 0; i < 100; i++)
+      000B56 7F 64            [12] 2832 	mov	r7,#0x64
+      000B58                       2833 00305$:
+      000B58 DF FE            [24] 2834 	djnz	r7,00305$
+                                   2835 ;	ledmatrix.c:63: SER = 0;
+                                   2836 ;	assignBit
+      000B5A C2 B4            [12] 2837 	clr	_P3_4
+                                   2838 ;	ledmatrix.c:64: for (i = 0; i < 8; i++)
+      000B5C 7F 00            [12] 2839 	mov	r7,#0x00
+      000B5E                       2840 00306$:
+                                   2841 ;	ledmatrix.c:66: SCK = 1;
+                                   2842 ;	assignBit
+      000B5E D2 B6            [12] 2843 	setb	_P3_6
+                                   2844 ;	ledmatrix.c:67: SCK = 0;
+                                   2845 ;	assignBit
+      000B60 C2 B6            [12] 2846 	clr	_P3_6
+                                   2847 ;	ledmatrix.c:64: for (i = 0; i < 8; i++)
+      000B62 0F               [12] 2848 	inc	r7
+      000B63 BF 08 00         [24] 2849 	cjne	r7,#0x08,00679$
+      000B66                       2850 00679$:
+      000B66 40 F6            [24] 2851 	jc	00306$
+                                   2852 ;	ledmatrix.c:69: RCK = 1;
+                                   2853 ;	assignBit
+      000B68 D2 B5            [12] 2854 	setb	_P3_5
+                                   2855 ;	ledmatrix.c:70: RCK = 0;
+                                   2856 ;	assignBit
+      000B6A C2 B5            [12] 2857 	clr	_P3_5
+                                   2858 ;	ledmatrix.c:71: display_number(point);
+      000B6C AC*08            [24] 2859 	mov	r4,_point
+      000B6E 7D 00            [12] 2860 	mov	r5,#0x00
+      000B70 7E 00            [12] 2861 	mov	r6,#0x00
+      000B72 7F 00            [12] 2862 	mov	r7,#0x00
+      000B74 8C 82            [24] 2863 	mov	dpl,r4
+      000B76 8D 83            [24] 2864 	mov	dph,r5
+      000B78 8E F0            [24] 2865 	mov	b,r6
+      000B7A EF               [12] 2866 	mov	a,r7
+      000B7B 12r00r00         [24] 2867 	lcall	_display_number
+                                   2868 ;	ledmatrix.c:72: display_number(point);
+      000B7E AC*08            [24] 2869 	mov	r4,_point
+      000B80 7D 00            [12] 2870 	mov	r5,#0x00
+      000B82 7E 00            [12] 2871 	mov	r6,#0x00
+      000B84 7F 00            [12] 2872 	mov	r7,#0x00
+      000B86 8C 82            [24] 2873 	mov	dpl,r4
+      000B88 8D 83            [24] 2874 	mov	dph,r5
+      000B8A 8E F0            [24] 2875 	mov	b,r6
+      000B8C EF               [12] 2876 	mov	a,r7
+      000B8D 12r00r00         [24] 2877 	lcall	_display_number
+                                   2878 ;	ledmatrix.c:73: display_number(point);
+      000B90 AC*08            [24] 2879 	mov	r4,_point
+      000B92 7D 00            [12] 2880 	mov	r5,#0x00
+      000B94 7E 00            [12] 2881 	mov	r6,#0x00
+      000B96 7F 00            [12] 2882 	mov	r7,#0x00
+      000B98 8C 82            [24] 2883 	mov	dpl,r4
+      000B9A 8D 83            [24] 2884 	mov	dph,r5
+      000B9C 8E F0            [24] 2885 	mov	b,r6
+      000B9E EF               [12] 2886 	mov	a,r7
+      000B9F 12r00r00         [24] 2887 	lcall	_display_number
+                                   2888 ;	keymatrix.h:12: P1 = 0xff;
+      000BA2 75 90 FF         [24] 2889 	mov	_P1,#0xff
+                                   2890 ;	keymatrix.h:13: P1_3 = 0;
+                                   2891 ;	assignBit
+      000BA5 C2 93            [12] 2892 	clr	_P1_3
+                                   2893 ;	ledmatrix.c:14: #define dir_right 1
+      000BA7 20 97 08         [24] 2894 	jb	_P1_7,00217$
+      000BAA                       2895 00213$:
+      000BAA 30 97 FD         [24] 2896 	jnb	_P1_7,00213$
+      000BAD 7F 01            [12] 2897 	mov	r7,#0x01
+      000BAF 02r0Cr5D         [24] 2898 	ljmp	00293$
+      000BB2                       2899 00217$:
+                                   2900 ;	ledmatrix.c:15: #define dir_up 2
+      000BB2 20 96 08         [24] 2901 	jb	_P1_6,00222$
+      000BB5                       2902 00218$:
+      000BB5 30 96 FD         [24] 2903 	jnb	_P1_6,00218$
+      000BB8 7F 05            [12] 2904 	mov	r7,#0x05
+      000BBA 02r0Cr5D         [24] 2905 	ljmp	00293$
+      000BBD                       2906 00222$:
+                                   2907 ;	ledmatrix.c:16: #define dir_down 3
+      000BBD 20 95 08         [24] 2908 	jb	_P1_5,00227$
+      000BC0                       2909 00223$:
+      000BC0 30 95 FD         [24] 2910 	jnb	_P1_5,00223$
+      000BC3 7F 09            [12] 2911 	mov	r7,#0x09
+      000BC5 02r0Cr5D         [24] 2912 	ljmp	00293$
+      000BC8                       2913 00227$:
+                                   2914 ;	ledmatrix.c:17: 
+      000BC8 20 94 08         [24] 2915 	jb	_P1_4,00232$
+      000BCB                       2916 00228$:
+      000BCB 30 94 FD         [24] 2917 	jnb	_P1_4,00228$
+      000BCE 7F 0D            [12] 2918 	mov	r7,#0x0d
+      000BD0 02r0Cr5D         [24] 2919 	ljmp	00293$
+      000BD3                       2920 00232$:
+                                   2921 ;	keymatrix.h:19: P1 = 0xff;
+      000BD3 75 90 FF         [24] 2922 	mov	_P1,#0xff
+                                   2923 ;	keymatrix.h:20: P1_2 = 0;
+                                   2924 ;	assignBit
+      000BD6 C2 92            [12] 2925 	clr	_P1_2
+                                   2926 ;	ledmatrix.c:21: 
+      000BD8 20 97 08         [24] 2927 	jb	_P1_7,00237$
+      000BDB                       2928 00233$:
+      000BDB 30 97 FD         [24] 2929 	jnb	_P1_7,00233$
+      000BDE 7F 02            [12] 2930 	mov	r7,#0x02
+      000BE0 02r0Cr5D         [24] 2931 	ljmp	00293$
+      000BE3                       2932 00237$:
+                                   2933 ;	ledmatrix.c:22: char sqr_left = 61;
+      000BE3 20 96 07         [24] 2934 	jb	_P1_6,00242$
+      000BE6                       2935 00238$:
+      000BE6 30 96 FD         [24] 2936 	jnb	_P1_6,00238$
+      000BE9 7F 06            [12] 2937 	mov	r7,#0x06
+      000BEB 80 70            [24] 2938 	sjmp	00293$
+      000BED                       2939 00242$:
+                                   2940 ;	ledmatrix.c:23: char cur_dir = dir_right;
+      000BED 20 95 07         [24] 2941 	jb	_P1_5,00247$
+      000BF0                       2942 00243$:
+      000BF0 30 95 FD         [24] 2943 	jnb	_P1_5,00243$
+      000BF3 7F 0A            [12] 2944 	mov	r7,#0x0a
+      000BF5 80 66            [24] 2945 	sjmp	00293$
+      000BF7                       2946 00247$:
+                                   2947 ;	ledmatrix.c:24: char data_mat[8];
+      000BF7 20 94 07         [24] 2948 	jb	_P1_4,00252$
+      000BFA                       2949 00248$:
+      000BFA 30 94 FD         [24] 2950 	jnb	_P1_4,00248$
+      000BFD 7F 0E            [12] 2951 	mov	r7,#0x0e
+      000BFF 80 5C            [24] 2952 	sjmp	00293$
+      000C01                       2953 00252$:
+                                   2954 ;	keymatrix.h:26: P1 = 0xff;
+      000C01 75 90 FF         [24] 2955 	mov	_P1,#0xff
+                                   2956 ;	keymatrix.h:27: P1_1 = 0;
+                                   2957 ;	assignBit
+      000C04 C2 91            [12] 2958 	clr	_P1_1
+                                   2959 ;	ledmatrix.c:28: char food;
+      000C06 20 97 07         [24] 2960 	jb	_P1_7,00257$
+      000C09                       2961 00253$:
+      000C09 30 97 FD         [24] 2962 	jnb	_P1_7,00253$
+      000C0C 7F 03            [12] 2963 	mov	r7,#0x03
+      000C0E 80 4D            [24] 2964 	sjmp	00293$
+      000C10                       2965 00257$:
+                                   2966 ;	ledmatrix.c:29: char bit0[8];
+      000C10 20 96 07         [24] 2967 	jb	_P1_6,00262$
+      000C13                       2968 00258$:
+      000C13 30 96 FD         [24] 2969 	jnb	_P1_6,00258$
+      000C16 7F 07            [12] 2970 	mov	r7,#0x07
+      000C18 80 43            [24] 2971 	sjmp	00293$
+      000C1A                       2972 00262$:
+                                   2973 ;	ledmatrix.c:30: char bit1[8]; // 0 : horizontal 1: vertical
+      000C1A 20 95 07         [24] 2974 	jb	_P1_5,00267$
+      000C1D                       2975 00263$:
+      000C1D 30 95 FD         [24] 2976 	jnb	_P1_5,00263$
+      000C20 7F 0B            [12] 2977 	mov	r7,#0x0b
+      000C22 80 39            [24] 2978 	sjmp	00293$
+      000C24                       2979 00267$:
+                                   2980 ;	ledmatrix.c:31: 
+      000C24 20 94 07         [24] 2981 	jb	_P1_4,00272$
+      000C27                       2982 00268$:
+      000C27 30 94 FD         [24] 2983 	jnb	_P1_4,00268$
+      000C2A 7F 0F            [12] 2984 	mov	r7,#0x0f
+      000C2C 80 2F            [24] 2985 	sjmp	00293$
+      000C2E                       2986 00272$:
+                                   2987 ;	keymatrix.h:33: P1 = 0xff;
+      000C2E 75 90 FF         [24] 2988 	mov	_P1,#0xff
+                                   2989 ;	keymatrix.h:34: P1_0 = 0;
+                                   2990 ;	assignBit
+      000C31 C2 90            [12] 2991 	clr	_P1_0
+                                   2992 ;	ledmatrix.c:35: // 11: down
+      000C33 20 97 07         [24] 2993 	jb	_P1_7,00277$
+      000C36                       2994 00273$:
+      000C36 30 97 FD         [24] 2995 	jnb	_P1_7,00273$
+      000C39 7F 04            [12] 2996 	mov	r7,#0x04
+      000C3B 80 20            [24] 2997 	sjmp	00293$
+      000C3D                       2998 00277$:
+                                   2999 ;	ledmatrix.c:36: inline void display_led_mat(void)
+      000C3D 20 96 07         [24] 3000 	jb	_P1_6,00282$
+      000C40                       3001 00278$:
+      000C40 30 96 FD         [24] 3002 	jnb	_P1_6,00278$
+      000C43 7F 08            [12] 3003 	mov	r7,#0x08
+      000C45 80 16            [24] 3004 	sjmp	00293$
+      000C47                       3005 00282$:
+                                   3006 ;	ledmatrix.c:37: {
+      000C47 20 95 07         [24] 3007 	jb	_P1_5,00287$
+      000C4A                       3008 00283$:
+      000C4A 30 95 FD         [24] 3009 	jnb	_P1_5,00283$
+      000C4D 7F 0C            [12] 3010 	mov	r7,#0x0c
+      000C4F 80 0C            [24] 3011 	sjmp	00293$
+      000C51                       3012 00287$:
+                                   3013 ;	ledmatrix.c:38: for (char row = 0; row < 8; row++)
+      000C51 20 94 07         [24] 3014 	jb	_P1_4,00292$
+      000C54                       3015 00288$:
+      000C54 30 94 FD         [24] 3016 	jnb	_P1_4,00288$
+      000C57 7F 10            [12] 3017 	mov	r7,#0x10
+      000C59 80 02            [24] 3018 	sjmp	00293$
+      000C5B                       3019 00292$:
+                                   3020 ;	keymatrix.h:39: return 0;
+      000C5B 7F 00            [12] 3021 	mov	r7,#0x00
+                                   3022 ;	ledmatrix.c:492: key_pressed = get_pressed_key();
+      000C5D                       3023 00293$:
+                                   3024 ;	ledmatrix.c:493: if (key_pressed)
+      000C5D EF               [12] 3025 	mov	a,r7
+      000C5E F5*13            [12] 3026 	mov	_key_pressed,a
+      000C60 70 03            [24] 3027 	jnz	00713$
+      000C62 02r0ArE0         [24] 3028 	ljmp	00107$
+      000C65                       3029 00713$:
+                                   3030 ;	ledmatrix.c:495: key_pressed_handle();
+      000C65 12r08r35         [24] 3031 	lcall	_key_pressed_handle
+                                   3032 ;	ledmatrix.c:498: }
+      000C68 02r0ArE0         [24] 3033 	ljmp	00107$
+                                   3034 	.area CSEG    (CODE)
+                                   3035 	.area CONST   (CODE)
+      000000                       3036 _number_string:
+      000000 3F                    3037 	.db #0x3f	; 63
+      000001 06                    3038 	.db #0x06	; 6
+      000002 5B                    3039 	.db #0x5b	; 91
+      000003 4F                    3040 	.db #0x4f	; 79	'O'
+      000004 66                    3041 	.db #0x66	; 102	'f'
+      000005 6D                    3042 	.db #0x6d	; 109	'm'
+      000006 7D                    3043 	.db #0x7d	; 125
+      000007 07                    3044 	.db #0x07	; 7
+      000008 7F                    3045 	.db #0x7f	; 127
+      000009 6F                    3046 	.db #0x6f	; 111	'o'
+      00000A                       3047 _game_over_floating_display_65537_111:
+      00000A 81                    3048 	.db #0x81	; 129
+      00000B 42                    3049 	.db #0x42	; 66	'B'
+      00000C 24                    3050 	.db #0x24	; 36
+      00000D 18                    3051 	.db #0x18	; 24
+      00000E 18                    3052 	.db #0x18	; 24
+      00000F 24                    3053 	.db #0x24	; 36
+      000010 42                    3054 	.db #0x42	; 66	'B'
+      000011 81                    3055 	.db #0x81	; 129
+      000012 18                    3056 	.db #0x18	; 24
+      000013 3C                    3057 	.db #0x3c	; 60
+      000014 7E                    3058 	.db #0x7e	; 126
+      000015 FF                    3059 	.db #0xff	; 255
+      000016 FF                    3060 	.db #0xff	; 255
+      000017 7E                    3061 	.db #0x7e	; 126
+      000018 3C                    3062 	.db #0x3c	; 60
+      000019 18                    3063 	.db #0x18	; 24
+      00001A 00                    3064 	.db #0x00	; 0
+      00001B 66                    3065 	.db #0x66	; 102	'f'
+      00001C FF                    3066 	.db #0xff	; 255
+      00001D FF                    3067 	.db #0xff	; 255
+      00001E 7E                    3068 	.db #0x7e	; 126
+      00001F 3C                    3069 	.db #0x3c	; 60
+      000020 18                    3070 	.db #0x18	; 24
+      000021 00                    3071 	.db #0x00	; 0
+      000022 3C                    3072 	.db #0x3c	; 60
+      000023 42                    3073 	.db #0x42	; 66	'B'
+      000024 81                    3074 	.db #0x81	; 129
+      000025 A5                    3075 	.db #0xa5	; 165
+      000026 81                    3076 	.db #0x81	; 129
+      000027 99                    3077 	.db #0x99	; 153
+      000028 42                    3078 	.db #0x42	; 66	'B'
+      000029 3C                    3079 	.db #0x3c	; 60
+      00002A 3C                    3080 	.db #0x3c	; 60
+      00002B 42                    3081 	.db #0x42	; 66	'B'
+      00002C 81                    3082 	.db #0x81	; 129
+      00002D 81                    3083 	.db #0x81	; 129
+      00002E 81                    3084 	.db #0x81	; 129
+      00002F 81                    3085 	.db #0x81	; 129
+      000030 42                    3086 	.db #0x42	; 66	'B'
+      000031 3C                    3087 	.db #0x3c	; 60
+      000032 60                    3088 	.db #0x60	; 96
+      000033 50                    3089 	.db #0x50	; 80	'P'
+      000034 50                    3090 	.db #0x50	; 80	'P'
+      000035 10                    3091 	.db #0x10	; 16
+      000036 10                    3092 	.db #0x10	; 16
+      000037 10                    3093 	.db #0x10	; 16
+      000038 10                    3094 	.db #0x10	; 16
+      000039 1F                    3095 	.db #0x1f	; 31
+      00003A 00                    3096 	.db 0x00
+      00003B 00                    3097 	.db 0x00
+      00003C 00                    3098 	.db 0x00
+      00003D 00                    3099 	.db 0x00
+      00003E 00                    3100 	.db 0x00
+      00003F 00                    3101 	.db 0x00
+      000040 00                    3102 	.db 0x00
+      000041 00                    3103 	.db 0x00
+      000042 00                    3104 	.db 0x00
+      000043 00                    3105 	.db 0x00
+      000044 00                    3106 	.db 0x00
+      000045 00                    3107 	.db 0x00
+      000046 00                    3108 	.db 0x00
+      000047 00                    3109 	.db 0x00
+      000048 00                    3110 	.db 0x00
+      000049 00                    3111 	.db 0x00
+      00004A 00                    3112 	.db 0x00
+      00004B 00                    3113 	.db 0x00
+      00004C 00                    3114 	.db 0x00
+      00004D 00                    3115 	.db 0x00
+      00004E 00                    3116 	.db 0x00
+      00004F 00                    3117 	.db 0x00
+      000050 00                    3118 	.db 0x00
+      000051 00                    3119 	.db 0x00
+      000052 00                    3120 	.db 0x00
+      000053 00                    3121 	.db 0x00
+      000054 00                    3122 	.db 0x00
+      000055 00                    3123 	.db 0x00
+      000056 00                    3124 	.db 0x00
+      000057 00                    3125 	.db 0x00
+      000058 00                    3126 	.db 0x00
+      000059 00                    3127 	.db 0x00
+      00005A 00                    3128 	.db 0x00
+      00005B 00                    3129 	.db 0x00
+      00005C 00                    3130 	.db 0x00
+      00005D 00                    3131 	.db 0x00
+      00005E 00                    3132 	.db 0x00
+      00005F 00                    3133 	.db 0x00
+      000060 00                    3134 	.db 0x00
+      000061 00                    3135 	.db 0x00
+      000062 00                    3136 	.db 0x00
+      000063 00                    3137 	.db 0x00
+      000064 00                    3138 	.db 0x00
+      000065 00                    3139 	.db 0x00
+      000066 00                    3140 	.db 0x00
+      000067 00                    3141 	.db 0x00
+      000068 00                    3142 	.db 0x00
+      000069 00                    3143 	.db 0x00
+      00006A                       3144 _game_over_firework_65537_111:
+      00006A 00                    3145 	.db #0x00	; 0
+      00006B 00                    3146 	.db #0x00	; 0
+      00006C 00                    3147 	.db #0x00	; 0
+      00006D 00                    3148 	.db #0x00	; 0
+      00006E 00                    3149 	.db #0x00	; 0
+      00006F 00                    3150 	.db #0x00	; 0
+      000070 18                    3151 	.db #0x18	; 24
+      000071 18                    3152 	.db #0x18	; 24
+      000072 00                    3153 	.db #0x00	; 0
+      000073 00                    3154 	.db #0x00	; 0
+      000074 00                    3155 	.db #0x00	; 0
+      000075 18                    3156 	.db #0x18	; 24
+      000076 18                    3157 	.db #0x18	; 24
+      000077 00                    3158 	.db #0x00	; 0
+      000078 00                    3159 	.db #0x00	; 0
+      000079 00                    3160 	.db #0x00	; 0
+      00007A 00                    3161 	.db #0x00	; 0
+      00007B 00                    3162 	.db #0x00	; 0
+      00007C 18                    3163 	.db #0x18	; 24
+      00007D 18                    3164 	.db #0x18	; 24
+      00007E 00                    3165 	.db #0x00	; 0
+      00007F 00                    3166 	.db #0x00	; 0
+      000080 00                    3167 	.db #0x00	; 0
+      000081 00                    3168 	.db #0x00	; 0
+      000082 24                    3169 	.db #0x24	; 36
+      000083 00                    3170 	.db #0x00	; 0
+      000084 81                    3171 	.db #0x81	; 129
+      000085 18                    3172 	.db #0x18	; 24
+      000086 18                    3173 	.db #0x18	; 24
+      000087 81                    3174 	.db #0x81	; 129
+      000088 00                    3175 	.db #0x00	; 0
+      000089 24                    3176 	.db #0x24	; 36
+      00008A 00                    3177 	.db #0x00	; 0
+      00008B 24                    3178 	.db #0x24	; 36
+      00008C 00                    3179 	.db #0x00	; 0
+      00008D 81                    3180 	.db #0x81	; 129
+      00008E 81                    3181 	.db #0x81	; 129
+      00008F 00                    3182 	.db #0x00	; 0
+      000090 24                    3183 	.db #0x24	; 36
+      000091 00                    3184 	.db #0x00	; 0
+      000092 24                    3185 	.db #0x24	; 36
+      000093 00                    3186 	.db #0x00	; 0
+      000094 81                    3187 	.db #0x81	; 129
+      000095 00                    3188 	.db #0x00	; 0
+      000096 00                    3189 	.db #0x00	; 0
+      000097 81                    3190 	.db #0x81	; 129
+      000098 00                    3191 	.db #0x00	; 0
+      000099 24                    3192 	.db #0x24	; 36
+      00009A 00                    3193 	.db #0x00	; 0
+      00009B 24                    3194 	.db #0x24	; 36
+      00009C 00                    3195 	.db #0x00	; 0
+      00009D 00                    3196 	.db #0x00	; 0
+      00009E 00                    3197 	.db #0x00	; 0
+      00009F 00                    3198 	.db #0x00	; 0
+      0000A0 24                    3199 	.db #0x24	; 36
+      0000A1 00                    3200 	.db #0x00	; 0
+      0000A2 00                    3201 	.db #0x00	; 0
+      0000A3 00                    3202 	.db #0x00	; 0
+      0000A4 24                    3203 	.db #0x24	; 36
+      0000A5 00                    3204 	.db #0x00	; 0
+      0000A6 00                    3205 	.db #0x00	; 0
+      0000A7 24                    3206 	.db #0x24	; 36
+      0000A8 00                    3207 	.db #0x00	; 0
+      0000A9 00                    3208 	.db #0x00	; 0
+      0000AA 00                    3209 	.db #0x00	; 0
+      0000AB 00                    3210 	.db #0x00	; 0
+      0000AC 00                    3211 	.db #0x00	; 0
+      0000AD 24                    3212 	.db #0x24	; 36
+      0000AE 24                    3213 	.db #0x24	; 36
+      0000AF 00                    3214 	.db #0x00	; 0
+      0000B0 00                    3215 	.db #0x00	; 0
+      0000B1 00                    3216 	.db #0x00	; 0
+      0000B2 00                    3217 	.db #0x00	; 0
+      0000B3 00                    3218 	.db #0x00	; 0
+      0000B4 00                    3219 	.db #0x00	; 0
+      0000B5 00                    3220 	.db #0x00	; 0
+      0000B6 00                    3221 	.db #0x00	; 0
+      0000B7 24                    3222 	.db #0x24	; 36
+      0000B8 24                    3223 	.db #0x24	; 36
+      0000B9 00                    3224 	.db #0x00	; 0
+      0000BA 00                    3225 	.db #0x00	; 0
+      0000BB 00                    3226 	.db #0x00	; 0
+      0000BC 00                    3227 	.db #0x00	; 0
+      0000BD 00                    3228 	.db #0x00	; 0
+      0000BE 00                    3229 	.db #0x00	; 0
+      0000BF 00                    3230 	.db #0x00	; 0
+      0000C0 00                    3231 	.db #0x00	; 0
+      0000C1 00                    3232 	.db #0x00	; 0
+                                   3233 	.area XINIT   (CODE)
+                                   3234 	.area CABS    (ABS,CODE)
