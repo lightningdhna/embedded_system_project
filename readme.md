@@ -90,7 +90,7 @@ https://drive.google.com/file/d/1Ov-C5lpnTSf85BlZtrucXNpACiIgJT74/view?usp=shari
 
 # Điều khiển điểm sáng di chuyển giữa 2 mạch.
 
-## File : dotmove.c
+## File : connect.c
 ## File hex build : hex_file/dotmove.hex
 ## Mô tả chung:
 
