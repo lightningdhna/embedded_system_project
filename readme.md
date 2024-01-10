@@ -59,6 +59,7 @@
 ![Alt text](image-1.png)
 Game over:
 ![Alt text](image-2.png)
+https://drive.google.com/file/d/1Ov-C5lpnTSf85BlZtrucXNpACiIgJT74/view?usp=sharing
 
 ### Xây dựng Game rắn săn mồi:
  #### Quản lý trạng thái của game thông qua các biến:
@@ -120,6 +121,9 @@ Sau đó, ta có thể điểu khiển điểm sáng này bằng phím trên b�
 https://www.stcmicro.com/datasheet/STC89C51RC-en.pdf
 
 # Một vài trò con bò trên mạch esp32 với joystick:
+
+## demo:
+https://drive.google.com/file/d/1Os2v-M5jRHhf6sVe-q3SuGL9yTM6VxWA/view?usp=sharing
 
 ## Lấy thông tin điểu khiển từ joystick
 > * Từ joystick lấy được 2 giá trị x, y. 2 giá trị này có miền giá trị giống nhau, thực nghiệm cho thấy điều đó.
