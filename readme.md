@@ -34,3 +34,55 @@
 >* ### Tín hiệu hồng ngoại nhận được từ điểu khiển chỉ lấy 1 byte cuối. Sau khi nhận được tín hiệu, không thực hiện lệnh ngay mà đẩy vào 1 hàng đợi. Điều này khắc phục việc, nếu 89c52 nhận quá nhiều tín hiệu điều khiển sẽ bị lag.
 >* ### Dòng lệnh chỉ được viết trên 1 dòng của lcd 1602 tại 1 thời điểm. Có phím để chuyển dòng, khi thực hiện lệnh, mạch chỉ lấy giá trị câu lệnh trên dòng hiện tại đang được chính sửa. Điều này là để tiết kiệm bộ nhớ.
 >* ### led 7 thanh có hỗ trợ in ra màn hình số âm. 
+
+# Game rắn săn mồi trên ma trận led 8*8.
+## Chương trình được cài đặt ở file snake.c , file sau build là snake.hex
+## Cách chơi :
+>* Bấm phím bất kì để bắt đầu
+>* 4 phím điều khiển là phím thứ 2 trên hàng thứ nhất và 3 phím đầu trên hàng thứ 2. Tương tự như các phím mũi tên có trên bàn phím.
+>* Điểu khiển rắn ăn mồi để tăng điểm. Mồi là điểm sáng nhấp nháy trên mành hình.
+>* Điểm của người chơi hiện trên ma trận led 7 thanh, ở phía bên phải. Có một số 0 ở phía trái, đừng bận tâm, đây là hạn chế của việc trùng chân với điều khiển ma trận led, cũng như sử dụng chung code led 7 thanh của các chương trình khác.
+>* Game kết thúc khi rắn chạm biên, hoặc chạm chính nó.
+>* Sau khi game kết thúc, sẽ có một dạng hỉnh ảnh chạy hiển thị trên ma trận led.
+
+## Xây dựng game:
+
+### Xây dựng chương trình điểu khiển ma trận led.
+>* Mỗi đèn led trong ma trận led được điểu khiển bởi giá trị của 2 chân. 64 đèn cần tổng cộng 16 chân, 1 hàng 8 chân và 1 cột 8 chân, mỗi cặp tương ứng 1 đèn.
+>* Giá trị của chân theo hàng được điều khiển thông qua IC dịch và latch, được điểu khiển bởi 3 chân của 89c52 là P34,p35,p36 bao gồm 1 chân data, 1 chân clock và 1 chân latch.
+>* Giá trị của cột là giá trị của P0
+>* Dữ liệu của các bit 8*8 để hiển thị được lưu trong mảng data_mat, là 1 mảng 8 phần tử char ( để tiết kiệm bộ nhớ)
+>* Các toán tử để gán giá trị để điểu khiển ma trận led dều là toán tử bit ( bit manipulation)
+
+### Demo
+>Game:
+![Alt text](image-1.png)
+Game over:
+![Alt text](image-2.png)
+
+### Xây dựng Game rắn săn mồi:
+ #### Quản lý trạng thái của game thông qua các biến:
+ > head : Vị trí đầu rắn
+> tail : Vị trí đuôi rắn
+> Một cấu trúc dữ liệu đặc biệt để lưu vị trí tiếp theo của đuôi rắn. 
+> Dạng Next[u] = v , tức là nếu đuôi rắn đang ở vị trí u, thì tiếp theo đuôi sẽ ở vị trí v.
+> Tuy nhiên, Để giảm bớt bộ nhớ cần thiết, ta nhận thấy, vị trí tiếp theo của v chỉ có tối đa 4 khả năng.
+> Do đó, ta sẽ sử dụng 2 mảng char, bit0[8] và bit1[8], với ý tưởng tương tự data_mat, ghép 2 giá trị của bit0 và bit1 lại ta sẽ biết vị trí tiếp theo của tail.
+> Một biến char để lưu vị trí của mồi. Trong game 1 lúc chỉ có 1 mồi tồn tại
+> Một biến lưu hướng di chuyển hiện tại của con rắn
+
+ ### Sau mỗi bước di chuyển của rắn, game sẽ được cập nhật:
+ #### Kiểm tra trạng thái của game tại vị trí Head :
+> Nếu Head là vị trí của mồi, không cập nhật tail, tăng điểm
+> Nếu Head là vị trí bình thường, cập nhật Head, cập nhật tail, cập nhật giá trị next[Head] = new Head
+> Nếu Head là vị trí biên, hoặc chính là con rắn , thì game kết thúc.
+
+#### Bật đèn led tại ví trí của Head
+#### Tắt đèn led tại vị trí của Tail
+#### Trạng thái của game được upate ( con rắn sẽ di chuyển) sau:
+> * Người dùng bấm phím điều khiển. Nếu hướng điều khiển khác với hướng hiện tại của con rắn, thì update trạng thái game
+> * Sau một khoảng thời gian nhất định, cập nhật trạng thái game.
+
+#### Một Đồng hồ được sử dụng để:
+> * Cập nhật trạng thái game sau mỗi khoảng thời gian nhất định.
+> * Bật tắt đèn led tại vị trí mồi để làm cho điểm đó nhấp nháy
